@@ -1,0 +1,1 @@
+include ':core', ':zxing', ':zbar', ':zxingdemo', ':zbardemo'

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="QRCodeView">
+        <attr name="qrcv_topOffset" format="dimension|reference"/>
+        <attr name="qrcv_cornerSize" format="dimension|reference"/>
+        <attr name="qrcv_cornerLength" format="dimension|reference"/>
+        <attr name="qrcv_cornerColor" format="color|reference"/>
+        <attr name="qrcv_rectWidth" format="dimension|reference"/>
+        <attr name="qrcv_maskColor" format="color|reference"/>
+        <attr name="qrcv_scanLineSize" format="dimension|reference"/>
+        <attr name="qrcv_scanLineColor" format="color|reference"/>
+    </declare-styleable>
+</resources>
