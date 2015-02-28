@@ -73,7 +73,6 @@ public class ZBarView extends QRCodeView {
                         camera.setOneShotPreviewCallback(ZBarView.this);
                     } catch (RuntimeException e) {
                     }
-
                 }
             }
         }.execute();

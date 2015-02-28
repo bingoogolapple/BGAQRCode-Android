@@ -1,55 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical">
 
-    <cn.bingoogolapple.qrcode.zxing.ZXingView
-        android:id="@+id/zxingview"
-        app:qrcv_topOffset="150dp"
-        app:qrcv_cornerColor="#0f0"
-        app:qrcv_cornerSize="3dp"
-        app:qrcv_cornerLength="20dp"
-        app:qrcv_maskColor="#3fff"
-        app:qrcv_scanLineColor="#f00"
-        app:qrcv_scanLineSize="2dp"
-        app:qrcv_rectWidth="200dp"
+    <Button
+        android:id="@+id/scan_qrcode"
+        android:text="扫描二维码"
+        android:onClick="onClick"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:layout_alignParentBottom="true"
+    <Button
+        android:id="@+id/generate_qrcode"
+        android:text="生成二维码"
+        android:layout_marginTop="10dp"
+        android:onClick="onClick"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/start_spot"
-            android:text="开始识别"
-            android:onClick="onClick"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/stop_spot"
-            android:text="暂停识别"
-            android:onClick="onClick"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/hidden_rect"
-            android:text="隐藏扫描框"
-            android:onClick="onClick"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/show_rect"
-            android:text="显示扫描框"
-            android:onClick="onClick"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

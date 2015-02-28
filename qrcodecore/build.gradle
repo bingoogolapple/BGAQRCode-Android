@@ -10,11 +10,6 @@ android {
     }
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':qrcodecore')
-}
-
 apply from: '../android-artifacts.gradle'
 apply from: '../central-publish.gradle'
 apply from: '../bintray-publish.gradle'

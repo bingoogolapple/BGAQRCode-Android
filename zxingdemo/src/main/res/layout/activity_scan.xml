@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <cn.bingoogolapple.qrcode.zbar.ZBarView
-        android:id="@+id/zbarview"
+    <cn.bingoogolapple.qrcode.zxing.ZXingView
+        android:id="@+id/zxingview"
         app:qrcv_topOffset="90dp"
         app:qrcv_cornerColor="#0f0"
         app:qrcv_cornerSize="3dp"

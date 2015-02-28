@@ -20,6 +20,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ScanActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".Generatectivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package cn.bingoogolapple.qrcode.zbardemo;
+package cn.bingoogolapple.qrcode.zxingdemo;
 
 import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
@@ -8,27 +8,27 @@ import android.view.View;
 import android.widget.Toast;
 
 import cn.bingoogolapple.qrcode.core.QRCodeView;
-import cn.bingoogolapple.qrcode.zbar.ZBarView;
+import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
-public class MainActivity extends ActionBarActivity implements QRCodeView.ResultHandler {
-    private ZBarView mZBarView;
+public class ScanActivity extends ActionBarActivity implements QRCodeView.ResultHandler {
+    private ZXingView mZXingView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mZBarView = (ZBarView) findViewById(R.id.zbarview);
-        mZBarView.setResultHandler(this);
+        setContentView(R.layout.activity_scan);
+        mZXingView = (ZXingView) findViewById(R.id.zxingview);
+        mZXingView.setResultHandler(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mZBarView.startCamera();
+        mZXingView.startCamera();
     }
 
     @Override
     protected void onStop() {
-        mZBarView.stopCamera();
+        mZXingView.stopCamera();
         super.onStop();
     }
 
@@ -40,9 +40,9 @@ public class MainActivity extends ActionBarActivity implements QRCodeView.Result
     @Override
     public void handleResult(String result) {
         Log.i("bingo", "result:" + result);
-        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,result,Toast.LENGTH_SHORT).show();
         vibrate();
-        mZBarView.startSpot();
+        mZXingView.startSpot();
     }
 
     @Override
@@ -53,28 +53,28 @@ public class MainActivity extends ActionBarActivity implements QRCodeView.Result
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.start_spot:
-                mZBarView.startSpot();
+                mZXingView.startSpot();
                 break;
             case R.id.stop_spot:
-                mZBarView.stopSpot();
+                mZXingView.stopSpot();
                 break;
             case R.id.start_spot_showrect:
-                mZBarView.startSpotAndShowRect();
+                mZXingView.startSpotAndShowRect();
                 break;
             case R.id.stop_spot_hiddenrect:
-                mZBarView.stopSpotAndHiddenRect();
+                mZXingView.stopSpotAndHiddenRect();
                 break;
             case R.id.show_rect:
-                mZBarView.showScanRect();
+                mZXingView.showScanRect();
                 break;
             case R.id.hidden_rect:
-                mZBarView.hiddenScanRect();
+                mZXingView.hiddenScanRect();
                 break;
             case R.id.start_preview:
-                mZBarView.startCamera();
+                mZXingView.startCamera();
                 break;
             case R.id.stop_preview:
-                mZBarView.stopCamera();
+                mZXingView.stopCamera();
                 break;
         }
     }

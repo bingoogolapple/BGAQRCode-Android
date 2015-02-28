@@ -15,7 +15,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private boolean mPreviewing = true;
     private boolean mAutoFocus = true;
     private boolean mSurfaceCreated = false;
-    private Camera.PreviewCallback mPreviewCallback;
+//    private Camera.PreviewCallback mPreviewCallback;
     private CameraConfigurationManager mCameraConfigurationManager;
 
     public CameraPreview(Context context) {
@@ -26,9 +26,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         super(context, attrs);
     }
 
-    public void setCamera(Camera camera, Camera.PreviewCallback previewCallback) {
+    public void setCamera(Camera camera) {
         mCamera = camera;
-        mPreviewCallback = previewCallback;
         if (mCamera != null) {
             mAutoFocusHandler = new Handler();
             mCameraConfigurationManager = new CameraConfigurationManager(getContext());
@@ -74,7 +73,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 mCamera.setPreviewDisplay(getHolder());
 
                 mCameraConfigurationManager.setDesiredCameraParameters(mCamera);
-                mCamera.setOneShotPreviewCallback(mPreviewCallback);
                 mCamera.startPreview();
                 if (mAutoFocus) {
                     mCamera.autoFocus(autoFocusCB);
