@@ -13,6 +13,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':qrcodecore')
+//    compile 'cn.bingoogolapple:qrcodecore:1.0.0@aar'
 }
 
 apply from: '../android-artifacts.gradle'
