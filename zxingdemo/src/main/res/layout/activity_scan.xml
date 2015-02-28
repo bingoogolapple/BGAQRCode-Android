@@ -7,11 +7,11 @@
     <cn.bingoogolapple.qrcode.zxing.ZXingView
         android:id="@+id/zxingview"
         app:qrcv_topOffset="90dp"
-        app:qrcv_cornerColor="#0f0"
+        app:qrcv_cornerColor="#fff"
         app:qrcv_cornerSize="3dp"
         app:qrcv_cornerLength="20dp"
         app:qrcv_maskColor="#3fff"
-        app:qrcv_scanLineColor="#f00"
+        app:qrcv_scanLineColor="#ccc"
         app:qrcv_scanLineSize="2dp"
         app:qrcv_rectWidth="200dp"
         android:layout_width="match_parent"
