@@ -5,6 +5,7 @@
 主要功能：ZXing生成二维码、ZXing扫描二维码、ZBar扫描二维码
 
 #### 效果图
+![Image of IqeggQRCodeDemo](https://raw.githubusercontent.com/bingoogolapple/QRCode/master/screenshots/IqeggQRCodeDemo.gif)
 ![Image of ZXingDemo](https://raw.githubusercontent.com/bingoogolapple/QRCode/master/screenshots/ZXingDemo.gif)
 ![Image of ZBarDemo](https://raw.githubusercontent.com/bingoogolapple/QRCode/master/screenshots/ZBarDemo.gif)
 
