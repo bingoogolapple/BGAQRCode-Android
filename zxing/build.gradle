@@ -12,8 +12,8 @@ android {
 
 dependencies {
     compile 'com.google.zxing:core:3.1.0'
-    compile project(':qrcodecore')
-//    compile 'cn.bingoogolapple:qrcodecore:1.0.0@aar'
+//    compile project(':qrcodecore')
+    compile 'cn.bingoogolapple:qrcodecore:1.0.0@aar'
 }
 
 apply from: '../android-artifacts.gradle'

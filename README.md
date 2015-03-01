@@ -9,13 +9,21 @@
 ![Image of ZXingDemo](https://raw.githubusercontent.com/bingoogolapple/QRCode/master/screenshots/ZXingDemo.gif)
 ![Image of ZBarDemo](https://raw.githubusercontent.com/bingoogolapple/QRCode/master/screenshots/ZBarDemo.gif)
 
->Gradle
+>ZXing
+
+```groovy
+dependencies {
+    compile 'com.google.zxing:core:3.1.0'
+    compile 'cn.bingoogolapple:qrcodecore:1.0.0@aar'
+    compile 'cn.bingoogolapple:zxing:1.0.0@aar'
+}
+```
+>ZBar
 
 ```groovy
 dependencies {
     compile 'cn.bingoogolapple:qrcodecore:1.0.0@aar'
     compile 'cn.bingoogolapple:zbar:1.0.0@aar'
-    compile 'cn.bingoogolapple:zxing:1.0.0@aar'
 }
 ```
 

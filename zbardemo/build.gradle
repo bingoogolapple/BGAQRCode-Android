@@ -14,6 +14,7 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:21.0.2'
-    compile project(':zbar')
-//    compile 'cn.bingoogolapple:zbar:1.0.0@aar'
+//    compile project(':zbar')
+    compile 'cn.bingoogolapple:qrcodecore:1.0.0@aar'
+    compile 'cn.bingoogolapple:zbar:1.0.0@aar'
 }

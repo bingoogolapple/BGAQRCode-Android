@@ -14,6 +14,8 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:21.0.2'
-    compile project(':zxing')
-//    compile 'cn.bingoogolapple:zbar:1.0.0@aar'
+//    compile project(':zxing')
+    compile 'com.google.zxing:core:3.1.0'
+    compile 'cn.bingoogolapple:qrcodecore:1.0.0@aar'
+    compile 'cn.bingoogolapple:zxing:1.0.0@aar'
 }
