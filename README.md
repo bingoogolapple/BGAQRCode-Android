@@ -5,9 +5,9 @@
 主要功能：ZXing生成二维码、ZXing扫描二维码、ZBar扫描二维码
 
 #### 效果图
-![Image of IqeggQRCodeDemo](https://raw.githubusercontent.com/bingoogolapple/QRCode/master/screenshots/IqeggQRCodeDemo.gif)
-![Image of ZXingDemo](https://raw.githubusercontent.com/bingoogolapple/QRCode/master/screenshots/ZXingDemo.gif)
-![Image of ZBarDemo](https://raw.githubusercontent.com/bingoogolapple/QRCode/master/screenshots/ZBarDemo.gif)
+![Image of IqeggQRCodeDemo](https://raw.githubusercontent.com/bingoogolapple/QRCode-Android/master/screenshots/IqeggQRCodeDemo.gif)
+![Image of ZXingDemo](https://raw.githubusercontent.com/bingoogolapple/QRCode-Android/master/screenshots/ZXingDemo.gif)
+![Image of ZBarDemo](https://raw.githubusercontent.com/bingoogolapple/QRCode-Android/master/screenshots/ZBarDemo.gif)
 
 >ZXing
 
@@ -27,6 +27,6 @@ dependencies {
 }
 ```
 
-##### 详细用法请查看[ZBarDemo](https://github.com/bingoogolapple/QRCode/tree/master/zbardemo):feet:
+##### 详细用法请查看[ZBarDemo](https://github.com/bingoogolapple/QRCode-Android/tree/master/zbardemo):feet:
 
-##### 详细用法请查看[ZXingDemo](https://github.com/bingoogolapple/QRCode/tree/master/zxingdemo):feet:
+##### 详细用法请查看[ZXingDemo](https://github.com/bingoogolapple/QRCode-Android/tree/master/zxingdemo):feet:
