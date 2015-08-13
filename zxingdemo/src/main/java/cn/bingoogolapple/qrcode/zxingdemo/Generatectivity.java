@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
 import com.google.zxing.WriterException;
@@ -12,7 +12,7 @@ import com.google.zxing.WriterException;
 import cn.bingoogolapple.qrcode.core.DisplayUtils;
 import cn.bingoogolapple.qrcode.zxing.EncodingHandler;
 
-public class Generatectivity extends ActionBarActivity {
+public class Generatectivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,6 @@ public class Generatectivity extends ActionBarActivity {
         setQrcode1();
         setQrcode2();
     }
-
 
     private void setQrcode1() {
         new AsyncTask<Void, Void, Bitmap>() {

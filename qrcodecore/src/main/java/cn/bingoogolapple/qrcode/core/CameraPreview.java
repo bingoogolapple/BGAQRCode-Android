@@ -1,6 +1,7 @@
 package cn.bingoogolapple.qrcode.core;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -15,7 +16,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private boolean mPreviewing = true;
     private boolean mAutoFocus = true;
     private boolean mSurfaceCreated = false;
-//    private Camera.PreviewCallback mPreviewCallback;
     private CameraConfigurationManager mCameraConfigurationManager;
 
     public CameraPreview(Context context) {
@@ -93,7 +93,24 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             } catch (Exception e) {
                 Log.e(TAG, e.toString(), e);
             }
+            mCamera = null;
         }
+    }
+
+    public void openFlashlight() {
+        if (flashLightAvaliable()) {
+            mCameraConfigurationManager.openFlashlight(mCamera);
+        }
+    }
+
+    public void closeFlashlight() {
+        if (flashLightAvaliable()) {
+            mCameraConfigurationManager.closeFlashlight(mCamera);
+        }
+    }
+
+    private boolean flashLightAvaliable() {
+        return mCamera != null && getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     }
 
     private Runnable doAutoFocus = new Runnable() {

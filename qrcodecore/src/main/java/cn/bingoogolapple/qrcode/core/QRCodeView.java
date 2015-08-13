@@ -180,6 +180,19 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         showScanRect();
     }
 
+    /**
+     * 打开闪光灯
+     */
+    public void openFlashlight() {
+        mPreview.openFlashlight();
+    }
+
+    /**
+     * 关闭散光灯
+     */
+    public void closeFlashlight() {
+        mPreview.closeFlashlight();
+    }
 
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
@@ -213,8 +226,8 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
     };
 
     public interface ResultHandler {
-        public void handleResult(String result);
+        void handleResult(String result);
 
-        public void handleCameraError();
+        void handleCameraError();
     }
 }
