@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="QRCodeView">
+        <!-- 扫描框距离扫描视图顶部的距离，默认值为50dp -->
         <attr name="qrcv_topOffset" format="dimension|reference"/>
+        <!-- 扫描框边角线的宽度，默认值为2dp -->
         <attr name="qrcv_cornerSize" format="dimension|reference"/>
+        <!-- 扫描框边角线的长度，默认值为20dp -->
         <attr name="qrcv_cornerLength" format="dimension|reference"/>
+        <!-- 扫描框边角线的颜色，默认值为@android:color/white -->
         <attr name="qrcv_cornerColor" format="color|reference"/>
+        <!-- 扫描框的宽度，默认值为200dp -->
         <attr name="qrcv_rectWidth" format="dimension|reference"/>
+        <!-- 除去扫描框，其余部分阴影颜色，默认值为#33ffffff -->
         <attr name="qrcv_maskColor" format="color|reference"/>
+        <!-- 扫描线的宽度，默认值为1dp -->
         <attr name="qrcv_scanLineSize" format="dimension|reference"/>
+        <!-- 扫描线的颜色，默认值为@android:color/white -->
         <attr name="qrcv_scanLineColor" format="color|reference"/>
     </declare-styleable>
 </resources>

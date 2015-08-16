@@ -9,7 +9,7 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">#179641</item>
+        <item name="android:background">@drawable/selector_btn</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:onClick">onClick</item>
         <item name="android:padding">10dp</item>
@@ -19,7 +19,7 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">#179641</item>
+        <item name="android:background">@drawable/selector_btn</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:onClick">onClick</item>
         <item name="android:padding">10dp</item>

@@ -6,14 +6,14 @@
     <cn.bingoogolapple.qrcode.zxing.ZXingView
         android:id="@+id/zxingview"
         style="@style/MatchMatch"
-        app:qrcv_cornerColor="#fff"
+        app:qrcv_cornerColor="@android:color/white"
         app:qrcv_cornerLength="20dp"
-        app:qrcv_cornerSize="3dp"
-        app:qrcv_maskColor="#3fff"
+        app:qrcv_cornerSize="2dp"
+        app:qrcv_maskColor="#33ffffff"
         app:qrcv_rectWidth="200dp"
-        app:qrcv_scanLineColor="#ccc"
-        app:qrcv_scanLineSize="2dp"
-        app:qrcv_topOffset="80dp" />
+        app:qrcv_scanLineColor="@android:color/white"
+        app:qrcv_scanLineSize="1dp"
+        app:qrcv_topOffset="50dp" />
 
     <include layout="@layout/view_control" />
 </RelativeLayout>

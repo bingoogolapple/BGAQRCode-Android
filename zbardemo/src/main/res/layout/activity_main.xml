@@ -7,10 +7,10 @@
         android:id="@+id/zbarview"
         style="@style/MatchMatch"
         app:qrcv_cornerColor="#B2DB4D"
-        app:qrcv_cornerLength="20dp"
+        app:qrcv_cornerLength="25dp"
         app:qrcv_cornerSize="3dp"
-        app:qrcv_maskColor="#3fff"
-        app:qrcv_rectWidth="200dp"
+        app:qrcv_maskColor="#66ffffff"
+        app:qrcv_rectWidth="220dp"
         app:qrcv_scanLineColor="#179641"
         app:qrcv_scanLineSize="2dp"
         app:qrcv_topOffset="80dp" />

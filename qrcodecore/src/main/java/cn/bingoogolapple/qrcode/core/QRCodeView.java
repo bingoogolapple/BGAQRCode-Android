@@ -2,8 +2,6 @@ package cn.bingoogolapple.qrcode.core;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.Point;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -38,7 +36,7 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.QRCodeView);
         final int count = typedArray.getIndexCount();
         for (int i = 0; i < count; i++) {
-            initAttr(context, typedArray.getIndex(i), typedArray);
+            initAttr(typedArray.getIndex(i), typedArray);
         }
         typedArray.recycle();
 
@@ -46,40 +44,23 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         addView(mScanBoxView);
     }
 
-    public void initAttr(Context context, int attr, TypedArray typedArray) {
+    public void initAttr(int attr, TypedArray typedArray) {
         if (attr == R.styleable.QRCodeView_qrcv_topOffset) {
-            int topOffset = (int) DisplayUtils.dp2px(context, 50);
-            topOffset = typedArray.getDimensionPixelSize(attr, topOffset);
-            mScanBoxView.setTopOffset(topOffset);
+            mScanBoxView.setTopOffset(typedArray.getDimensionPixelSize(attr, mScanBoxView.getTopOffset()));
         } else if (attr == R.styleable.QRCodeView_qrcv_cornerSize) {
-            int cornerSize = (int) DisplayUtils.dp2px(context, 2);
-            cornerSize = typedArray.getDimensionPixelSize(attr, cornerSize);
-            mScanBoxView.setCornerSize(cornerSize);
+            mScanBoxView.setCornerSize(typedArray.getDimensionPixelSize(attr, mScanBoxView.getCornerSize()));
         } else if (attr == R.styleable.QRCodeView_qrcv_cornerLength) {
-            int cornerLength = (int) DisplayUtils.dp2px(context, 20);
-            cornerLength = typedArray.getDimensionPixelSize(attr, cornerLength);
-            mScanBoxView.setCornerLength(cornerLength);
+            mScanBoxView.setCornerLength(typedArray.getDimensionPixelSize(attr, mScanBoxView.getCornerLength()));
         } else if (attr == R.styleable.QRCodeView_qrcv_scanLineSize) {
-            int scanLineSize = (int) DisplayUtils.dp2px(context, 1);
-            scanLineSize = typedArray.getDimensionPixelSize(attr, scanLineSize);
-            mScanBoxView.setScanLineSize(scanLineSize);
+            mScanBoxView.setScanLineSize(typedArray.getDimensionPixelSize(attr, mScanBoxView.getScanLineSize()));
         } else if (attr == R.styleable.QRCodeView_qrcv_rectWidth) {
-            Point screenResolution = DisplayUtils.getScreenResolution(getContext());
-            int rectWidth = Math.min(screenResolution.x, screenResolution.y) * 3 / 5;
-            rectWidth = typedArray.getDimensionPixelSize(attr, rectWidth);
-            mScanBoxView.setRectWidth(rectWidth);
+            mScanBoxView.setRectWidth(typedArray.getDimensionPixelSize(attr, mScanBoxView.getRectWidth()));
         } else if (attr == R.styleable.QRCodeView_qrcv_maskColor) {
-            int maskColor = 0x60000000;
-            maskColor = typedArray.getColor(attr, maskColor);
-            mScanBoxView.setMaskColor(maskColor);
+            mScanBoxView.setMaskColor(typedArray.getColor(attr, mScanBoxView.getMaskColor()));
         } else if (attr == R.styleable.QRCodeView_qrcv_cornerColor) {
-            int cornerColor = Color.WHITE;
-            cornerColor = typedArray.getColor(attr, cornerColor);
-            mScanBoxView.setCornerColor(cornerColor);
+            mScanBoxView.setCornerColor(typedArray.getColor(attr, mScanBoxView.getCornerColor()));
         } else if (attr == R.styleable.QRCodeView_qrcv_scanLineColor) {
-            int scanLineColor = Color.WHITE;
-            scanLineColor = typedArray.getColor(attr, scanLineColor);
-            mScanBoxView.setScanLineColor(scanLineColor);
+            mScanBoxView.setScanLineColor(typedArray.getColor(attr, mScanBoxView.getScanLineColor()));
         }
     }
 
