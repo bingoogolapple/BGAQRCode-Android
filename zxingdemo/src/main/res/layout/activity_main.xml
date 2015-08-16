@@ -1,23 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp"
-    android:orientation="vertical">
+    style="@style/MatchMatch.Vertical"
+    android:gravity="center">
 
-    <Button
+    <TextView
         android:id="@+id/scan_qrcode"
-        android:text="扫描二维码"
-        android:onClick="onClick"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        style="@style/MatchWrapTv"
+        android:text="扫描二维码" />
 
-    <Button
+    <TextView
         android:id="@+id/generate_qrcode"
-        android:text="生成二维码"
-        android:layout_marginTop="10dp"
-        android:onClick="onClick"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        style="@style/MatchWrapTv"
+        android:text="生成二维码" />
 
 </LinearLayout>

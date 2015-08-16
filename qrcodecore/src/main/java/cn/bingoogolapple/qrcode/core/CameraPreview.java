@@ -93,7 +93,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             } catch (Exception e) {
                 Log.e(TAG, e.toString(), e);
             }
-            mCamera = null;
         }
     }
 
@@ -110,7 +109,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     private boolean flashLightAvaliable() {
-        return mCamera != null && getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+        return mCamera != null && mPreviewing && mSurfaceCreated && getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     }
 
     private Runnable doAutoFocus = new Runnable() {

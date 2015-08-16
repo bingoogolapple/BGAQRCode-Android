@@ -50,7 +50,7 @@ public class Generatectivity extends AppCompatActivity {
             @Override
             protected Bitmap doInBackground(Void... params) {
                 try {
-                    return EncodingHandler.createQRCode("bingoogolapple", (int) DisplayUtils.dp2px(Generatectivity.this, 200), Color.parseColor("#00ff00"));
+                    return EncodingHandler.createQRCode("bingoogolapple", (int) DisplayUtils.dp2px(Generatectivity.this, 200), Color.parseColor("#B2DB4D"));
                 } catch (WriterException e) {
                     e.printStackTrace();
                 }
