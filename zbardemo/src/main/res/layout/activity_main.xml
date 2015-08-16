@@ -13,7 +13,9 @@
         app:qrcv_rectWidth="220dp"
         app:qrcv_scanLineColor="#179641"
         app:qrcv_scanLineSize="2dp"
-        app:qrcv_topOffset="80dp" />
+        app:qrcv_topOffset="90dp" />
+
+    <include layout="@layout/toolbar" />
 
     <include layout="@layout/view_control" />
 </RelativeLayout>

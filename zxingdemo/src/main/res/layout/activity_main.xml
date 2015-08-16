@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/MatchMatch.Vertical"
-    android:gravity="center">
+    style="@style/MatchMatch.Vertical">
+
+    <include layout="@layout/toolbar" />
 
     <TextView
         android:id="@+id/scan_qrcode"

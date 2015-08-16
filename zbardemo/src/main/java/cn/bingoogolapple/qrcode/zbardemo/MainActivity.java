@@ -3,6 +3,7 @@ package cn.bingoogolapple.qrcode.zbardemo;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -17,6 +18,8 @@ public class MainActivity extends AppCompatActivity implements QRCodeView.Result
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+
         mQRCodeView = (ZBarView) findViewById(R.id.zbarview);
         mQRCodeView.setResultHandler(this);
     }

@@ -9,9 +9,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCallback {
-    private Camera mCamera;
-    private CameraPreview mPreview;
-    private ScanBoxView mScanBoxView;
+    protected Camera mCamera;
+    protected CameraPreview mPreview;
+    protected ScanBoxView mScanBoxView;
     protected ResultHandler mResultHandler;
     protected Handler mHandler;
 
@@ -19,7 +19,7 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         this(context, attributeSet, 0);
     }
 
-    protected QRCodeView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public QRCodeView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mHandler = new Handler();
         initView(context, attrs);
@@ -29,7 +29,7 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         mResultHandler = resultHandler;
     }
 
-    public void initView(Context context, AttributeSet attrs) {
+    private void initView(Context context, AttributeSet attrs) {
         mPreview = new CameraPreview(getContext());
         mScanBoxView = new ScanBoxView(getContext());
 
@@ -44,7 +44,7 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         addView(mScanBoxView);
     }
 
-    public void initAttr(int attr, TypedArray typedArray) {
+    private void initAttr(int attr, TypedArray typedArray) {
         if (attr == R.styleable.QRCodeView_qrcv_topOffset) {
             mScanBoxView.setTopOffset(typedArray.getDimensionPixelSize(attr, mScanBoxView.getTopOffset()));
         } else if (attr == R.styleable.QRCodeView_qrcv_cornerSize) {
@@ -154,7 +154,7 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
     }
 
     /**
-     * 显示扫描矿，并且延迟1.5秒后开始识别
+     * 显示扫描框，并且延迟1.5秒后开始识别
      */
     public void startSpotAndShowRect() {
         startSpot();
@@ -207,8 +207,16 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
     };
 
     public interface ResultHandler {
+        /**
+         * 处理扫描结果
+         *
+         * @param result
+         */
         void handleResult(String result);
 
+        /**
+         * 处理打开相机出错
+         */
         void handleCameraError();
     }
 }

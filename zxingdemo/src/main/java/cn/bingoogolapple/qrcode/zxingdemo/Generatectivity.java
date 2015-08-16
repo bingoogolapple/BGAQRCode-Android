@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 
 import com.google.zxing.WriterException;
@@ -18,6 +19,8 @@ public class Generatectivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generate);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+
         setQrcode1();
         setQrcode2();
     }

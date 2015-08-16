@@ -35,7 +35,7 @@ public class ScanBoxView extends View {
         mCornerSize = DisplayUtils.dp2px(context, 2);
         mScanLineSize = DisplayUtils.dp2px(context, 1);
         mScanLineColor = Color.WHITE;
-        mTopOffset = DisplayUtils.dp2px(context, 50);
+        mTopOffset = DisplayUtils.dp2px(context, 80);
         mRectWidth = DisplayUtils.dp2px(context, 200);
     }
 

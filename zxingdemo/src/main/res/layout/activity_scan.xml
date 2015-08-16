@@ -13,7 +13,9 @@
         app:qrcv_rectWidth="200dp"
         app:qrcv_scanLineColor="@android:color/white"
         app:qrcv_scanLineSize="1dp"
-        app:qrcv_topOffset="50dp" />
+        app:qrcv_topOffset="80dp" />
+
+    <include layout="@layout/toolbar" />
 
     <include layout="@layout/view_control" />
 </RelativeLayout>

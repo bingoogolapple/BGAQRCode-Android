@@ -3,6 +3,7 @@ package cn.bingoogolapple.qrcode.zxingdemo;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -17,6 +18,8 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Result
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+
         mQRCodeView = (ZXingView) findViewById(R.id.zxingview);
         mQRCodeView.setResultHandler(this);
     }

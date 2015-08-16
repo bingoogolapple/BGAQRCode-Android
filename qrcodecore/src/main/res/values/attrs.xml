@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="QRCodeView">
-        <!-- 扫描框距离扫描视图顶部的距离，默认值为50dp -->
+        <!-- 扫描框距离扫描视图顶部的距离，默认值为80dp -->
         <attr name="qrcv_topOffset" format="dimension|reference"/>
         <!-- 扫描框边角线的宽度，默认值为2dp -->
         <attr name="qrcv_cornerSize" format="dimension|reference"/>
