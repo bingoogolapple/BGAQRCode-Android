@@ -29,15 +29,14 @@ public class ScanBoxView extends View {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL);
-        mMaskColor = 0x60000000;
+        mMaskColor = Color.parseColor("#33ffffff");
         mCornerColor = Color.WHITE;
-        mCornerLength = (int) DisplayUtils.dp2px(context, 20);
-        mCornerSize = (int) DisplayUtils.dp2px(context, 2);
-        mScanLineSize = (int) DisplayUtils.dp2px(context, 1);
+        mCornerLength = DisplayUtils.dp2px(context, 20);
+        mCornerSize = DisplayUtils.dp2px(context, 2);
+        mScanLineSize = DisplayUtils.dp2px(context, 1);
         mScanLineColor = Color.WHITE;
-
-        Point screenResolution = DisplayUtils.getScreenResolution(getContext());
-        mRectWidth = Math.min(screenResolution.x, screenResolution.y) * 3 / 5;
+        mTopOffset = DisplayUtils.dp2px(context, 80);
+        mRectWidth = DisplayUtils.dp2px(context, 200);
     }
 
     public void setTopOffset(int topOffset) {
@@ -70,6 +69,38 @@ public class ScanBoxView extends View {
 
     public void setRectWidth(int rectWidth) {
         mRectWidth = rectWidth;
+    }
+
+    public int getMaskColor() {
+        return mMaskColor;
+    }
+
+    public int getCornerColor() {
+        return mCornerColor;
+    }
+
+    public int getCornerLength() {
+        return mCornerLength;
+    }
+
+    public int getCornerSize() {
+        return mCornerSize;
+    }
+
+    public int getRectWidth() {
+        return mRectWidth;
+    }
+
+    public int getTopOffset() {
+        return mTopOffset;
+    }
+
+    public int getScanLineSize() {
+        return mScanLineSize;
+    }
+
+    public int getScanLineColor() {
+        return mScanLineColor;
     }
 
     @Override

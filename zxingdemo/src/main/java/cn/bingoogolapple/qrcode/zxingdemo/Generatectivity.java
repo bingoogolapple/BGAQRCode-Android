@@ -4,7 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 
 import com.google.zxing.WriterException;
@@ -12,16 +13,17 @@ import com.google.zxing.WriterException;
 import cn.bingoogolapple.qrcode.core.DisplayUtils;
 import cn.bingoogolapple.qrcode.zxing.EncodingHandler;
 
-public class Generatectivity extends ActionBarActivity {
+public class Generatectivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generate);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+
         setQrcode1();
         setQrcode2();
     }
-
 
     private void setQrcode1() {
         new AsyncTask<Void, Void, Bitmap>() {
@@ -29,7 +31,7 @@ public class Generatectivity extends ActionBarActivity {
             @Override
             protected Bitmap doInBackground(Void... params) {
                 try {
-                    return EncodingHandler.createQRCode("王浩", (int) DisplayUtils.dp2px(Generatectivity.this, 200));
+                    return EncodingHandler.createQRCode("王浩", DisplayUtils.dp2px(Generatectivity.this, 200));
                 } catch (WriterException e) {
                     e.printStackTrace();
                 }
@@ -51,7 +53,7 @@ public class Generatectivity extends ActionBarActivity {
             @Override
             protected Bitmap doInBackground(Void... params) {
                 try {
-                    return EncodingHandler.createQRCode("bingoogolapple", (int) DisplayUtils.dp2px(Generatectivity.this, 200), Color.parseColor("#00ff00"));
+                    return EncodingHandler.createQRCode("bingoogolapple", DisplayUtils.dp2px(Generatectivity.this, 200), Color.parseColor("#B2DB4D"));
                 } catch (WriterException e) {
                     e.printStackTrace();
                 }

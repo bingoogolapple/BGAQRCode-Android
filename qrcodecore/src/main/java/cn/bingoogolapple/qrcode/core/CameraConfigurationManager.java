@@ -7,6 +7,7 @@ import android.view.Display;
 import android.view.Surface;
 import android.view.WindowManager;
 
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 final class CameraConfigurationManager {
@@ -38,7 +39,6 @@ final class CameraConfigurationManager {
         cameraResolution = getCameraResolution(parameters, screenResolutionForCamera);
     }
 
-
     public void setDesiredCameraParameters(Camera camera) {
         Camera.Parameters parameters = camera.getParameters();
         parameters.setPreviewSize(cameraResolution.x, cameraResolution.y);
@@ -46,6 +46,42 @@ final class CameraConfigurationManager {
 
         camera.setDisplayOrientation(getDisplayOrientation());
         camera.setParameters(parameters);
+    }
+
+    public void openFlashlight(Camera camera) {
+        doSetTorch(camera, true);
+    }
+
+    public void closeFlashlight(Camera camera) {
+        doSetTorch(camera, false);
+    }
+
+    private void doSetTorch(Camera camera, boolean newSetting) {
+        Camera.Parameters parameters = camera.getParameters();
+        String flashMode;
+        /** 是否支持闪光灯 */
+        if (newSetting) {
+            flashMode = findSettableValue(parameters.getSupportedFlashModes(), Camera.Parameters.FLASH_MODE_TORCH, Camera.Parameters.FLASH_MODE_ON);
+        } else {
+            flashMode = findSettableValue(parameters.getSupportedFlashModes(), Camera.Parameters.FLASH_MODE_OFF);
+        }
+        if (flashMode != null) {
+            parameters.setFlashMode(flashMode);
+        }
+        camera.setParameters(parameters);
+    }
+
+    private static String findSettableValue(Collection<String> supportedValues, String... desiredValues) {
+        String result = null;
+        if (supportedValues != null) {
+            for (String desiredValue : desiredValues) {
+                if (supportedValues.contains(desiredValue)) {
+                    result = desiredValue;
+                    break;
+                }
+            }
+        }
+        return result;
     }
 
     public int getDisplayOrientation() {

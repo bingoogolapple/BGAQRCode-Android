@@ -1,8 +1,9 @@
 package cn.bingoogolapple.qrcode.zxingdemo;
 
-import android.os.Vibrator;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.os.Vibrator;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -10,25 +11,28 @@ import android.widget.Toast;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
-public class ScanActivity extends ActionBarActivity implements QRCodeView.ResultHandler {
-    private ZXingView mZXingView;
+public class ScanActivity extends AppCompatActivity implements QRCodeView.ResultHandler {
+    private static final String TAG = ScanActivity.class.getSimpleName();
+    private QRCodeView mQRCodeView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
-        mZXingView = (ZXingView) findViewById(R.id.zxingview);
-        mZXingView.setResultHandler(this);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+
+        mQRCodeView = (ZXingView) findViewById(R.id.zxingview);
+        mQRCodeView.setResultHandler(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mZXingView.startCamera();
+        mQRCodeView.startCamera();
     }
 
     @Override
     protected void onStop() {
-        mZXingView.stopCamera();
+        mQRCodeView.stopCamera();
         super.onStop();
     }
 
@@ -39,42 +43,48 @@ public class ScanActivity extends ActionBarActivity implements QRCodeView.Result
 
     @Override
     public void handleResult(String result) {
-        Log.i("bingo", "result:" + result);
-        Toast.makeText(this,result,Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "result:" + result);
+        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
         vibrate();
-        mZXingView.startSpot();
+        mQRCodeView.startSpot();
     }
 
     @Override
     public void handleCameraError() {
-        Log.e("bingo", "打开相机出错");
+        Log.e(TAG, "打开相机出错");
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.start_spot:
-                mZXingView.startSpot();
+                mQRCodeView.startSpot();
                 break;
             case R.id.stop_spot:
-                mZXingView.stopSpot();
+                mQRCodeView.stopSpot();
                 break;
             case R.id.start_spot_showrect:
-                mZXingView.startSpotAndShowRect();
+                mQRCodeView.startSpotAndShowRect();
                 break;
             case R.id.stop_spot_hiddenrect:
-                mZXingView.stopSpotAndHiddenRect();
+                mQRCodeView.stopSpotAndHiddenRect();
                 break;
             case R.id.show_rect:
-                mZXingView.showScanRect();
+                mQRCodeView.showScanRect();
                 break;
             case R.id.hidden_rect:
-                mZXingView.hiddenScanRect();
+                mQRCodeView.hiddenScanRect();
                 break;
             case R.id.start_preview:
-                mZXingView.startCamera();
+                mQRCodeView.startCamera();
                 break;
             case R.id.stop_preview:
-                mZXingView.stopCamera();
+                mQRCodeView.stopCamera();
+                break;
+            case R.id.open_flashlight:
+                mQRCodeView.openFlashlight();
+                break;
+            case R.id.close_flashlight:
+                mQRCodeView.closeFlashlight();
                 break;
         }
     }

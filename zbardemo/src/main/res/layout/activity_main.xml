@@ -1,116 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    style="@style/MatchMatch">
 
     <cn.bingoogolapple.qrcode.zbar.ZBarView
         android:id="@+id/zbarview"
-        app:qrcv_topOffset="90dp"
-        app:qrcv_cornerColor="#0f0"
+        style="@style/MatchMatch"
+        app:qrcv_cornerColor="#B2DB4D"
+        app:qrcv_cornerLength="25dp"
         app:qrcv_cornerSize="3dp"
-        app:qrcv_cornerLength="20dp"
-        app:qrcv_maskColor="#3fff"
-        app:qrcv_scanLineColor="#f00"
+        app:qrcv_maskColor="#66ffffff"
+        app:qrcv_rectWidth="220dp"
+        app:qrcv_scanLineColor="#179641"
         app:qrcv_scanLineSize="2dp"
-        app:qrcv_rectWidth="200dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        app:qrcv_topOffset="90dp" />
 
-    <LinearLayout
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <include layout="@layout/toolbar" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/start_spot"
-                android:text="开始识别"
-                android:onClick="onClick"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/stop_spot"
-                android:text="暂停识别"
-                android:onClick="onClick"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"  />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/start_spot_showrect"
-                android:text="开始识别显示扫描框"
-                android:onClick="onClick"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/stop_spot_hiddenrect"
-                android:text="暂停识别隐藏扫描框"
-                android:onClick="onClick"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"  />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/show_rect"
-                android:text="显示扫描框"
-                android:onClick="onClick"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/hidden_rect"
-                android:text="隐藏扫描框"
-                android:onClick="onClick"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/start_preview"
-                android:text="开始预览"
-                android:onClick="onClick"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/stop_preview"
-                android:text="停止预览"
-                android:onClick="onClick"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-    </LinearLayout>
-
+    <include layout="@layout/view_control" />
 </RelativeLayout>

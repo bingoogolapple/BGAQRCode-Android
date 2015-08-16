@@ -1,8 +1,9 @@
 package cn.bingoogolapple.qrcode.zbardemo;
 
-import android.os.Vibrator;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.os.Vibrator;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -10,25 +11,28 @@ import android.widget.Toast;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zbar.ZBarView;
 
-public class MainActivity extends ActionBarActivity implements QRCodeView.ResultHandler {
-    private ZBarView mZBarView;
+public class MainActivity extends AppCompatActivity implements QRCodeView.ResultHandler {
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private QRCodeView mQRCodeView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mZBarView = (ZBarView) findViewById(R.id.zbarview);
-        mZBarView.setResultHandler(this);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+
+        mQRCodeView = (ZBarView) findViewById(R.id.zbarview);
+        mQRCodeView.setResultHandler(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mZBarView.startCamera();
+        mQRCodeView.startCamera();
     }
 
     @Override
     protected void onStop() {
-        mZBarView.stopCamera();
+        mQRCodeView.stopCamera();
         super.onStop();
     }
 
@@ -39,42 +43,48 @@ public class MainActivity extends ActionBarActivity implements QRCodeView.Result
 
     @Override
     public void handleResult(String result) {
-        Log.i("bingo", "result:" + result);
+        Log.i(TAG, "result:" + result);
         Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
         vibrate();
-        mZBarView.startSpot();
+        mQRCodeView.startSpot();
     }
 
     @Override
     public void handleCameraError() {
-        Log.e("bingo", "打开相机出错");
+        Log.e(TAG, "打开相机出错");
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.start_spot:
-                mZBarView.startSpot();
+                mQRCodeView.startSpot();
                 break;
             case R.id.stop_spot:
-                mZBarView.stopSpot();
+                mQRCodeView.stopSpot();
                 break;
             case R.id.start_spot_showrect:
-                mZBarView.startSpotAndShowRect();
+                mQRCodeView.startSpotAndShowRect();
                 break;
             case R.id.stop_spot_hiddenrect:
-                mZBarView.stopSpotAndHiddenRect();
+                mQRCodeView.stopSpotAndHiddenRect();
                 break;
             case R.id.show_rect:
-                mZBarView.showScanRect();
+                mQRCodeView.showScanRect();
                 break;
             case R.id.hidden_rect:
-                mZBarView.hiddenScanRect();
+                mQRCodeView.hiddenScanRect();
                 break;
             case R.id.start_preview:
-                mZBarView.startCamera();
+                mQRCodeView.startCamera();
                 break;
             case R.id.stop_preview:
-                mZBarView.stopCamera();
+                mQRCodeView.stopCamera();
+                break;
+            case R.id.open_flashlight:
+                mQRCodeView.openFlashlight();
+                break;
+            case R.id.close_flashlight:
+                mQRCodeView.closeFlashlight();
                 break;
         }
     }
