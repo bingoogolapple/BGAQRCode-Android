@@ -9,13 +9,14 @@
         android:id="@+id/iv_qrcode1"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/ic_launcher" />
+        android:layout_marginTop="20dp"
+        android:src="@drawable/bga" />
 
     <ImageView
         android:id="@+id/iv_qrcode2"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/ic_launcher" />
+        android:layout_marginTop="20dp"
+        android:src="@drawable/bga" />
 
 </LinearLayout>

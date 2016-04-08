@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchMatch">
+
+    <cn.bingoogolapple.qrcode.zbar.ZBarView
+        android:id="@+id/zbarview"
+        style="@style/MatchMatch"
+        app:qrcv_cornerColor="@color/colorPrimaryDark"
+        app:qrcv_cornerLength="25dp"
+        app:qrcv_cornerSize="3dp"
+        app:qrcv_maskColor="#66ffffff"
+        app:qrcv_rectWidth="220dp"
+        app:qrcv_scanLineColor="@color/colorPrimary"
+        app:qrcv_scanLineSize="2dp"
+        app:qrcv_topOffset="90dp" />
+
+    <include layout="@layout/toolbar" />
+
+    <include layout="@layout/view_control" />
+</RelativeLayout>

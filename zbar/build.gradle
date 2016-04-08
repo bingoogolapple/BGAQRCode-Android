@@ -12,14 +12,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-
-//    compile project(':qrcodecore')
-
-    compile 'cn.bingoogolapple:qrcodecore:1.0.1@aar'
+    compile project(':qrcodecore')
 }
 
-apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/project/library/android-artifacts.gradle'
-// 上传到Maven中央仓库  gradle -q uploadArchives
-apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/project/library/central-publish.gradle'
-// 上传到jCenter       gradle bintrayUpload
-apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/project/library/bintray-publish.gradle'
+// gradle uploadArchives
+apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/central-publish.gradle'

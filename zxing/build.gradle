@@ -11,15 +11,9 @@ android {
 }
 
 dependencies {
-    compile 'com.google.zxing:core:3.1.0'
-
-//    compile project(':qrcodecore')
-
-    compile 'cn.bingoogolapple:qrcodecore:1.0.1@aar'
+    compile 'com.google.zxing:core:3.2.1'
+    compile project(':qrcodecore')
 }
 
-apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/project/library/android-artifacts.gradle'
-// 上传到Maven中央仓库  gradle -q uploadArchives
-apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/project/library/central-publish.gradle'
-// 上传到jCenter       gradle bintrayUpload
-apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/project/library/bintray-publish.gradle'
+// gradle uploadArchives
+apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/central-publish.gradle'

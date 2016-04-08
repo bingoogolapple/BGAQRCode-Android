@@ -10,7 +10,7 @@ import android.view.View;
 
 public class ScanBoxView extends View {
     private static final int ANIMATION_DELAY = 1;
-    private int SPEEN_DISTANCE = 5;
+    private int SPEEN_DISTANCE = 3;
 
     private Rect mFramingRect;
     private int mScanLineTop;
