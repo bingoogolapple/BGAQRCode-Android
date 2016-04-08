@@ -8,10 +8,14 @@
 
 主要功能：ZXing生成二维码、ZXing扫描二维码、ZBar扫描二维码(扫描中文会有乱码)、可控制闪光灯和定制各式各样的扫描框
 
+| [点击下载ZXingDemo.apk](http://fir.im/ZXingDemo)或扫描下面的二维码安装 | [点击下载ZXingDemo apk](http://fir.im/ZXingDemo)或扫描下面的二维码安装 |
+| ------------ | ------------ |
+| ![ZXingDemo apk文件二维码](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/zxingdemoapk.png) | ![ZBarDemo apk文件二维码](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/zbardemoapk.png) |
+
 ### 效果图
+![Image of ZXingDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zxing102.gif)
+![Image of ZBarDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zbar102.gif)
 ![Image of IqeggQRCodeDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/IqeggQRCodeDemo.gif)
-![Image of ZXingDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/ZXingDemo.gif)
-![Image of ZBarDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/ZBarDemo.gif)
 
 ### Gradle依赖
 >ZXing
