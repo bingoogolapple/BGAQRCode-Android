@@ -12,8 +12,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-//    compile 'cn.bingoogolapple:qrcodecore:1.0.1@aar'
-
     compile project(':qrcodecore')
 }
 
