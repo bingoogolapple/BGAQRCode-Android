@@ -1,5 +1,6 @@
 package cn.bingoogolapple.qrcode.zbardemo;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
@@ -8,11 +9,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.List;
+
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zbar.ZBarView;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainActivity extends AppCompatActivity implements QRCodeView.ResultHandler {
+public class MainActivity extends AppCompatActivity implements QRCodeView.ResultHandler, EasyPermissions.PermissionCallbacks {
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    private static final int REQUEST_CODE_QRCODE_PERMISSIONS = 1;
     private QRCodeView mQRCodeView;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -27,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements QRCodeView.Result
     @Override
     protected void onStart() {
         super.onStart();
-        mQRCodeView.startCamera();
+        startCameraWrapper();
     }
 
     @Override
@@ -86,6 +93,30 @@ public class MainActivity extends AppCompatActivity implements QRCodeView.Result
             case R.id.close_flashlight:
                 mQRCodeView.closeFlashlight();
                 break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+    }
+
+    @AfterPermissionGranted(REQUEST_CODE_QRCODE_PERMISSIONS)
+    private void startCameraWrapper() {
+        String[] perms = {Manifest.permission.CAMERA, Manifest.permission.FLASHLIGHT};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            mQRCodeView.stopCamera();
+            mQRCodeView.startCamera();
+        } else {
+            EasyPermissions.requestPermissions(this, "扫描二维码需要打开相机和散光灯的权限", REQUEST_CODE_QRCODE_PERMISSIONS, perms);
         }
     }
 }
