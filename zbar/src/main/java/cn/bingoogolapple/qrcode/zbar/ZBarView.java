@@ -66,8 +66,8 @@ public class ZBarView extends QRCodeView {
 
             @Override
             protected void onPostExecute(String result) {
-                if (mResultHandler != null && !TextUtils.isEmpty(result)) {
-                    mResultHandler.handleResult(result);
+                if (mDelegate != null && !TextUtils.isEmpty(result)) {
+                    mDelegate.onScanQRCodeSuccess(result);
                 } else {
                     try {
                         camera.setOneShotPreviewCallback(ZBarView.this);

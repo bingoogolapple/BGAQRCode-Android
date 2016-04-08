@@ -16,9 +16,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'pub.devrel:easypermissions:0.1.5'
 
-//    compile project(':zxing')
+    compile project(':zxing')
 
-    compile 'com.google.zxing:core:3.2.1'
-    compile 'cn.bingoogolapple:qrcodecore:1.0.2@aar'
-    compile 'cn.bingoogolapple:zxing:1.0.2@aar'
+//    compile 'com.google.zxing:core:3.2.1'
+//    compile 'cn.bingoogolapple:qrcodecore:1.0.2@aar'
+//    compile 'cn.bingoogolapple:zxing:1.0.2@aar'
 }

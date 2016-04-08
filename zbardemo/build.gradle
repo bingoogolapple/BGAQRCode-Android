@@ -16,8 +16,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'pub.devrel:easypermissions:0.1.5'
 
-//    compile project(':zbar')
+    compile project(':zbar')
 
-    compile 'cn.bingoogolapple:qrcodecore:1.0.2@aar'
-    compile 'cn.bingoogolapple:zbar:1.0.2@aar'
+//    compile 'cn.bingoogolapple:qrcodecore:1.0.2@aar'
+//    compile 'cn.bingoogolapple:zbar:1.0.2@aar'
 }

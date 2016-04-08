@@ -12,7 +12,7 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
     protected Camera mCamera;
     protected CameraPreview mPreview;
     protected ScanBoxView mScanBoxView;
-    protected ResultHandler mResultHandler;
+    protected Delegate mDelegate;
     protected Handler mHandler;
 
     public QRCodeView(Context context, AttributeSet attributeSet) {
@@ -25,8 +25,8 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         initView(context, attrs);
     }
 
-    public void setResultHandler(ResultHandler resultHandler) {
-        mResultHandler = resultHandler;
+    public void setResultHandler(Delegate delegate) {
+        mDelegate = delegate;
     }
 
     private void initView(Context context, AttributeSet attrs) {
@@ -93,8 +93,8 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         try {
             mCamera = Camera.open();
         } catch (Exception e) {
-            if (mResultHandler != null) {
-                mResultHandler.handleCameraError();
+            if (mDelegate != null) {
+                mDelegate.onScanQRCodeOpenCameraError();
             }
         }
         if (mCamera != null) {
@@ -206,17 +206,17 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         }
     };
 
-    public interface ResultHandler {
+    public interface Delegate {
         /**
          * 处理扫描结果
          *
          * @param result
          */
-        void handleResult(String result);
+        void onScanQRCodeSuccess(String result);
 
         /**
          * 处理打开相机出错
          */
-        void handleCameraError();
+        void onScanQRCodeOpenCameraError();
     }
 }
