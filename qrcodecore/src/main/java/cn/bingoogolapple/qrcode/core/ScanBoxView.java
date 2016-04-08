@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
 public class ScanBoxView extends View {
@@ -23,13 +24,16 @@ public class ScanBoxView extends View {
     private int mTopOffset;
     private int mScanLineSize;
     private int mScanLineColor;
+    private int mScanLineMargin;
+    private Drawable mScanLineDrawable;
+    private int mBorderSize;
+    private int mBorderColor;
 
     public ScanBoxView(Context context) {
         super(context);
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setStyle(Paint.Style.FILL);
-        mMaskColor = Color.parseColor("#33ffffff");
+        mMaskColor = Color.parseColor("#33FFFFFF");
         mCornerColor = Color.WHITE;
         mCornerLength = DisplayUtils.dp2px(context, 20);
         mCornerSize = DisplayUtils.dp2px(context, 2);
@@ -37,6 +41,10 @@ public class ScanBoxView extends View {
         mScanLineColor = Color.WHITE;
         mTopOffset = DisplayUtils.dp2px(context, 80);
         mRectWidth = DisplayUtils.dp2px(context, 200);
+        mScanLineMargin = 0;
+        mScanLineDrawable = null;
+        mBorderSize = DisplayUtils.dp2px(context, 1);
+        mBorderColor = Color.WHITE;
     }
 
     public void setTopOffset(int topOffset) {
@@ -71,6 +79,22 @@ public class ScanBoxView extends View {
         mRectWidth = rectWidth;
     }
 
+    public void setScanLineMargin(int scanLineMargin) {
+        mScanLineMargin = scanLineMargin;
+    }
+
+    public void setScanLineDrawable(Drawable scanLineDrawable) {
+        mScanLineDrawable = scanLineDrawable;
+    }
+
+    public void setBorderSize(int borderSize) {
+        mBorderSize = borderSize;
+    }
+
+    public void setBorderColor(int borderColor) {
+        mBorderColor = borderColor;
+    }
+
     public int getMaskColor() {
         return mMaskColor;
     }
@@ -103,6 +127,18 @@ public class ScanBoxView extends View {
         return mScanLineColor;
     }
 
+    public int getScanLineMargin() {
+        return mScanLineMargin;
+    }
+
+    public int getBorderSize() {
+        return mBorderSize;
+    }
+
+    public int getBorderColor() {
+        return mBorderColor;
+    }
+
     @Override
     public void onDraw(Canvas canvas) {
         if (mFramingRect == null) {
@@ -113,13 +149,23 @@ public class ScanBoxView extends View {
         int width = canvas.getWidth();
         int height = canvas.getHeight();
 
+
+        // 画遮罩层
+        mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(mMaskColor);
         canvas.drawRect(0, 0, width, mFramingRect.top, mPaint);
         canvas.drawRect(0, mFramingRect.top, mFramingRect.left, mFramingRect.bottom + 1, mPaint);
         canvas.drawRect(mFramingRect.right + 1, mFramingRect.top, width, mFramingRect.bottom + 1, mPaint);
         canvas.drawRect(0, mFramingRect.bottom + 1, width, height, mPaint);
 
+        // 画边框线
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setColor(mBorderColor);
+        mPaint.setStrokeWidth(mBorderSize);
+        canvas.drawRect(mFramingRect, mPaint);
 
+        // 画四个角
+        mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(mCornerColor);
         canvas.drawRect(mFramingRect.left - mCornerSize + 2, mFramingRect.top - mCornerSize + 2, mFramingRect.left + mCornerLength - mCornerSize + 2, mFramingRect.top + 2, mPaint);
         canvas.drawRect(mFramingRect.left - mCornerSize + 2, mFramingRect.top - mCornerSize + 2, mFramingRect.left + 2, mFramingRect.top + mCornerLength - mCornerSize + 2, mPaint);
@@ -131,7 +177,8 @@ public class ScanBoxView extends View {
         canvas.drawRect(mFramingRect.right - mCornerLength + mCornerSize - 2, mFramingRect.bottom - 2, mFramingRect.right + mCornerSize - 2, mFramingRect.bottom + mCornerSize - 2, mPaint);
         canvas.drawRect(mFramingRect.right - 2, mFramingRect.bottom - mCornerLength + mCornerSize - 2, mFramingRect.right + mCornerSize - 2, mFramingRect.bottom + mCornerSize - 2, mPaint);
 
-
+        // 画扫描线
+        mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(mScanLineColor);
         canvas.drawRect(mFramingRect.left, mScanLineTop, mFramingRect.right, mScanLineTop + mScanLineSize, mPaint);
         mScanLineTop += SPEEN_DISTANCE;

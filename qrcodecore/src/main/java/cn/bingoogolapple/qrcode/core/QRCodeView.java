@@ -33,15 +33,19 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         mPreview = new CameraPreview(getContext());
         mScanBoxView = new ScanBoxView(getContext());
 
+        initAttrs(context, attrs);
+
+        addView(mPreview);
+        addView(mScanBoxView);
+    }
+
+    private void initAttrs(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.QRCodeView);
         final int count = typedArray.getIndexCount();
         for (int i = 0; i < count; i++) {
             initAttr(typedArray.getIndex(i), typedArray);
         }
         typedArray.recycle();
-
-        addView(mPreview);
-        addView(mScanBoxView);
     }
 
     private void initAttr(int attr, TypedArray typedArray) {
@@ -61,6 +65,14 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
             mScanBoxView.setCornerColor(typedArray.getColor(attr, mScanBoxView.getCornerColor()));
         } else if (attr == R.styleable.QRCodeView_qrcv_scanLineColor) {
             mScanBoxView.setScanLineColor(typedArray.getColor(attr, mScanBoxView.getScanLineColor()));
+        } else if (attr == R.styleable.QRCodeView_qrcv_scanLineMargin) {
+            mScanBoxView.setScanLineMargin(typedArray.getDimensionPixelSize(attr, mScanBoxView.getScanLineMargin()));
+        } else if (attr == R.styleable.QRCodeView_qrcv_scanLineDrawable) {
+            mScanBoxView.setScanLineDrawable(typedArray.getDrawable(attr));
+        } else if (attr == R.styleable.QRCodeView_qrcv_borderSize) {
+            mScanBoxView.setBorderSize(typedArray.getDimensionPixelSize(attr, mScanBoxView.getBorderSize()));
+        } else if (attr == R.styleable.QRCodeView_qrcv_borderColor) {
+            mScanBoxView.setBorderColor(typedArray.getColor(attr, mScanBoxView.getBorderColor()));
         }
     }
 
@@ -141,6 +153,8 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
     public void stopSpot() {
         if (mCamera != null) {
             mCamera.setOneShotPreviewCallback(null);
+        }
+        if (mHandler != null) {
             mHandler.removeCallbacks(mOneShotPreviewCallbackTask);
         }
     }
@@ -184,8 +198,9 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
 
         byte[] rotatedData = new byte[data.length];
         for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < width; x++) {
                 rotatedData[x * height + height - y - 1] = data[x + y * width];
+            }
         }
         int tmp = width;
         width = height;

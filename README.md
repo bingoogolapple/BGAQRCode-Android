@@ -76,7 +76,7 @@ qrcv_cornerSize         | 扫描框边角线的宽度        | 2dp
 qrcv_cornerLength         | 扫描框边角线的长度        | 20dp
 qrcv_cornerColor         | 扫描框边角线的颜色        | @android:color/white
 qrcv_rectWidth         | 扫描框的宽度        | 200dp
-qrcv_maskColor         | 除去扫描框，其余部分阴影颜色        | #33ffffff
+qrcv_maskColor         | 除去扫描框，其余部分阴影颜色        | #33FFFFFF
 qrcv_scanLineSize         | 扫描线的宽度        | 1dp
 qrcv_scanLineColor         | 扫描线的颜色        | @android:color/white
 
