@@ -1,6 +1,9 @@
 :running:QRCode-Android:running:
 ============
 
+[![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/qrcodecore/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/qrcodecore)
+
 根据公司项目需求，参考这个项目改的 [barcodescanner](https://github.com/dm77/barcodescanner)
 
 主要功能：ZXing生成二维码、ZXing扫描二维码、ZBar扫描二维码(扫描中文会有乱码)、可控制闪光灯和定制各式各样的扫描框
@@ -11,9 +14,6 @@
 ![Image of ZBarDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/ZBarDemo.gif)
 
 ### Gradle依赖
-
-[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/qrcodecore/images/download.svg) ](https://bintray.com/bingoogolapple/maven/qrcodecore/_latestVersion)
-
 >ZXing
 
 ```groovy
@@ -30,6 +30,37 @@ dependencies {
     compile 'cn.bingoogolapple:qrcodecore:latestVersion@aar'
     compile 'cn.bingoogolapple:zbar:latestVersion@aar'
 }
+```
+### Layout
+>ZXing
+
+```xml
+<cn.bingoogolapple.qrcode.zxing.ZXingView
+    android:id="@+id/zxingview"
+    style="@style/MatchMatch"
+    app:qrcv_cornerColor="@android:color/white"
+    app:qrcv_cornerLength="20dp"
+    app:qrcv_cornerSize="2dp"
+    app:qrcv_maskColor="#33ffffff"
+    app:qrcv_rectWidth="200dp"
+    app:qrcv_scanLineColor="@android:color/white"
+    app:qrcv_scanLineSize="1dp"
+    app:qrcv_topOffset="80dp" />
+```
+>ZBar
+
+```xml
+<cn.bingoogolapple.qrcode.zbar.ZBarView
+    android:id="@+id/zbarview"
+    style="@style/MatchMatch"
+    app:qrcv_cornerColor="@color/colorPrimaryDark"
+    app:qrcv_cornerLength="25dp"
+    app:qrcv_cornerSize="3dp"
+    app:qrcv_maskColor="#66ffffff"
+    app:qrcv_rectWidth="220dp"
+    app:qrcv_scanLineColor="@color/colorPrimary"
+    app:qrcv_scanLineSize="2dp"
+    app:qrcv_topOffset="90dp" />
 ```
 
 ### 自定义属性说明
@@ -128,5 +159,24 @@ void handleCameraError()
 
 ### 详细用法请查看[ZXingDemo](https://github.com/bingoogolapple/QRCode-Android/tree/master/zxingdemo):feet:
 
->关于我<br/>
->微博：<a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a>&nbsp;&nbsp;&nbsp;&nbsp;主页：<a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;邮箱：<a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a>
+### 关于我
+
+| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群 |
+| ------------ | ------------- | ------------ | ------------ |
+| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
+
+## License
+
+    Copyright 2015 bingoogolapple
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
