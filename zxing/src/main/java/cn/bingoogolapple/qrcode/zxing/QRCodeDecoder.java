@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:16/4/8 下午11:22
- * 描述:
+ * 描述:解析二维码图片
  */
 public class QRCodeDecoder {
     public static final Map<DecodeHintType, Object> HINTS = new EnumMap<DecodeHintType, Object>(DecodeHintType.class);
@@ -52,6 +52,12 @@ public class QRCodeDecoder {
     private QRCodeDecoder() {
     }
 
+    /**
+     * 解析二维码图片
+     *
+     * @param bitmap   要解析的二维码图片
+     * @param delegate 解析二位码图片的代理
+     */
     public static void decodeQRCode(final Bitmap bitmap, final Delegate delegate) {
         new AsyncTask<Void, Void, String>() {
             @Override
@@ -83,8 +89,16 @@ public class QRCodeDecoder {
     }
 
     public interface Delegate {
+        /**
+         * 解析二维码成功
+         *
+         * @param result 从二维码中解析的文本，如果该方法有被调用，result不会为空
+         */
         void onDecodeQRCodeSuccess(String result);
 
+        /**
+         * 解析二维码失败
+         */
         void onDecodeQRCodeFailure();
     }
 }

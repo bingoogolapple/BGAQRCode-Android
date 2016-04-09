@@ -1,12 +1,12 @@
-:running:QRCode-Android:running:
+:running:BGAQRCode-Android:running:
 ============
 
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/qrcodecore/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/qrcodecore)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore)
 
 根据公司项目需求，参考这个项目改的 [barcodescanner](https://github.com/dm77/barcodescanner)
 
-主要功能：ZXing生成二维码、ZXing扫描二维码、ZBar扫描二维码(扫描中文会有乱码)、可控制闪光灯和定制各式各样的扫描框
+主要功能：ZXing生成二维码、ZXing扫描二维码、ZXing识别图库中的二维码、ZBar扫描二维码(扫描中文会有乱码)、可控制闪光灯和定制各式各样的扫描框
 
 ### 效果图
 ![Image of ZXingDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zxing102.gif)
@@ -23,16 +23,16 @@
 ```groovy
 dependencies {
     compile 'com.google.zxing:core:3.1.0'
-    compile 'cn.bingoogolapple:qrcodecore:latestVersion@aar'
-    compile 'cn.bingoogolapple:zxing:latestVersion@aar'
+    compile 'cn.bingoogolapple:bga-qrcodecore:latestVersion@aar'
+    compile 'cn.bingoogolapple:bga-zxing:latestVersion@aar'
 }
 ```
 >ZBar
 
 ```groovy
 dependencies {
-    compile 'cn.bingoogolapple:qrcodecore:latestVersion@aar'
-    compile 'cn.bingoogolapple:zbar:latestVersion@aar'
+    compile 'cn.bingoogolapple:bga-qrcodecore:latestVersion@aar'
+    compile 'cn.bingoogolapple:bga-zbar:latestVersion@aar'
 }
 ```
 ### Layout
@@ -42,14 +42,17 @@ dependencies {
 <cn.bingoogolapple.qrcode.zxing.ZXingView
     android:id="@+id/zxingview"
     style="@style/MatchMatch"
-    app:qrcv_cornerColor="@android:color/white"
+    app:qrcv_animTime="1000"
+    app:qrcv_borderColor="@android:color/white"
+    app:qrcv_borderSize="1dp"
+    app:qrcv_cornerColor="@color/colorPrimaryDark"
     app:qrcv_cornerLength="20dp"
-    app:qrcv_cornerSize="2dp"
-    app:qrcv_maskColor="#33ffffff"
+    app:qrcv_cornerSize="3dp"
+    app:qrcv_maskColor="#33FFFFFF"
     app:qrcv_rectWidth="200dp"
-    app:qrcv_scanLineColor="@android:color/white"
+    app:qrcv_scanLineColor="@color/colorPrimaryDark"
     app:qrcv_scanLineSize="1dp"
-    app:qrcv_topOffset="80dp" />
+    app:qrcv_topOffset="90dp" />
 ```
 >ZBar
 
@@ -57,13 +60,16 @@ dependencies {
 <cn.bingoogolapple.qrcode.zbar.ZBarView
     android:id="@+id/zbarview"
     style="@style/MatchMatch"
+    app:qrcv_animTime="1000"
+    app:qrcv_borderColor="@android:color/white"
+    app:qrcv_borderSize="1dp"
     app:qrcv_cornerColor="@color/colorPrimaryDark"
-    app:qrcv_cornerLength="25dp"
+    app:qrcv_cornerLength="20dp"
     app:qrcv_cornerSize="3dp"
-    app:qrcv_maskColor="#66ffffff"
-    app:qrcv_rectWidth="220dp"
-    app:qrcv_scanLineColor="@color/colorPrimary"
-    app:qrcv_scanLineSize="2dp"
+    app:qrcv_isShowDefaultScanLineDrawable="true"
+    app:qrcv_maskColor="#33FFFFFF"
+    app:qrcv_rectWidth="200dp"
+    app:qrcv_scanLineColor="@color/colorPrimaryDark"
     app:qrcv_topOffset="90dp" />
 ```
 
@@ -143,7 +149,7 @@ public void openFlashlight()
 public void closeFlashlight()
 ```
 
->ResultHandler
+>QRCodeView.Delegate   扫描二维码的代理
 
 ```java
 /**
@@ -151,17 +157,84 @@ public void closeFlashlight()
  *
  * @param result
  */
-void handleResult(String result)
+void onScanQRCodeSuccess(String result)
 
 /**
  * 处理打开相机出错
  */
-void handleCameraError()
+void onScanQRCodeOpenCameraError()
 ```
 
-### 详细用法请查看[ZBarDemo](https://github.com/bingoogolapple/QRCode-Android/tree/master/zbardemo):feet:
+>QRCodeDecoder  解析二维码图片
 
-### 详细用法请查看[ZXingDemo](https://github.com/bingoogolapple/QRCode-Android/tree/master/zxingdemo):feet:
+```java
+/**
+ * 解析二维码图片
+ *
+ * @param bitmap   要解析的二维码图片
+ * @param delegate 解析二位码图片的代理
+ */
+public static void decodeQRCode(Bitmap bitmap, Delegate delegate)
+```
+
+>QRCodeDecoder.Delegate  解析二位码图片的代理
+
+```java
+/**
+ * 解析二维码成功
+ *
+ * @param result 从二维码中解析的文本，如果该方法有被调用，result不会为空
+ */
+void onDecodeQRCodeSuccess(String result)
+
+/**
+ * 解析二维码失败
+ */
+void onDecodeQRCodeFailure()
+```
+
+>QRCodeEncoder  创建二维码图片
+
+```java
+/**
+ * 创建黑色的二维码图片
+ *
+ * @param content
+ * @param size     图片宽高，单位为px
+ * @param delegate 创建二维码图片的代理
+ */
+public static void encodeQRCode(String content, int size, Delegate delegate)
+
+/**
+ * 创建指定颜色的二维码图片
+ *
+ * @param content
+ * @param size     图片宽高，单位为px
+ * @param color    二维码图片的颜色
+ * @param delegate 创建二维码图片的代理
+ */
+public static void encodeQRCode(String content, int size, int color, Delegate delegate)
+```
+
+>QRCodeEncoder.Delegate   创建二维码图片的代理
+
+```java
+/**
+ * 创建二维码图片成功
+ *
+ * @param bitmap
+ */
+void onEncodeQRCodeSuccess(Bitmap bitmap)
+
+/**
+ * 创建二维码图片失败
+ */
+void onEncodeQRCodeFailure()
+```
+
+### 详细用法请查看[ZBarDemo](https://github.com/bingoogolapple/BGAQRCode-Android/tree/master/zbardemo):feet:
+
+### 详细用法请查看[ZXingDemo](https://github.com/bingoogolapple/BGAQRCode-Android/tree/master/zxingdemo):feet:
 
 ### 关于我
 

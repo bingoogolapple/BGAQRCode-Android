@@ -12,6 +12,6 @@
     <TextView
         android:id="@+id/generate_qrcode"
         style="@style/MatchWrapTv"
-        android:text="生成二维码" />
+        android:text="生成和识别图片二维码" />
 
 </LinearLayout>
