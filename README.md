@@ -1,23 +1,28 @@
 :running:BGAQRCode-Android:running:
 ============
 
-[![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore)
+根据之前公司的产品需求，参考这个项目改的 [barcodescanner](https://github.com/dm77/barcodescanner)，希望能帮助到有生成二维码、扫描二维码、识别图片二维码需求的猿友。修改幅度较大，也就没准备针对[barcodescanner](https://github.com/dm77/barcodescanner)库提交PR。
 
-根据公司项目需求，参考这个项目改的 [barcodescanner](https://github.com/dm77/barcodescanner)
+主要功能：
+* ZXing生成二维码
+* ZXing扫描二维码
+* ZXing识别图库中的二维码图片
+* 可以控制闪光灯，方便夜间使用
+* 可以定制各式各样的扫描框
+* ZBar扫描二维码「扫描中文会有乱码，如果对中文有要求，请使用ZXing」
 
-主要功能：ZXing生成二维码、ZXing扫描二维码、ZXing识别图库中的二维码、ZBar扫描二维码(扫描中文会有乱码)、可控制闪光灯和定制各式各样的扫描框
+### 效果图与示例apk
 
-### 效果图
-![Image of ZXingDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zxing102.gif)
-![Image of ZBarDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zbar102.gif)
-![Image of IqeggQRCodeDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/IqeggQRCodeDemo.gif)
+| ZXingDemo | ZBarDemo | [小蛋智能空气净化器Android添加设备](http://www.iqegg.com) |
+| :------------: | :------------: | :------------: |
+| ![Image of ZXingDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zxing103.gif) | ![Image of ZBarDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zbar103.gif) | ![Image of 小蛋空气净化器](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/IqeggQRCodeDemo.gif) |
 
 | [点击下载ZXingDemo.apk](http://fir.im/ZXingDemo)或扫描下面的二维码安装 | [点击下载ZBarDemo apk](http://fir.im/ZBarDemo)或扫描下面的二维码安装 |
-| ------------ | ------------ |
+| :------------: | :------------: |
 | ![ZXingDemo apk文件二维码](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/zxingdemoapk.png) | ![ZBarDemo apk文件二维码](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/zbardemoapk.png) |
 
-### Gradle依赖
+### Gradle依赖 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore) ***「latestVersion」指的是左边这个 maven-central 徽章后面的「数字」，请自行替换。不要再来问我「latestVersion」是什么了:angry:不过你问了我还是回回答你的:smile:***
+
 >ZXing
 
 ```groovy
@@ -77,14 +82,20 @@ dependencies {
 
 属性名 | 说明 | 默认值
 :----------- | :----------- | :-----------
-qrcv_topOffset         | 扫描框距离扫描视图顶部的距离        | 80dp
-qrcv_cornerSize         | 扫描框边角线的宽度        | 2dp
+qrcv_topOffset         | 扫描框距离扫描视图顶部的距离        | 90dp
+qrcv_cornerSize         | 扫描框边角线的宽度        | 3dp
 qrcv_cornerLength         | 扫描框边角线的长度        | 20dp
 qrcv_cornerColor         | 扫描框边角线的颜色        | @android:color/white
 qrcv_rectWidth         | 扫描框的宽度        | 200dp
 qrcv_maskColor         | 除去扫描框，其余部分阴影颜色        | #33FFFFFF
 qrcv_scanLineSize         | 扫描线的宽度        | 1dp
-qrcv_scanLineColor         | 扫描线的颜色        | @android:color/white
+qrcv_scanLineColor         | 扫描线的颜色「扫描线和默认的扫描线图片的颜色」        | @android:color/white
+qrcv_scanLineHorizontalMargin         | 扫描线距离左右边框的间距        | 0dp
+qrcv_isShowDefaultScanLineDrawable         | 是否显示默认的图片扫描线「设置该属性后 qrcv_scanLineSize 将失效，可以通过 qrcv_scanLineColor 设置扫描线的颜色，避免让你公司的UI单独给你出特定颜色的扫描线图片」        | false
+qrcv_customScanLineDrawable         | 扫描线的图片资源「默认的扫描线图片样式不能满足你的需求时使用，设置该属性后 qrcv_isShowDefaultScanLineDrawable、qrcv_scanLineSize、qrcv_scanLineColor 将失效」        | null
+qrcv_borderSize         | 扫描边框的宽度        | 1dp
+qrcv_borderColor         | 扫描边框的颜色        | @android:color/white
+qrcv_animTime         | 扫描线从顶部移动到底部的动画时间「单位为毫秒」        | 1000
 
 ### 接口说明
 

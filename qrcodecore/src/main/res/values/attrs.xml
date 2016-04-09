@@ -17,7 +17,7 @@
         <attr name="qrcv_scanLineSize" format="dimension|reference" />
         <!-- 扫描线的颜色，默认值为@android:color/white -->
         <attr name="qrcv_scanLineColor" format="color|reference" />
-        <!-- 扫描线离左右边框的间距，默认值为0dp -->
+        <!-- 扫描线距离左右边框的间距，默认值为0dp -->
         <attr name="qrcv_scanLineHorizontalMargin" format="dimension|reference" />
         <!-- 是否显示默认的图片扫描线，默认值为false -->
         <attr name="qrcv_isShowDefaultScanLineDrawable" format="boolean" />
