@@ -1,7 +1,7 @@
 :running:BGAQRCode-Android:running:
 ============
 
-根据之前公司的产品需求，参考这个项目改的 [barcodescanner](https://github.com/dm77/barcodescanner)，希望能帮助到有生成二维码、扫描二维码、识别图片二维码需求的猿友。修改幅度较大，也就没准备针对[barcodescanner](https://github.com/dm77/barcodescanner)库提交PR。
+根据[之前公司](http://www.iqegg.com)的产品需求，参考这个项目改的 [barcodescanner](https://github.com/dm77/barcodescanner)，希望能帮助到有生成二维码、扫描二维码、识别图片二维码等需求的猿友。修改幅度较大，也就没准备针对[barcodescanner](https://github.com/dm77/barcodescanner)库提交PR。
 
 主要功能：
 * ZXing生成二维码
@@ -13,7 +13,7 @@
 
 ### 效果图与示例apk
 
-| ZXingDemo | ZBarDemo | [小蛋智能空气净化器Android添加设备](http://www.iqegg.com) |
+| ZXingDemo | ZBarDemo | [之前公司的Android客户端扫描二维码添加设备](http://www.iqegg.com) |
 | :------------: | :------------: | :------------: |
 | ![Image of ZXingDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zxing103.gif) | ![Image of ZBarDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zbar103.gif) | ![Image of 小蛋空气净化器](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/IqeggQRCodeDemo.gif) |
 
@@ -252,19 +252,3 @@ void onEncodeQRCodeFailure()
 | 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群 |
 | ------------ | ------------- | ------------ | ------------ |
 | <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
-
-## License
-
-    Copyright 2015 bingoogolapple
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
