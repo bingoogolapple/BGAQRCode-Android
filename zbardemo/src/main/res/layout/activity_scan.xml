@@ -6,13 +6,16 @@
     <cn.bingoogolapple.qrcode.zbar.ZBarView
         android:id="@+id/zbarview"
         style="@style/MatchMatch"
+        app:qrcv_animTime="1000"
+        app:qrcv_borderColor="@android:color/white"
+        app:qrcv_borderSize="1dp"
         app:qrcv_cornerColor="@color/colorPrimaryDark"
-        app:qrcv_cornerLength="25dp"
+        app:qrcv_cornerLength="20dp"
         app:qrcv_cornerSize="3dp"
-        app:qrcv_maskColor="#66ffffff"
-        app:qrcv_rectWidth="220dp"
-        app:qrcv_scanLineColor="@color/colorPrimary"
-        app:qrcv_scanLineSize="2dp"
+        app:qrcv_isShowDefaultScanLineDrawable="true"
+        app:qrcv_maskColor="#33FFFFFF"
+        app:qrcv_rectWidth="200dp"
+        app:qrcv_scanLineColor="@color/colorPrimaryDark"
         app:qrcv_topOffset="90dp" />
 
     <include layout="@layout/toolbar" />

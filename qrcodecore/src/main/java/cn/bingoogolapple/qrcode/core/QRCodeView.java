@@ -1,7 +1,6 @@
 package cn.bingoogolapple.qrcode.core;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -12,7 +11,7 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
     protected Camera mCamera;
     protected CameraPreview mPreview;
     protected ScanBoxView mScanBoxView;
-    protected ResultHandler mResultHandler;
+    protected Delegate mDelegate;
     protected Handler mHandler;
 
     public QRCodeView(Context context, AttributeSet attributeSet) {
@@ -25,43 +24,18 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         initView(context, attrs);
     }
 
-    public void setResultHandler(ResultHandler resultHandler) {
-        mResultHandler = resultHandler;
+    public void setResultHandler(Delegate delegate) {
+        mDelegate = delegate;
     }
 
     private void initView(Context context, AttributeSet attrs) {
         mPreview = new CameraPreview(getContext());
-        mScanBoxView = new ScanBoxView(getContext());
 
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.QRCodeView);
-        final int count = typedArray.getIndexCount();
-        for (int i = 0; i < count; i++) {
-            initAttr(typedArray.getIndex(i), typedArray);
-        }
-        typedArray.recycle();
+        mScanBoxView = new ScanBoxView(getContext());
+        mScanBoxView.initCustomAttrs(context, attrs);
 
         addView(mPreview);
         addView(mScanBoxView);
-    }
-
-    private void initAttr(int attr, TypedArray typedArray) {
-        if (attr == R.styleable.QRCodeView_qrcv_topOffset) {
-            mScanBoxView.setTopOffset(typedArray.getDimensionPixelSize(attr, mScanBoxView.getTopOffset()));
-        } else if (attr == R.styleable.QRCodeView_qrcv_cornerSize) {
-            mScanBoxView.setCornerSize(typedArray.getDimensionPixelSize(attr, mScanBoxView.getCornerSize()));
-        } else if (attr == R.styleable.QRCodeView_qrcv_cornerLength) {
-            mScanBoxView.setCornerLength(typedArray.getDimensionPixelSize(attr, mScanBoxView.getCornerLength()));
-        } else if (attr == R.styleable.QRCodeView_qrcv_scanLineSize) {
-            mScanBoxView.setScanLineSize(typedArray.getDimensionPixelSize(attr, mScanBoxView.getScanLineSize()));
-        } else if (attr == R.styleable.QRCodeView_qrcv_rectWidth) {
-            mScanBoxView.setRectWidth(typedArray.getDimensionPixelSize(attr, mScanBoxView.getRectWidth()));
-        } else if (attr == R.styleable.QRCodeView_qrcv_maskColor) {
-            mScanBoxView.setMaskColor(typedArray.getColor(attr, mScanBoxView.getMaskColor()));
-        } else if (attr == R.styleable.QRCodeView_qrcv_cornerColor) {
-            mScanBoxView.setCornerColor(typedArray.getColor(attr, mScanBoxView.getCornerColor()));
-        } else if (attr == R.styleable.QRCodeView_qrcv_scanLineColor) {
-            mScanBoxView.setScanLineColor(typedArray.getColor(attr, mScanBoxView.getScanLineColor()));
-        }
     }
 
     /**
@@ -93,8 +67,8 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         try {
             mCamera = Camera.open();
         } catch (Exception e) {
-            if (mResultHandler != null) {
-                mResultHandler.handleCameraError();
+            if (mDelegate != null) {
+                mDelegate.onScanQRCodeOpenCameraError();
             }
         }
         if (mCamera != null) {
@@ -141,6 +115,8 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
     public void stopSpot() {
         if (mCamera != null) {
             mCamera.setOneShotPreviewCallback(null);
+        }
+        if (mHandler != null) {
             mHandler.removeCallbacks(mOneShotPreviewCallbackTask);
         }
     }
@@ -184,8 +160,9 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
 
         byte[] rotatedData = new byte[data.length];
         for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < width; x++) {
                 rotatedData[x * height + height - y - 1] = data[x + y * width];
+            }
         }
         int tmp = width;
         width = height;
@@ -206,17 +183,17 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         }
     };
 
-    public interface ResultHandler {
+    public interface Delegate {
         /**
          * 处理扫描结果
          *
          * @param result
          */
-        void handleResult(String result);
+        void onScanQRCodeSuccess(String result);
 
         /**
          * 处理打开相机出错
          */
-        void handleCameraError();
+        void onScanQRCodeOpenCameraError();
     }
 }

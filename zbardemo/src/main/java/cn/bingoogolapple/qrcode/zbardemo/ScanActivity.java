@@ -11,7 +11,7 @@ import android.widget.Toast;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zbar.ZBarView;
 
-public class ScanActivity extends AppCompatActivity implements QRCodeView.ResultHandler {
+public class ScanActivity extends AppCompatActivity implements QRCodeView.Delegate {
     private static final String TAG = ScanActivity.class.getSimpleName();
 
     private static final int REQUEST_CODE_QRCODE_PERMISSIONS = 1;
@@ -44,7 +44,7 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Result
     }
 
     @Override
-    public void handleResult(String result) {
+    public void onScanQRCodeSuccess(String result) {
         Log.i(TAG, "result:" + result);
         Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
         vibrate();
@@ -52,7 +52,7 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Result
     }
 
     @Override
-    public void handleCameraError() {
+    public void onScanQRCodeOpenCameraError() {
         Log.e(TAG, "打开相机出错");
     }
 

@@ -2,16 +2,18 @@ package cn.bingoogolapple.qrcode.zxingdemo;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.AsyncTask;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
-
-import com.google.zxing.WriterException;
+import android.widget.Toast;
 
 import cn.bingoogolapple.qrcode.core.DisplayUtils;
-import cn.bingoogolapple.qrcode.zxing.EncodingHandler;
+import cn.bingoogolapple.qrcode.zxing.QRCodeDecoder;
+import cn.bingoogolapple.qrcode.zxing.QRCodeEncoder;
 
 public class Generatectivity extends AppCompatActivity {
 
@@ -21,51 +23,62 @@ public class Generatectivity extends AppCompatActivity {
         setContentView(R.layout.activity_generate);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-        setQrcode1();
-        setQrcode2();
+        createChineseQRCode();
+        createEnglishQRCode();
     }
 
-    private void setQrcode1() {
-        new AsyncTask<Void, Void, Bitmap>() {
-
+    private void createChineseQRCode() {
+        QRCodeEncoder.encodeQRCode("王浩", DisplayUtils.dp2px(Generatectivity.this, 150), new QRCodeEncoder.Delegate() {
             @Override
-            protected Bitmap doInBackground(Void... params) {
-                try {
-                    return EncodingHandler.createQRCode("王浩", DisplayUtils.dp2px(Generatectivity.this, 200));
-                } catch (WriterException e) {
-                    e.printStackTrace();
-                }
-                return null;
+            public void onEncodeQRCodeSuccess(Bitmap bitmap) {
+                ((ImageView) findViewById(R.id.iv_chinese_qrcode)).setImageBitmap(bitmap);
             }
 
             @Override
-            protected void onPostExecute(Bitmap bitmap) {
-                if (bitmap != null) {
-                    ((ImageView)findViewById(R.id.iv_qrcode1)).setImageBitmap(bitmap);
-                }
+            public void onEncodeQRCodeFailure() {
+                Toast.makeText(Generatectivity.this, "生成中文二维码失败", Toast.LENGTH_SHORT).show();
             }
-        }.execute();
+        });
     }
 
-    private void setQrcode2() {
-        new AsyncTask<Void, Void, Bitmap>() {
-
+    private void createEnglishQRCode() {
+        QRCodeEncoder.encodeQRCode("bingoogolapple", DisplayUtils.dp2px(Generatectivity.this, 150), Color.parseColor("#B2DB4D"), new QRCodeEncoder.Delegate() {
             @Override
-            protected Bitmap doInBackground(Void... params) {
-                try {
-                    return EncodingHandler.createQRCode("bingoogolapple", DisplayUtils.dp2px(Generatectivity.this, 200), Color.parseColor("#B2DB4D"));
-                } catch (WriterException e) {
-                    e.printStackTrace();
-                }
-                return null;
+            public void onEncodeQRCodeSuccess(Bitmap bitmap) {
+                ((ImageView) findViewById(R.id.iv_english_qrcode)).setImageBitmap(bitmap);
             }
 
             @Override
-            protected void onPostExecute(Bitmap bitmap) {
-                if (bitmap != null) {
-                    ((ImageView)findViewById(R.id.iv_qrcode2)).setImageBitmap(bitmap);
-                }
+            public void onEncodeQRCodeFailure() {
+                Toast.makeText(Generatectivity.this, "生成英文二维码失败", Toast.LENGTH_SHORT).show();
             }
-        }.execute();
+        });
+    }
+
+    public void onClick(View v) {
+        Drawable drawable = null;
+        if (v.getId() == R.id.decode_chinese_qrcode) {
+            drawable = getResources().getDrawable(R.mipmap.test_chinese);
+        } else if (v.getId() == R.id.decode_english_qrcode) {
+            drawable = getResources().getDrawable(R.mipmap.test_english);
+        } else if (v.getId() == R.id.decode_isbn) {
+            drawable = getResources().getDrawable(R.mipmap.test_isbn);
+        }
+
+        if (drawable != null) {
+            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+
+            QRCodeDecoder.decodeQRCode(bitmap, new QRCodeDecoder.Delegate() {
+                @Override
+                public void onDecodeQRCodeSuccess(String result) {
+                    Toast.makeText(Generatectivity.this, result, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onDecodeQRCodeFailure() {
+                    Toast.makeText(Generatectivity.this, "解码二维码失败", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

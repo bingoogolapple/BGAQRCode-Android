@@ -16,4 +16,4 @@ dependencies {
 }
 
 // gradle uploadArchives
-apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/central-publish.gradle'
+//apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/central-publish.gradle'

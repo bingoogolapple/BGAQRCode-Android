@@ -6,17 +6,34 @@
     <include layout="@layout/toolbar" />
 
     <ImageView
-        android:id="@+id/iv_qrcode1"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/bga" />
+        android:id="@+id/iv_chinese_qrcode"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="10dp"
+        android:src="@mipmap/holder" />
 
     <ImageView
-        android:id="@+id/iv_qrcode2"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/bga" />
+        android:id="@+id/iv_english_qrcode"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="10dp"
+        android:src="@mipmap/holder" />
 
+    <TextView
+        android:id="@+id/decode_chinese_qrcode"
+        style="@style/MatchWrapTv"
+        android:onClick="onClick"
+        android:text="识别中文二维码" />
+
+    <TextView
+        android:id="@+id/decode_english_qrcode"
+        style="@style/MatchWrapTv"
+        android:onClick="onClick"
+        android:text="识别英文二维码" />
+
+    <TextView
+        android:id="@+id/decode_isbn"
+        style="@style/MatchWrapTv"
+        android:onClick="onClick"
+        android:text="识别ISBN" />
 </LinearLayout>
