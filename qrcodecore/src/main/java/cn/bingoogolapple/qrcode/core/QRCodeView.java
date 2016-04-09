@@ -1,7 +1,6 @@
 package cn.bingoogolapple.qrcode.core;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -31,49 +30,12 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
 
     private void initView(Context context, AttributeSet attrs) {
         mPreview = new CameraPreview(getContext());
-        mScanBoxView = new ScanBoxView(getContext());
 
-        initAttrs(context, attrs);
+        mScanBoxView = new ScanBoxView(getContext());
+        mScanBoxView.initCustomAttrs(context, attrs);
 
         addView(mPreview);
         addView(mScanBoxView);
-    }
-
-    private void initAttrs(Context context, AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.QRCodeView);
-        final int count = typedArray.getIndexCount();
-        for (int i = 0; i < count; i++) {
-            initAttr(typedArray.getIndex(i), typedArray);
-        }
-        typedArray.recycle();
-    }
-
-    private void initAttr(int attr, TypedArray typedArray) {
-        if (attr == R.styleable.QRCodeView_qrcv_topOffset) {
-            mScanBoxView.setTopOffset(typedArray.getDimensionPixelSize(attr, mScanBoxView.getTopOffset()));
-        } else if (attr == R.styleable.QRCodeView_qrcv_cornerSize) {
-            mScanBoxView.setCornerSize(typedArray.getDimensionPixelSize(attr, mScanBoxView.getCornerSize()));
-        } else if (attr == R.styleable.QRCodeView_qrcv_cornerLength) {
-            mScanBoxView.setCornerLength(typedArray.getDimensionPixelSize(attr, mScanBoxView.getCornerLength()));
-        } else if (attr == R.styleable.QRCodeView_qrcv_scanLineSize) {
-            mScanBoxView.setScanLineSize(typedArray.getDimensionPixelSize(attr, mScanBoxView.getScanLineSize()));
-        } else if (attr == R.styleable.QRCodeView_qrcv_rectWidth) {
-            mScanBoxView.setRectWidth(typedArray.getDimensionPixelSize(attr, mScanBoxView.getRectWidth()));
-        } else if (attr == R.styleable.QRCodeView_qrcv_maskColor) {
-            mScanBoxView.setMaskColor(typedArray.getColor(attr, mScanBoxView.getMaskColor()));
-        } else if (attr == R.styleable.QRCodeView_qrcv_cornerColor) {
-            mScanBoxView.setCornerColor(typedArray.getColor(attr, mScanBoxView.getCornerColor()));
-        } else if (attr == R.styleable.QRCodeView_qrcv_scanLineColor) {
-            mScanBoxView.setScanLineColor(typedArray.getColor(attr, mScanBoxView.getScanLineColor()));
-        } else if (attr == R.styleable.QRCodeView_qrcv_scanLineMargin) {
-            mScanBoxView.setScanLineMargin(typedArray.getDimensionPixelSize(attr, mScanBoxView.getScanLineMargin()));
-        } else if (attr == R.styleable.QRCodeView_qrcv_scanLineDrawable) {
-            mScanBoxView.setScanLineDrawable(typedArray.getDrawable(attr));
-        } else if (attr == R.styleable.QRCodeView_qrcv_borderSize) {
-            mScanBoxView.setBorderSize(typedArray.getDimensionPixelSize(attr, mScanBoxView.getBorderSize()));
-        } else if (attr == R.styleable.QRCodeView_qrcv_borderColor) {
-            mScanBoxView.setBorderColor(typedArray.getColor(attr, mScanBoxView.getBorderColor()));
-        }
     }
 
     /**

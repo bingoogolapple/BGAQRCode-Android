@@ -7,6 +7,7 @@ import android.view.Display;
 import android.view.WindowManager;
 
 public class DisplayUtils {
+
     public static Point getScreenResolution(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
@@ -22,5 +23,4 @@ public class DisplayUtils {
     public static int dp2px(Context context, float dpValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
     }
-
 }

@@ -18,6 +18,6 @@ dependencies {
 
     compile project(':zbar')
 
-//    compile 'cn.bingoogolapple:qrcodecore:1.0.2@aar'
-//    compile 'cn.bingoogolapple:zbar:1.0.2@aar'
+//    compile 'cn.bingoogolapple:qrcodecore:1.0.3@aar'
+//    compile 'cn.bingoogolapple:zbar:1.0.3@aar'
 }

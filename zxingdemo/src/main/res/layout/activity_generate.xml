@@ -10,14 +10,14 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="10dp"
-        android:src="@drawable/bga" />
+        android:src="@mipmap/holder" />
 
     <ImageView
         android:id="@+id/iv_english_qrcode"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="10dp"
-        android:src="@drawable/bga" />
+        android:src="@mipmap/holder" />
 
     <TextView
         android:id="@+id/decode_chinese_qrcode"

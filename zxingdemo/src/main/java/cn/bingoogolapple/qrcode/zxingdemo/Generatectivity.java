@@ -58,11 +58,11 @@ public class Generatectivity extends AppCompatActivity {
     public void onClick(View v) {
         Drawable drawable = null;
         if (v.getId() == R.id.decode_chinese_qrcode) {
-            drawable = getResources().getDrawable(R.drawable.test_chinese);
+            drawable = getResources().getDrawable(R.mipmap.test_chinese);
         } else if (v.getId() == R.id.decode_english_qrcode) {
-            drawable = getResources().getDrawable(R.drawable.test_english);
+            drawable = getResources().getDrawable(R.mipmap.test_english);
         } else if (v.getId() == R.id.decode_isbn) {
-            drawable = getResources().getDrawable(R.drawable.test_isbn);
+            drawable = getResources().getDrawable(R.mipmap.test_isbn);
         }
 
         if (drawable != null) {
