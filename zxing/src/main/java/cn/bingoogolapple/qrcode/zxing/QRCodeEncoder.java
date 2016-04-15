@@ -5,8 +5,12 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
+
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -14,6 +18,11 @@ import com.google.zxing.common.BitMatrix;
  * 描述:创建二维码图片
  */
 public class QRCodeEncoder {
+    public static final Map<EncodeHintType, Object> HINTS = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
+
+    static {
+        HINTS.put(EncodeHintType.CHARACTER_SET, "utf-8");
+    }
 
     private QRCodeEncoder() {
     }
@@ -42,7 +51,7 @@ public class QRCodeEncoder {
             @Override
             protected Bitmap doInBackground(Void... params) {
                 try {
-                    BitMatrix matrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, size, size);
+                    BitMatrix matrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, size, size, HINTS);
                     int[] pixels = new int[size * size];
                     for (int y = 0; y < size; y++) {
                         for (int x = 0; x < size; x++) {

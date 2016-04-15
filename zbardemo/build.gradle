@@ -18,7 +18,7 @@ dependencies {
 //    compile project(':zbar')
 
     // -------------------- 以下两个库是必须依赖的 ----------------------------
-    compile 'cn.bingoogolapple:bga-qrcodecore:1.0.4@aar'
-    compile 'cn.bingoogolapple:bga-zbar:1.0.4@aar'
+    compile 'cn.bingoogolapple:bga-qrcodecore:1.0.5@aar'
+    compile 'cn.bingoogolapple:bga-zbar:1.0.5@aar'
     // -------------------- 以上两个库是必须依赖的 ----------------------------
 }
