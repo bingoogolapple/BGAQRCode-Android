@@ -5,35 +5,73 @@
 
     <include layout="@layout/toolbar" />
 
-    <ImageView
-        android:id="@+id/iv_chinese_qrcode"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="10dp"
-        android:src="@mipmap/holder" />
+    <LinearLayout
+        style="@style/MatchWrap.Horizontal"
+        android:gravity="center_horizontal">
 
-    <ImageView
-        android:id="@+id/iv_english_qrcode"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="10dp"
-        android:src="@mipmap/holder" />
+        <ImageView
+            android:id="@+id/iv_chinese"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_margin="10dp"
+            android:src="@mipmap/holder" />
 
-    <TextView
-        android:id="@+id/decode_chinese_qrcode"
-        style="@style/MatchWrapTv"
-        android:onClick="onClick"
-        android:text="识别中文二维码" />
+        <ImageView
+            android:id="@+id/iv_english"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_margin="10dp"
+            android:src="@mipmap/holder" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/decode_english_qrcode"
-        style="@style/MatchWrapTv"
-        android:onClick="onClick"
-        android:text="识别英文二维码" />
+    <LinearLayout style="@style/MatchWrap.Horizontal">
+
+        <TextView
+            style="@style/AutoWrapTv"
+            android:onClick="decodeChinese"
+            android:text="识别中文二维码" />
+
+        <TextView
+            style="@style/AutoWrapTv"
+            android:onClick="decodeEnglish"
+            android:text="识别英文二维码" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/MatchWrap.Horizontal"
+        android:gravity="center_horizontal">
+
+        <ImageView
+            android:id="@+id/iv_chinese_logo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_margin="10dp"
+            android:src="@mipmap/holder" />
+
+        <ImageView
+            android:id="@+id/iv_english_logo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_margin="10dp"
+            android:src="@mipmap/holder" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/MatchWrap.Horizontal">
+
+        <TextView
+            style="@style/AutoWrapTv"
+            android:onClick="decodeChineseWithLogo"
+            android:text="识别带logo的中文二维码" />
+
+        <TextView
+            style="@style/AutoWrapTv"
+            android:onClick="decodeEnglishWithLogo"
+            android:text="识别带logo的英文二维码" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/decode_isbn"
         style="@style/MatchWrapTv"
-        android:onClick="onClick"
+        android:onClick="decodeIsbn"
         android:text="识别ISBN" />
 </LinearLayout>

@@ -15,7 +15,7 @@
 
 | ZXingDemo | ZBarDemo | [之前公司的Android客户端扫描二维码添加设备](http://www.iqegg.com) |
 | :------------: | :------------: | :------------: |
-| ![Image of ZXingDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zxing103.gif) | ![Image of ZBarDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zbar103.gif) | ![Image of 小蛋空气净化器](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/IqeggQRCodeDemo.gif) |
+| ![Image of ZXingDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zxing106.gif) | ![Image of ZBarDemo](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zbar106.gif) | ![Image of 小蛋空气净化器](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/iqegg.gif) |
 
 | [点击下载ZXingDemo.apk](http://fir.im/ZXingDemo)或扫描下面的二维码安装 | [点击下载ZBarDemo apk](http://fir.im/ZBarDemo)或扫描下面的二维码安装 |
 | :------------: | :------------: |
@@ -225,6 +225,17 @@ public static void encodeQRCode(String content, int size, Delegate delegate)
  * @param delegate 创建二维码图片的代理
  */
 public static void encodeQRCode(String content, int size, int color, Delegate delegate)
+
+/**
+ * 创建指定颜色的、带logo的二维码图片
+ *
+ * @param content
+ * @param size     图片宽高，单位为px
+ * @param color    二维码图片的颜色
+ * @param logo     二维码图片的logo
+ * @param delegate 创建二维码图片的代理
+ */
+public static void encodeQRCode(final String content, final int size, final int color, final Bitmap logo, final Delegate delegate)
 ```
 
 >QRCodeEncoder.Delegate   创建二维码图片的代理
