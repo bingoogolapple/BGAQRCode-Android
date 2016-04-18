@@ -101,22 +101,26 @@ public class Generatectivity extends AppCompatActivity {
     }
 
     public void decodeChinese(View v) {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.test_chinese);
+        mChineseIv.setDrawingCacheEnabled(true);
+        Bitmap bitmap = mChineseIv.getDrawingCache();
         decode(bitmap, "解析中文二维码失败");
     }
 
     public void decodeEnglish(View v) {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.test_english);
+        mEnglishIv.setDrawingCacheEnabled(true);
+        Bitmap bitmap = mEnglishIv.getDrawingCache();
         decode(bitmap, "解析英文二维码失败");
     }
 
     public void decodeChineseWithLogo(View v) {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.test_chinese_logo);
+        mChineseLogoIv.setDrawingCacheEnabled(true);
+        Bitmap bitmap = mChineseLogoIv.getDrawingCache();
         decode(bitmap, "解析带logo的中文二维码失败");
     }
 
     public void decodeEnglishWithLogo(View v) {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.test_english_logo);
+        mEnglishLogoIv.setDrawingCacheEnabled(true);
+        Bitmap bitmap = mEnglishLogoIv.getDrawingCache();
         decode(bitmap, "解析带logo的英文二维码失败");
     }
 
