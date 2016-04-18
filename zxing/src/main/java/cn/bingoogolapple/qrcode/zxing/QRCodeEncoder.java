@@ -73,6 +73,8 @@ public class QRCodeEncoder {
                         for (int x = 0; x < size; x++) {
                             if (matrix.get(x, y)) {
                                 pixels[y * size + x] = color;
+                            } else {
+                                pixels[y * size + x] = Color.WHITE;
                             }
                         }
                     }
