@@ -13,13 +13,13 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'pub.devrel:easypermissions:0.1.5'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'pub.devrel:easypermissions:0.1.6'
 //    compile project(':zxing')
 
     // -------------------- 以下三个库是必须依赖的 ----------------------------
     compile 'com.google.zxing:core:3.2.1'
-    compile 'cn.bingoogolapple:bga-qrcodecore:1.0.7@aar'
-    compile 'cn.bingoogolapple:bga-zxing:1.0.7@aar'
+    compile 'cn.bingoogolapple:bga-qrcodecore:1.0.8@aar'
+    compile 'cn.bingoogolapple:bga-zxing:1.0.8@aar'
     // -------------------- 以上三个库是必须依赖的 ----------------------------
 }

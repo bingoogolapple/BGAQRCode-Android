@@ -3,16 +3,18 @@ package cn.bingoogolapple.qrcode.core;
 import android.content.Context;
 import android.hardware.Camera;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
-public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCallback {
+public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCallback, ProcessDataTask.Delegate {
     protected Camera mCamera;
     protected CameraPreview mPreview;
     protected ScanBoxView mScanBoxView;
     protected Delegate mDelegate;
     protected Handler mHandler;
+    protected boolean mSpotAble = false;
 
     public QRCodeView(Context context, AttributeSet attributeSet) {
         this(context, attributeSet, 0);
@@ -103,6 +105,8 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
      * @param delay
      */
     public void startSpotDelay(int delay) {
+        mSpotAble = true;
+
         startCamera();
         // 开始前先移除之前的任务
         mHandler.removeCallbacks(mOneShotPreviewCallbackTask);
@@ -113,6 +117,8 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
      * 停止识别
      */
     public void stopSpot() {
+        mSpotAble = false;
+
         if (mCamera != null) {
             mCamera.setOneShotPreviewCallback(null);
         }
@@ -152,32 +158,30 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
     }
 
     @Override
-    public void onPreviewFrame(byte[] data, Camera camera) {
-        Camera.Parameters parameters = camera.getParameters();
-        Camera.Size size = parameters.getPreviewSize();
-        int width = size.width;
-        int height = size.height;
-
-        byte[] rotatedData = new byte[data.length];
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                rotatedData[x * height + height - y - 1] = data[x + y * width];
-            }
+    public void onPreviewFrame(final byte[] data, final Camera camera) {
+        if (mSpotAble) {
+            new ProcessDataTask(camera, data, this) {
+                @Override
+                protected void onPostExecute(String result) {
+                    if (mSpotAble) {
+                        if (mDelegate != null && !TextUtils.isEmpty(result)) {
+                            mDelegate.onScanQRCodeSuccess(result);
+                        } else {
+                            try {
+                                camera.setOneShotPreviewCallback(QRCodeView.this);
+                            } catch (RuntimeException e) {
+                            }
+                        }
+                    }
+                }
+            }.execute();
         }
-        int tmp = width;
-        width = height;
-        height = tmp;
-        data = rotatedData;
-
-        handleData(data, width, height, camera);
     }
-
-    protected abstract void handleData(byte[] data, int width, int height, Camera camera);
 
     private Runnable mOneShotPreviewCallbackTask = new Runnable() {
         @Override
         public void run() {
-            if (mCamera != null) {
+            if (mCamera != null && mSpotAble) {
                 mCamera.setOneShotPreviewCallback(QRCodeView.this);
             }
         }

@@ -1,8 +1,6 @@
 package cn.bingoogolapple.qrcode.zbar;
 
 import android.content.Context;
-import android.hardware.Camera;
-import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
@@ -43,40 +41,20 @@ public class ZBarView extends QRCodeView {
     }
 
     @Override
-    protected void handleData(final byte[] data, final int width, final int height, final Camera camera) {
-        new AsyncTask<Void,Void,String>() {
-
-            @Override
-            protected String doInBackground(Void... params) {
-                String result = null;
-                Image barcode = new Image(width, height, "Y800");
-                barcode.setData(data);
-                if (mScanner.scanImage(barcode) != 0) {
-                    SymbolSet syms = mScanner.getResults();
-                    for (Symbol sym : syms) {
-                        String symData = sym.getData();
-                        if (!TextUtils.isEmpty(symData)) {
-                            result = symData;
-                            break;
-                        }
-                    }
-                }
-                return result;
-            }
-
-            @Override
-            protected void onPostExecute(String result) {
-                if (mDelegate != null && !TextUtils.isEmpty(result)) {
-                    mDelegate.onScanQRCodeSuccess(result);
-                } else {
-                    try {
-                        camera.setOneShotPreviewCallback(ZBarView.this);
-                    } catch (RuntimeException e) {
-                    }
+    public String processData(byte[] data, int width, int height) {
+        String result = null;
+        Image barcode = new Image(width, height, "Y800");
+        barcode.setData(data);
+        if (mScanner.scanImage(barcode) != 0) {
+            SymbolSet syms = mScanner.getResults();
+            for (Symbol sym : syms) {
+                String symData = sym.getData();
+                if (!TextUtils.isEmpty(symData)) {
+                    result = symData;
+                    break;
                 }
             }
-        }.execute();
-
+        }
+        return result;
     }
-
 }
