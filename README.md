@@ -27,7 +27,7 @@
 
 ```groovy
 dependencies {
-    compile 'com.google.zxing:core:3.1.0'
+    compile 'com.google.zxing:core:3.2.1'
     compile 'cn.bingoogolapple:bga-qrcodecore:latestVersion@aar'
     compile 'cn.bingoogolapple:bga-zxing:latestVersion@aar'
 }
@@ -260,6 +260,6 @@ void onEncodeQRCodeFailure()
 
 ### 关于我
 
-| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群 |
-| ------------ | ------------- | ------------ | ------------ |
-| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
+| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群 | 如果你觉得这个库确实对你有帮助，可以考虑赞助我一块钱买机械键盘来撸代码 |
+| ------------ | ------------- | ------------ | ------------ | ------------ |
+| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) | ![BGA_AliPay](http://7xk9dj.com1.z0.glb.clouddn.com/BGAAliPay.JPG?imageView2/2/w/300) |
