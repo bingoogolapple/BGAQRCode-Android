@@ -160,7 +160,7 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
     @Override
     public void onPreviewFrame(final byte[] data, final Camera camera) {
         if (mSpotAble) {
-            new ProcessDataTask(camera, data, this) {
+            ProcessDataTask processDataTask = new ProcessDataTask(camera, data, this) {
                 @Override
                 protected void onPostExecute(String result) {
                     if (mSpotAble) {
@@ -174,7 +174,12 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
                         }
                     }
                 }
-            }.execute();
+            };
+            if ( Build.VERSION.SDK_INT >= 11 ) {
+                processDataTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            } else {
+                processDataTask.execute (  );
+            }
         }
     }
 
