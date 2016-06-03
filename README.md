@@ -112,6 +112,13 @@ qrcv_animTime         | 扫描线从顶部移动到底部的动画时间「单�
 
 ```java
 /**
+ * 设置扫描二维码的代理
+ *
+ * @param delegate 扫描二维码的代理
+ */
+public void setDelegate(Delegate delegate)
+
+/**
  * 显示扫描框
  */
 public void showScanRect()

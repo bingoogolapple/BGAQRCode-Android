@@ -21,7 +21,7 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         mQRCodeView = (ZXingView) findViewById(R.id.zxingview);
-        mQRCodeView.setResultHandler(this);
+        mQRCodeView.setDelegate(this);
     }
 
     @Override

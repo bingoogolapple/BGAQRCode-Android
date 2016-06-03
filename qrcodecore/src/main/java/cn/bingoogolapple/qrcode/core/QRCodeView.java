@@ -27,10 +27,6 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         initView(context, attrs);
     }
 
-    public void setResultHandler(Delegate delegate) {
-        mDelegate = delegate;
-    }
-
     private void initView(Context context, AttributeSet attrs) {
         mPreview = new CameraPreview(getContext());
 
@@ -39,6 +35,15 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
 
         addView(mPreview);
         addView(mScanBoxView);
+    }
+
+    /**
+     * 设置扫描二维码的代理
+     *
+     * @param delegate 扫描二维码的代理
+     */
+    public void setDelegate(Delegate delegate) {
+        mDelegate = delegate;
     }
 
     /**
