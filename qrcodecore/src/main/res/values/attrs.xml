@@ -17,8 +17,8 @@
         <attr name="qrcv_scanLineSize" format="dimension|reference" />
         <!-- 扫描线的颜色，默认值为@android:color/white -->
         <attr name="qrcv_scanLineColor" format="color|reference" />
-        <!-- 扫描线距离左右边框的间距，默认值为0dp -->
-        <attr name="qrcv_scanLineHorizontalMargin" format="dimension|reference" />
+        <!-- 扫描线距离上下或者左右边框的间距，默认值为0dp -->
+        <attr name="qrcv_scanLineMargin" format="dimension|reference" />
         <!-- 是否显示默认的图片扫描线，默认值为false -->
         <attr name="qrcv_isShowDefaultScanLineDrawable" format="boolean" />
         <!-- 扫描线的图片资源，默认值为空 -->
@@ -29,9 +29,13 @@
         <attr name="qrcv_borderColor" format="color|reference" />
         <!-- 扫描线从顶部移动到底部的动画时间，默认值为1000 -->
         <attr name="qrcv_animTime" format="integer" />
-        <!-- 扫描框是否垂直居中，默认值为false，该属性为true时会忽略qrcv_topOffset属性 -->
+        <!-- 扫描框是否垂直居中，该属性为true时会忽略qrcv_topOffset属性，默认值为false -->
         <attr name="qrcv_isCenterVertical" format="boolean" />
         <!-- Toolbar的高度，当有设置qrcv_isCenterVertical属性时，通过该属性来修正有Toolbar时导致扫描框垂直居中的偏差，默认值为0dp -->
         <attr name="qrcv_toolbarHeight" format="dimension|reference" />
+        <!-- 扫描框的高度，默认值为200dp -->
+        <attr name="qrcv_rectHeight" format="dimension|reference" />
+        <!-- 是否是扫条形码，默认值为false -->
+        <attr name="qrcv_isBarcode" format="boolean" />
     </declare-styleable>
 </resources>

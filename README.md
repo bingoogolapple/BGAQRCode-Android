@@ -103,10 +103,11 @@ qrcv_cornerSize         | 扫描框边角线的宽度        | 3dp
 qrcv_cornerLength         | 扫描框边角线的长度        | 20dp
 qrcv_cornerColor         | 扫描框边角线的颜色        | @android:color/white
 qrcv_rectWidth         | 扫描框的宽度        | 200dp
+qrcv_rectHeight         | 扫描框的高度        | 200dp
 qrcv_maskColor         | 除去扫描框，其余部分阴影颜色        | #33FFFFFF
 qrcv_scanLineSize         | 扫描线的宽度        | 1dp
 qrcv_scanLineColor         | 扫描线的颜色「扫描线和默认的扫描线图片的颜色」        | @android:color/white
-qrcv_scanLineHorizontalMargin         | 扫描线距离左右边框的间距        | 0dp
+qrcv_scanLineMargin         | 扫描线距离上下或者左右边框的间距        | 0dp
 qrcv_isShowDefaultScanLineDrawable         | 是否显示默认的图片扫描线「设置该属性后 qrcv_scanLineSize 将失效，可以通过 qrcv_scanLineColor 设置扫描线的颜色，避免让你公司的UI单独给你出特定颜色的扫描线图片」        | false
 qrcv_customScanLineDrawable         | 扫描线的图片资源「默认的扫描线图片样式不能满足你的需求时使用，设置该属性后 qrcv_isShowDefaultScanLineDrawable、qrcv_scanLineSize、qrcv_scanLineColor 将失效」        | null
 qrcv_borderSize         | 扫描边框的宽度        | 1dp
@@ -114,6 +115,7 @@ qrcv_borderColor         | 扫描边框的颜色        | @android:color/white
 qrcv_animTime         | 扫描线从顶部移动到底部的动画时间「单位为毫秒」        | 1000
 qrcv_isCenterVertical         | 扫描框是否垂直居中，该属性为true时会忽略 qrcv_topOffset 属性        | false
 qrcv_toolbarHeight         | Toolbar 的高度，当有设置 qrcv_isCenterVertical 属性时，通过该属性来修正由 Toolbar 导致扫描框垂直居中的偏差        | 0dp
+qrcv_isBarcode         | 是否是扫条形码        | false
 
 ### 接口说明
 
