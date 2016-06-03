@@ -36,6 +36,12 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
         super.onStop();
     }
 
+    @Override
+    protected void onDestroy() {
+        mQRCodeView.onDestroy();
+        super.onDestroy();
+    }
+
     private void vibrate() {
         Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         vibrator.vibrate(200);

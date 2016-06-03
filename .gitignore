@@ -41,3 +41,5 @@ proguard/
 .DS_Store
 
 *.keystore
+
+captures

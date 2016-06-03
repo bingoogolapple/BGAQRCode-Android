@@ -14,7 +14,6 @@ import cn.bingoogolapple.qrcode.zbar.ZBarView;
 public class ScanActivity extends AppCompatActivity implements QRCodeView.Delegate {
     private static final String TAG = ScanActivity.class.getSimpleName();
 
-    private static final int REQUEST_CODE_QRCODE_PERMISSIONS = 1;
     private QRCodeView mQRCodeView;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +35,12 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
     protected void onStop() {
         mQRCodeView.stopCamera();
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mQRCodeView.onDestroy();
+        super.onDestroy();
     }
 
     private void vibrate() {

@@ -15,6 +15,7 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
     protected Delegate mDelegate;
     protected Handler mHandler;
     protected boolean mSpotAble = false;
+    protected ProcessDataTask mProcessDataTask;
 
     public QRCodeView(Context context, AttributeSet attributeSet) {
         this(context, attributeSet, 0);
@@ -73,10 +74,7 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
                 mDelegate.onScanQRCodeOpenCameraError();
             }
         }
-        if (mCamera != null) {
-            mPreview.setCamera(mCamera);
-            mPreview.initCameraPreview();
-        }
+        mPreview.setCamera(mCamera);
     }
 
     /**
@@ -117,6 +115,8 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
      * 停止识别
      */
     public void stopSpot() {
+        cancelProcessDataTask();
+
         mSpotAble = false;
 
         if (mCamera != null) {
@@ -157,29 +157,48 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         mPreview.closeFlashlight();
     }
 
+    /**
+     * 销毁二维码扫描控件
+     */
+    public void onDestroy() {
+        stopCamera();
+        mHandler = null;
+        mDelegate = null;
+        mOneShotPreviewCallbackTask = null;
+    }
+
+    /**
+     * 取消数据处理任务
+     */
+    protected void cancelProcessDataTask() {
+        if (mProcessDataTask != null) {
+            mProcessDataTask.cancelTask();
+            mProcessDataTask = null;
+        }
+    }
+
     @Override
     public void onPreviewFrame(final byte[] data, final Camera camera) {
         if (mSpotAble) {
-            ProcessDataTask processDataTask = new ProcessDataTask(camera, data, this) {
+            cancelProcessDataTask();
+            mProcessDataTask = new ProcessDataTask(camera, data, this) {
                 @Override
                 protected void onPostExecute(String result) {
                     if (mSpotAble) {
                         if (mDelegate != null && !TextUtils.isEmpty(result)) {
-                            mDelegate.onScanQRCodeSuccess(result);
+                            try {
+                                mDelegate.onScanQRCodeSuccess(result);
+                            } catch (Exception e) {
+                            }
                         } else {
                             try {
                                 camera.setOneShotPreviewCallback(QRCodeView.this);
-                            } catch (RuntimeException e) {
+                            } catch (Exception e) {
                             }
                         }
                     }
                 }
-            };
-            if ( Build.VERSION.SDK_INT >= 11 ) {
-                processDataTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } else {
-                processDataTask.execute (  );
-            }
+            }.perform();
         }
     }
 
