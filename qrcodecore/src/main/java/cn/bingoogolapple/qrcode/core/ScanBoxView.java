@@ -40,6 +40,8 @@ public class ScanBoxView extends View {
     private int mBorderSize;
     private int mBorderColor;
     private int mAnimTime;
+    private boolean mIsCenterVertical;
+    private int mToolbarHeight;
 
     private float mHalfCornerSize;
 
@@ -49,21 +51,23 @@ public class ScanBoxView extends View {
         mPaint.setAntiAlias(true);
         mMaskColor = Color.parseColor("#33FFFFFF");
         mCornerColor = Color.WHITE;
-        mCornerLength = DisplayUtils.dp2px(context, 20);
-        mCornerSize = DisplayUtils.dp2px(context, 3);
-        mScanLineSize = DisplayUtils.dp2px(context, 1);
+        mCornerLength = BGAQRCodeUIUtil.dp2px(context, 20);
+        mCornerSize = BGAQRCodeUIUtil.dp2px(context, 3);
+        mScanLineSize = BGAQRCodeUIUtil.dp2px(context, 1);
         mScanLineColor = Color.WHITE;
-        mTopOffset = DisplayUtils.dp2px(context, 90);
-        mRectWidth = DisplayUtils.dp2px(context, 200);
+        mTopOffset = BGAQRCodeUIUtil.dp2px(context, 90);
+        mRectWidth = BGAQRCodeUIUtil.dp2px(context, 200);
         mScanLineHorizontalMargin = 0;
         mIsShowDefaultScanLineDrawable = false;
         mCustomScanLineDrawable = null;
         mScanLineBitmap = null;
-        mBorderSize = DisplayUtils.dp2px(context, 1);
+        mBorderSize = BGAQRCodeUIUtil.dp2px(context, 1);
         mBorderColor = Color.WHITE;
         mAnimTime = 1000;
+        mIsCenterVertical = false;
+        mToolbarHeight = 0;
 
-        mMoveStepDistance = DisplayUtils.dp2px(context, 2);
+        mMoveStepDistance = BGAQRCodeUIUtil.dp2px(context, 2);
     }
 
     public void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -106,6 +110,10 @@ public class ScanBoxView extends View {
             mBorderColor = typedArray.getColor(attr, mBorderColor);
         } else if (attr == R.styleable.QRCodeView_qrcv_animTime) {
             mAnimTime = typedArray.getInteger(attr, mAnimTime);
+        } else if (attr == R.styleable.QRCodeView_qrcv_isCenterVertical) {
+            mIsCenterVertical = typedArray.getBoolean(attr, mIsCenterVertical);
+        } else if (attr == R.styleable.QRCodeView_qrcv_toolbarHeight) {
+            mToolbarHeight = typedArray.getDimensionPixelSize(attr, mToolbarHeight);
         }
     }
 
@@ -120,6 +128,15 @@ public class ScanBoxView extends View {
 
         mAnimDelayTime = (int) ((1.0f * mAnimTime * mMoveStepDistance) / mRectWidth);
         mHalfCornerSize = 1.0f * mCornerSize / 2;
+
+        if (mIsCenterVertical) {
+            int screenHeight = BGAQRCodeUIUtil.getScreenResolution(getContext()).y;
+            if (mToolbarHeight == 0) {
+                mTopOffset = (screenHeight - mRectWidth) / 2;
+            } else {
+                mTopOffset = (screenHeight - mRectWidth) / 2 + mToolbarHeight / 2;
+            }
+        }
     }
 
     public static Bitmap makeTintBitmap(Bitmap src, int tintColor) {
@@ -244,7 +261,7 @@ public class ScanBoxView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        Point screenResolution = DisplayUtils.getScreenResolution(getContext());
+        Point screenResolution = BGAQRCodeUIUtil.getScreenResolution(getContext());
         int leftOffset = (screenResolution.x - mRectWidth) / 2;
         mFramingRect = new Rect(leftOffset, mTopOffset, leftOffset + mRectWidth, mTopOffset + mRectWidth);
         mScanLineTop = mTopOffset + mHalfCornerSize + 0.5f;

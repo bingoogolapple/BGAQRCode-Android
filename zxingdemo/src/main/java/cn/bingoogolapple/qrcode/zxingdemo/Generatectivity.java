@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import cn.bingoogolapple.qrcode.core.DisplayUtils;
+import cn.bingoogolapple.qrcode.core.BGAQRCodeUIUtil;
 import cn.bingoogolapple.qrcode.zxing.QRCodeDecoder;
 import cn.bingoogolapple.qrcode.zxing.QRCodeEncoder;
 
@@ -45,7 +45,7 @@ public class Generatectivity extends AppCompatActivity {
     }
 
     private void createChineseQRCode() {
-        QRCodeEncoder.encodeQRCode("王浩", DisplayUtils.dp2px(Generatectivity.this, 150), new QRCodeEncoder.Delegate() {
+        QRCodeEncoder.encodeQRCode("王浩", BGAQRCodeUIUtil.dp2px(Generatectivity.this, 150), new QRCodeEncoder.Delegate() {
             @Override
             public void onEncodeQRCodeSuccess(Bitmap bitmap) {
                 mChineseIv.setImageBitmap(bitmap);
@@ -59,7 +59,7 @@ public class Generatectivity extends AppCompatActivity {
     }
 
     private void createEnglishQRCode() {
-        QRCodeEncoder.encodeQRCode("bingoogolapple", DisplayUtils.dp2px(Generatectivity.this, 150), Color.parseColor("#ff0000"), new QRCodeEncoder.Delegate() {
+        QRCodeEncoder.encodeQRCode("bingoogolapple", BGAQRCodeUIUtil.dp2px(Generatectivity.this, 150), Color.parseColor("#ff0000"), new QRCodeEncoder.Delegate() {
             @Override
             public void onEncodeQRCodeSuccess(Bitmap bitmap) {
                 mEnglishIv.setImageBitmap(bitmap);
@@ -73,7 +73,7 @@ public class Generatectivity extends AppCompatActivity {
     }
 
     private void createChineseQRCodeWithLogo() {
-        QRCodeEncoder.encodeQRCode("王浩", DisplayUtils.dp2px(Generatectivity.this, 150), Color.parseColor("#795dbf"), BitmapFactory.decodeResource(Generatectivity.this.getResources(), R.mipmap.logo), new QRCodeEncoder.Delegate() {
+        QRCodeEncoder.encodeQRCode("王浩", BGAQRCodeUIUtil.dp2px(Generatectivity.this, 150), Color.parseColor("#795dbf"), BitmapFactory.decodeResource(Generatectivity.this.getResources(), R.mipmap.logo), new QRCodeEncoder.Delegate() {
             @Override
             public void onEncodeQRCodeSuccess(Bitmap bitmap) {
                 mChineseLogoIv.setImageBitmap(bitmap);
@@ -87,7 +87,7 @@ public class Generatectivity extends AppCompatActivity {
     }
 
     private void createEnglishQRCodeWithLogo() {
-        QRCodeEncoder.encodeQRCode("bingoogolapple", DisplayUtils.dp2px(Generatectivity.this, 150), Color.parseColor("#0000ff"), BitmapFactory.decodeResource(Generatectivity.this.getResources(), R.mipmap.logo), new QRCodeEncoder.Delegate() {
+        QRCodeEncoder.encodeQRCode("bingoogolapple", BGAQRCodeUIUtil.dp2px(Generatectivity.this, 150), Color.parseColor("#0000ff"), BitmapFactory.decodeResource(Generatectivity.this.getResources(), R.mipmap.logo), new QRCodeEncoder.Delegate() {
             @Override
             public void onEncodeQRCodeSuccess(Bitmap bitmap) {
                 mEnglishLogoIv.setImageBitmap(bitmap);

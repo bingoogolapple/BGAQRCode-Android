@@ -29,5 +29,9 @@
         <attr name="qrcv_borderColor" format="color|reference" />
         <!-- 扫描线从顶部移动到底部的动画时间，默认值为1000 -->
         <attr name="qrcv_animTime" format="integer" />
+        <!-- 扫描框是否垂直居中，默认值为false，该属性为true时会忽略qrcv_topOffset属性 -->
+        <attr name="qrcv_isCenterVertical" format="boolean" />
+        <!-- Toolbar的高度，当有设置qrcv_isCenterVertical属性时，通过该属性来修正有Toolbar时导致扫描框垂直居中的偏差，默认值为0dp -->
+        <attr name="qrcv_toolbarHeight" format="dimension|reference" />
     </declare-styleable>
 </resources>

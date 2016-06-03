@@ -6,7 +6,7 @@ import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
 
-public class DisplayUtils {
+public class BGAQRCodeUIUtil {
 
     public static Point getScreenResolution(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);

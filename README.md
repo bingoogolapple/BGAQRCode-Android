@@ -4,7 +4,14 @@
 根据[之前公司](http://www.iqegg.com)的产品需求，参考这个项目改的 [barcodescanner](https://github.com/dm77/barcodescanner)，希望能帮助到有生成二维码、扫描二维码、识别图片二维码等需求的猿友。修改幅度较大，也就没准备针对[barcodescanner](https://github.com/dm77/barcodescanner)库提交PR。
 
 ## 常见问题
-> 1.ZBar混淆规则
+> 1.宽高一定要填充除了状态栏以外的其余部分
+
+```xml
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+```
+
+> 2.ZBar混淆规则
 
 ```java
 -keep class net.sourceforge.zbar.** { *; }
@@ -105,6 +112,8 @@ qrcv_customScanLineDrawable         | 扫描线的图片资源「默认的扫描
 qrcv_borderSize         | 扫描边框的宽度        | 1dp
 qrcv_borderColor         | 扫描边框的颜色        | @android:color/white
 qrcv_animTime         | 扫描线从顶部移动到底部的动画时间「单位为毫秒」        | 1000
+qrcv_isCenterVertical         | 扫描框是否垂直居中，该属性为true时会忽略 qrcv_topOffset 属性        | false
+qrcv_toolbarHeight         | Toolbar 的高度，当有设置 qrcv_isCenterVertical 属性时，通过该属性来修正由 Toolbar 导致扫描框垂直居中的偏差        | 0dp
 
 ### 接口说明
 
