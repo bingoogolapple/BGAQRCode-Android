@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
@@ -26,6 +28,10 @@ public class BGAQRCodeUtil {
 
     public static int dp2px(Context context, float dpValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
+    }
+
+    public static int sp2px(Context context, float spValue) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, context.getResources().getDisplayMetrics());
     }
 
     public static Bitmap adjustPhotoRotation(Bitmap inputBitmap, int orientationDegree) {
@@ -49,6 +55,15 @@ public class BGAQRCodeUtil {
         Paint paint = new Paint();
         Canvas canvas = new Canvas(outputBitmap);
         canvas.drawBitmap(inputBitmap, matrix, paint);
+        return outputBitmap;
+    }
+
+    public static Bitmap makeTintBitmap(Bitmap inputBitmap, int tintColor) {
+        Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap.getWidth(), inputBitmap.getHeight(), inputBitmap.getConfig());
+        Canvas canvas = new Canvas(outputBitmap);
+        Paint paint = new Paint();
+        paint.setColorFilter(new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(inputBitmap, 0, 0, paint);
         return outputBitmap;
     }
 }

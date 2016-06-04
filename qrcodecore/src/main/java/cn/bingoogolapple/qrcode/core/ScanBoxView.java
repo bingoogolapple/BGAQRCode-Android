@@ -8,23 +8,26 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
 public class ScanBoxView extends View {
-    private static int mMoveStepDistance;
+    private int mMoveStepDistance;
     private int mAnimDelayTime;
 
     private Rect mFramingRect;
     private float mScanLineTop;
     private float mScanLineLeft;
     private Paint mPaint;
+    private TextPaint mTipPaint;
 
     private int mMaskColor;
     private int mCornerColor;
@@ -45,8 +48,16 @@ public class ScanBoxView extends View {
     private boolean mIsCenterVertical;
     private int mToolbarHeight;
     private boolean mIsBarcode;
+    private String mTipText;
+    private int mTipTextSize;
+    private int mTipTextColor;
+    private boolean mIsTipTextBelowRect;
+    private int mTipTextMargin;
+    private int mTipBackgroundColor;
 
     private float mHalfCornerSize;
+    private StaticLayout mTipTextSl;
+    private int mTipBackgroundRadius;
 
     public ScanBoxView(Context context) {
         super(context);
@@ -71,8 +82,21 @@ public class ScanBoxView extends View {
         mIsCenterVertical = false;
         mToolbarHeight = 0;
         mIsBarcode = false;
-
         mMoveStepDistance = BGAQRCodeUtil.dp2px(context, 2);
+//        mTipText = "将取景框对准二维码\n即可自动扫描";
+        mTipText = "将二维码/条形码放到框内，即可自动扫描";
+        mTipTextSize = BGAQRCodeUtil.sp2px(context, 14);
+        mTipTextColor = Color.WHITE;
+        mIsTipTextBelowRect = false;
+        mTipTextMargin = BGAQRCodeUtil.dp2px(context, 20);
+        mTipBackgroundColor = Color.parseColor("#22000000");
+
+        mTipPaint = new TextPaint();
+        mTipPaint.setAntiAlias(true);
+        mTipPaint.setTextSize(mTipTextSize);
+        mTipPaint.setColor(mTipTextColor);
+
+        mTipBackgroundRadius = BGAQRCodeUtil.dp2px(context, 4);
     }
 
     public void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -126,11 +150,10 @@ public class ScanBoxView extends View {
         }
     }
 
-
     private void afterInitCustomAttrs() {
         if (mIsShowDefaultScanLineDrawable) {
             Bitmap defaultScanLineBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.qrcode_default_scan_line);
-            mScanLineBitmap = makeTintBitmap(defaultScanLineBitmap, mScanLineColor);
+            mScanLineBitmap = BGAQRCodeUtil.makeTintBitmap(defaultScanLineBitmap, mScanLineColor);
 
             if (mIsBarcode) {
                 mScanLineBitmap = BGAQRCodeUtil.adjustPhotoRotation(mScanLineBitmap, 90);
@@ -155,15 +178,8 @@ public class ScanBoxView extends View {
                 mTopOffset = (screenHeight - mRectHeight) / 2 + mToolbarHeight / 2;
             }
         }
-    }
 
-    public static Bitmap makeTintBitmap(Bitmap src, int tintColor) {
-        Bitmap result = Bitmap.createBitmap(src.getWidth(), src.getHeight(), src.getConfig());
-        Canvas canvas = new Canvas(result);
-        Paint paint = new Paint();
-        paint.setColorFilter(new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(src, 0, 0, paint);
-        return result;
+        mTipTextSl = new StaticLayout(mTipText, mTipPaint, mRectWidth, Layout.Alignment.ALIGN_CENTER, 1.0f, 0, true);
     }
 
     @Override
@@ -184,8 +200,12 @@ public class ScanBoxView extends View {
         // 画扫描线
         drawScanLine(canvas);
 
+        // 画提示文本
+        drawTipText(canvas);
+
         // 移动扫描线的位置
         moveScanLine();
+
     }
 
     /**
@@ -267,6 +287,33 @@ public class ScanBoxView extends View {
                 RectF lineRect = new RectF(mFramingRect.left + mHalfCornerSize + mScanLineMargin, mScanLineTop, mFramingRect.right - mHalfCornerSize - mScanLineMargin, mScanLineTop + mScanLineBitmap.getHeight());
                 canvas.drawBitmap(mScanLineBitmap, null, lineRect, mPaint);
             }
+        }
+    }
+
+    /**
+     * 画提示文本
+     *
+     * @param canvas
+     */
+    private void drawTipText(Canvas canvas) {
+        if (TextUtils.isEmpty(mTipText) || mTipTextSl == null) {
+            return;
+        }
+
+        if (mIsTipTextBelowRect) {
+            mPaint.setColor(mTipBackgroundColor);
+            canvas.drawRoundRect(new RectF(mFramingRect.left, mFramingRect.bottom + mTipTextMargin, mFramingRect.right, mFramingRect.bottom + mTipTextMargin + mTipTextSl.getHeight()), mTipBackgroundRadius, mTipBackgroundRadius, mPaint);
+            canvas.save();
+            canvas.translate(mFramingRect.left, mFramingRect.bottom + mTipTextMargin);
+            mTipTextSl.draw(canvas);
+            canvas.restore();
+        } else {
+            mPaint.setColor(mTipBackgroundColor);
+            canvas.drawRoundRect(new RectF(mFramingRect.left, mFramingRect.top - mTipTextMargin - mTipTextSl.getHeight(), mFramingRect.right, mFramingRect.top - mTipTextMargin), mTipBackgroundRadius, mTipBackgroundRadius, mPaint);
+            canvas.save();
+            canvas.translate(mFramingRect.left, mFramingRect.top - mTipTextMargin - mTipTextSl.getHeight());
+            mTipTextSl.draw(canvas);
+            canvas.restore();
         }
     }
 
