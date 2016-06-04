@@ -55,5 +55,9 @@
         <attr name="qrcv_tipBackgroundColor" format="color|reference" />
         <!-- 扫描线是否来回移动，默认值为true -->
         <attr name="qrcv_isScanLineReverse" format="boolean" />
+        <!-- 是否显示默认的网格图片扫描线，默认值为false -->
+        <attr name="qrcv_isShowDefaultGridScanLineDrawable" format="boolean" />
+        <!-- 扫描线的网格图片资源，默认值为null -->
+        <attr name="qrcv_customGridScanLineDrawable" format="reference" />
     </declare-styleable>
 </resources>
