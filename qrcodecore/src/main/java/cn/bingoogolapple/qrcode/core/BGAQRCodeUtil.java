@@ -35,6 +35,10 @@ public class BGAQRCodeUtil {
     }
 
     public static Bitmap adjustPhotoRotation(Bitmap inputBitmap, int orientationDegree) {
+        if (inputBitmap == null) {
+            return null;
+        }
+
         Matrix matrix = new Matrix();
         matrix.setRotate(orientationDegree, (float) inputBitmap.getWidth() / 2, (float) inputBitmap.getHeight() / 2);
         float outputX, outputY;
@@ -59,6 +63,10 @@ public class BGAQRCodeUtil {
     }
 
     public static Bitmap makeTintBitmap(Bitmap inputBitmap, int tintColor) {
+        if (inputBitmap == null) {
+            return null;
+        }
+
         Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap.getWidth(), inputBitmap.getHeight(), inputBitmap.getConfig());
         Canvas canvas = new Canvas(outputBitmap);
         Paint paint = new Paint();
