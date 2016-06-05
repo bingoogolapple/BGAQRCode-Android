@@ -11,6 +11,8 @@
         <attr name="qrcv_cornerColor" format="color|reference" />
         <!-- 扫描框的宽度，默认值为200dp -->
         <attr name="qrcv_rectWidth" format="dimension|reference" />
+        <!-- 扫描框的高度，默认值为200dp -->
+        <attr name="qrcv_rectHeight" format="dimension|reference" />
         <!-- 除去扫描框，其余部分阴影颜色，默认值为#33FFFFFF -->
         <attr name="qrcv_maskColor" format="color|reference" />
         <!-- 扫描线的宽度，默认值为1dp -->
@@ -33,8 +35,6 @@
         <attr name="qrcv_isCenterVertical" format="boolean" />
         <!-- Toolbar的高度，当有设置qrcv_isCenterVertical属性时，通过该属性来修正有Toolbar时导致扫描框垂直居中的偏差，默认值为0dp -->
         <attr name="qrcv_toolbarHeight" format="dimension|reference" />
-        <!-- 扫描框的高度，默认值为200dp -->
-        <attr name="qrcv_rectHeight" format="dimension|reference" />
         <!-- 是否是扫条形码，默认值为false -->
         <attr name="qrcv_isBarcode" format="boolean" />
         <!-- 提示文案，默认值为null -->
