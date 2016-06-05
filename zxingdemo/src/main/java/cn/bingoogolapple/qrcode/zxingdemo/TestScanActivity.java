@@ -1,18 +1,29 @@
 package cn.bingoogolapple.qrcode.zxingdemo;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.File;
+
 import cn.bingoogolapple.qrcode.core.QRCodeView;
+import cn.bingoogolapple.qrcode.zxing.QRCodeDecoder;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
 public class TestScanActivity extends AppCompatActivity implements QRCodeView.Delegate {
     private static final String TAG = TestScanActivity.class.getSimpleName();
+    private static final int REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY = 666;
+
     private QRCodeView mQRCodeView;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -98,6 +109,45 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
             case R.id.scan_qrcode:
                 mQRCodeView.changeToScanQRCodeStyle();
                 break;
+            case R.id.choose_qrcde_from_gallery:
+                startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY);
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        mQRCodeView.showScanRect();
+
+        if (requestCode == REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY && resultCode == Activity.RESULT_OK && null != data) {
+            String picturePath;
+            try {
+                Uri selectedImage = data.getData();
+                String[] filePathColumns = {MediaStore.Images.Media.DATA};
+                Cursor c = getContentResolver().query(selectedImage, filePathColumns, null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePathColumns[0]);
+                picturePath = c.getString(columnIndex);
+                c.close();
+            } catch (Exception e) {
+                picturePath = data.getData().getPath();
+            }
+
+            if (new File(picturePath).exists()) {
+                QRCodeDecoder.decodeQRCode(BitmapFactory.decodeFile(picturePath), new QRCodeDecoder.Delegate() {
+                    @Override
+                    public void onDecodeQRCodeSuccess(String result) {
+                        Toast.makeText(TestScanActivity.this, result, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onDecodeQRCodeFailure() {
+                        Toast.makeText(TestScanActivity.this, "未发现二维码", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
     }
 }

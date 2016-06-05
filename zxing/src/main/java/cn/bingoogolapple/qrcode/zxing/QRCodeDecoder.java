@@ -78,10 +78,10 @@ public class QRCodeDecoder {
             @Override
             protected void onPostExecute(String result) {
                 if (delegate != null) {
-                    if (!TextUtils.isEmpty(result)) {
-                        delegate.onDecodeQRCodeSuccess(result);
-                    } else {
+                    if (TextUtils.isEmpty(result)) {
                         delegate.onDecodeQRCodeFailure();
+                    } else {
+                        delegate.onDecodeQRCodeSuccess(result);
                     }
                 }
             }

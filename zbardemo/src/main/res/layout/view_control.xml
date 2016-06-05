@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/MatchWrap.Vertical"
     android:layout_alignParentBottom="true">
 
@@ -32,22 +31,12 @@
         <TextView
             android:id="@+id/start_spot_showrect"
             style="@style/AutoWrapTv"
-            android:text="识别显示框" />
+            android:text="开始识别显示扫描框" />
 
         <TextView
             android:id="@+id/stop_spot_hiddenrect"
             style="@style/AutoWrapTv"
-            android:text="不识别隐藏框" />
-
-        <TextView
-            android:id="@+id/open_flashlight"
-            style="@style/AutoWrapTv"
-            android:text="开灯" />
-
-        <TextView
-            android:id="@+id/close_flashlight"
-            style="@style/AutoWrapTv"
-            android:text="关灯" />
+            android:text="暂停识别隐藏扫描框" />
     </LinearLayout>
 
     <LinearLayout style="@style/MatchWrap.Horizontal">
@@ -73,4 +62,16 @@
             android:text="扫二维码" />
     </LinearLayout>
 
+    <LinearLayout style="@style/MatchWrap.Horizontal">
+
+        <TextView
+            android:id="@+id/open_flashlight"
+            style="@style/AutoWrapTv"
+            android:text="开灯" />
+
+        <TextView
+            android:id="@+id/close_flashlight"
+            style="@style/AutoWrapTv"
+            android:text="关灯" />
+    </LinearLayout>
 </LinearLayout>
