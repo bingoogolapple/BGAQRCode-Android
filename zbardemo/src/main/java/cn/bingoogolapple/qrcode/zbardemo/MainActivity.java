@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.scan_qrcode:
-                startActivity(new Intent(this, ScanActivity.class));
+            case R.id.test_scan_qrcode:
+                startActivity(new Intent(this, TestScanActivity.class));
                 break;
         }
     }

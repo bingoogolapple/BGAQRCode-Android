@@ -24,11 +24,11 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.scan_qrcode:
-                startActivity(new Intent(this, ScanActivity.class));
+            case R.id.test_scan_qrcode:
+                startActivity(new Intent(this, TestScanActivity.class));
                 break;
-            case R.id.generate_qrcode:
-                startActivity(new Intent(this, Generatectivity.class));
+            case R.id.test_generate_qrcode:
+                startActivity(new Intent(this, TestGeneratectivity.class));
                 break;
         }
     }

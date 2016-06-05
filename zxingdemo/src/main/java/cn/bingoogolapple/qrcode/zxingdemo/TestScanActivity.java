@@ -1,4 +1,4 @@
-package cn.bingoogolapple.qrcode.zbardemo;
+package cn.bingoogolapple.qrcode.zxingdemo;
 
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -9,19 +9,18 @@ import android.view.View;
 import android.widget.Toast;
 
 import cn.bingoogolapple.qrcode.core.QRCodeView;
-import cn.bingoogolapple.qrcode.zbar.ZBarView;
+import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
-public class ScanActivity extends AppCompatActivity implements QRCodeView.Delegate {
-    private static final String TAG = ScanActivity.class.getSimpleName();
-
+public class TestScanActivity extends AppCompatActivity implements QRCodeView.Delegate {
+    private static final String TAG = TestScanActivity.class.getSimpleName();
     private QRCodeView mQRCodeView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scan);
+        setContentView(R.layout.activity_test_scan);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-        mQRCodeView = (ZBarView) findViewById(R.id.zbarview);
+        mQRCodeView = (ZXingView) findViewById(R.id.zxingview);
         mQRCodeView.setDelegate(this);
     }
 

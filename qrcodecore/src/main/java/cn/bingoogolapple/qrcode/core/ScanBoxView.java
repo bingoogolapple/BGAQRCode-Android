@@ -327,15 +327,16 @@ public class ScanBoxView extends View {
     private void drawScanLine(Canvas canvas) {
         if (mIsBarcode) {
             if (mGridScanLineBitmap != null) {
-                RectF gridRect = new RectF(mFramingRect.left + mHalfCornerSize + 0.5f, mFramingRect.top + mHalfCornerSize + mScanLineMargin, mGridScanLineRight, mFramingRect.bottom - mHalfCornerSize - mScanLineMargin);
-                int srcTop = 0;
-                int srcBottom = mGridScanLineBitmap.getHeight();
-                int diff = srcBottom - (int)gridRect.height();
-                if (diff > 0) {
-                    srcTop = diff / 2;
-                    srcBottom = srcBottom - srcTop;
+                RectF dstGridRectF = new RectF(mFramingRect.left + mHalfCornerSize + 0.5f, mFramingRect.top + mHalfCornerSize + mScanLineMargin, mGridScanLineRight, mFramingRect.bottom - mHalfCornerSize - mScanLineMargin);
+
+                Rect srcGridRect = new Rect((int) (mGridScanLineBitmap.getWidth() - dstGridRectF.width()), 0, mGridScanLineBitmap.getWidth(), mGridScanLineBitmap.getHeight());
+
+                if (srcGridRect.left < 0) {
+                    srcGridRect.left = 0;
+                    dstGridRectF.left = dstGridRectF.right - srcGridRect.width();
                 }
-                canvas.drawBitmap(mGridScanLineBitmap, new Rect((int) (mGridScanLineBitmap.getWidth() - gridRect.width()), srcTop, mGridScanLineBitmap.getWidth(), srcBottom), gridRect, mPaint);
+
+                canvas.drawBitmap(mGridScanLineBitmap, srcGridRect, dstGridRectF, mPaint);
             } else if (mScanLineBitmap != null) {
                 RectF lineRect = new RectF(mScanLineLeft, mFramingRect.top + mHalfCornerSize + mScanLineMargin, mScanLineLeft + mScanLineBitmap.getWidth(), mFramingRect.bottom - mHalfCornerSize - mScanLineMargin);
                 canvas.drawBitmap(mScanLineBitmap, null, lineRect, mPaint);
@@ -346,8 +347,8 @@ public class ScanBoxView extends View {
             }
         } else {
             if (mGridScanLineBitmap != null) {
-                RectF gridRect = new RectF(mFramingRect.left + mHalfCornerSize + mScanLineMargin, mFramingRect.top + mHalfCornerSize + 0.5f, mFramingRect.right - mHalfCornerSize - mScanLineMargin, mGridScanLineBottom);
-                canvas.drawBitmap(mGridScanLineBitmap, new Rect(0, (int) (mGridScanLineBitmap.getHeight() - gridRect.height()), mGridScanLineBitmap.getWidth(), mGridScanLineBitmap.getHeight()), gridRect, mPaint);
+                RectF dstGridRectF = new RectF(mFramingRect.left + mHalfCornerSize + mScanLineMargin, mFramingRect.top + mHalfCornerSize + 0.5f, mFramingRect.right - mHalfCornerSize - mScanLineMargin, mGridScanLineBottom);
+                canvas.drawBitmap(mGridScanLineBitmap, new Rect(0, (int) (mGridScanLineBitmap.getHeight() - dstGridRectF.height()), mGridScanLineBitmap.getWidth(), mGridScanLineBitmap.getHeight()), dstGridRectF, mPaint);
             } else if (mScanLineBitmap != null) {
                 RectF lineRect = new RectF(mFramingRect.left + mHalfCornerSize + mScanLineMargin, mScanLineTop, mFramingRect.right - mHalfCornerSize - mScanLineMargin, mScanLineTop + mScanLineBitmap.getHeight());
                 canvas.drawBitmap(mScanLineBitmap, null, lineRect, mPaint);

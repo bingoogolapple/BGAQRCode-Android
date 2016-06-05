@@ -23,11 +23,11 @@
         </activity>
 
         <activity
-            android:name=".ScanActivity"
+            android:name=".TestScanActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".Generatectivity"
+            android:name=".TestGeneratectivity"
             android:screenOrientation="portrait" />
     </application>
 
