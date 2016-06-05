@@ -92,6 +92,12 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
             case R.id.close_flashlight:
                 mQRCodeView.closeFlashlight();
                 break;
+            case R.id.scan_barcode:
+                mQRCodeView.changeToScanBarcodeStyle();
+                break;
+            case R.id.scan_qrcode:
+                mQRCodeView.changeToScanQRCodeStyle();
+                break;
         }
     }
 }

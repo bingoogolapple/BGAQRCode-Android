@@ -182,6 +182,33 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         }
     }
 
+    /**
+     * 切换成扫描条码样式
+     */
+    public void changeToScanBarcodeStyle() {
+        if (!mScanBoxView.getIsBarcode()) {
+            mScanBoxView.setIsBarcode(true);
+        }
+    }
+
+    /**
+     * 切换成扫描二维码样式
+     */
+    public void changeToScanQRCodeStyle() {
+        if (mScanBoxView.getIsBarcode()) {
+            mScanBoxView.setIsBarcode(false);
+        }
+    }
+
+    /**
+     * 当前是否为条码扫描样式
+     *
+     * @return
+     */
+    public boolean getIsScanBarcodeStyle() {
+        return mScanBoxView.getIsBarcode();
+    }
+
     @Override
     public void onPreviewFrame(final byte[] data, final Camera camera) {
         if (mSpotAble) {

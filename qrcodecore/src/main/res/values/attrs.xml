@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="QRCodeView">
-        <!-- 扫描框距离扫描视图顶部的距离，默认值为90dp -->
+        <!-- 扫描框距离toolbar底部的距离，默认值为90dp -->
         <attr name="qrcv_topOffset" format="dimension|reference" />
         <!-- 扫描框边角线的宽度，默认值为3dp -->
         <attr name="qrcv_cornerSize" format="dimension|reference" />
@@ -11,8 +11,8 @@
         <attr name="qrcv_cornerColor" format="color|reference" />
         <!-- 扫描框的宽度，默认值为200dp -->
         <attr name="qrcv_rectWidth" format="dimension|reference" />
-        <!-- 扫描框的高度，默认值为200dp -->
-        <attr name="qrcv_rectHeight" format="dimension|reference" />
+        <!-- 条码扫样式描框的高度，默认值为140dp -->
+        <attr name="qrcv_barcodeRectHeight" format="dimension|reference" />
         <!-- 除去扫描框，其余部分阴影颜色，默认值为#33FFFFFF -->
         <attr name="qrcv_maskColor" format="color|reference" />
         <!-- 扫描线的宽度，默认值为1dp -->
@@ -37,8 +37,10 @@
         <attr name="qrcv_toolbarHeight" format="dimension|reference" />
         <!-- 是否是扫条形码，默认值为false -->
         <attr name="qrcv_isBarcode" format="boolean" />
-        <!-- 提示文案，默认值为null -->
-        <attr name="qrcv_tipText" format="string|reference" />
+        <!-- 扫描二维码时的提示文案，默认值为null -->
+        <attr name="qrcv_qrCodeTipText" format="string|reference" />
+        <!-- 扫描条码时的提示文案，默认值为null -->
+        <attr name="qrcv_barCodeTipText" format="string|reference" />
         <!-- 提示文案字体大小，默认值为14sp -->
         <attr name="qrcv_tipTextSize" format="dimension|reference" />
         <!-- 提示文案颜色，默认值为@android:color/white -->

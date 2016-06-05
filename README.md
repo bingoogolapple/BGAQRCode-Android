@@ -112,12 +112,12 @@ dependencies {
 
 属性名 | 说明 | 默认值
 :----------- | :----------- | :-----------
-qrcv_topOffset         | 扫描框距离扫描视图顶部的距离        | 90dp
+qrcv_topOffset         | 扫描框距离 toolbar 底部的距离        | 90dp
 qrcv_cornerSize         | 扫描框边角线的宽度        | 3dp
 qrcv_cornerLength         | 扫描框边角线的长度        | 20dp
 qrcv_cornerColor         | 扫描框边角线的颜色        | @android:color/white
 qrcv_rectWidth         | 扫描框的宽度        | 200dp
-qrcv_rectHeight         | 扫描框的高度        | 200dp
+qrcv_barcodeRectHeight         | 条码扫样式描框的高度        | 140dp
 qrcv_maskColor         | 除去扫描框，其余部分阴影颜色        | #33FFFFFF
 qrcv_scanLineSize         | 扫描线的宽度        | 1dp
 qrcv_scanLineColor         | 扫描线的颜色「扫描线和默认的扫描线图片的颜色」        | @android:color/white
@@ -128,7 +128,7 @@ qrcv_borderSize         | 扫描边框的宽度        | 1dp
 qrcv_borderColor         | 扫描边框的颜色        | @android:color/white
 qrcv_animTime         | 扫描线从顶部移动到底部的动画时间「单位为毫秒」        | 1000
 qrcv_isCenterVertical         | 扫描框是否垂直居中，该属性为true时会忽略 qrcv_topOffset 属性        | false
-qrcv_toolbarHeight         | Toolbar 的高度，当有设置 qrcv_isCenterVertical 属性时，通过该属性来修正由 Toolbar 导致扫描框垂直居中的偏差        | 0dp
+qrcv_toolbarHeight         | Toolbar 的高度，通过该属性来修正由 Toolbar 导致扫描框在垂直方向上的偏差        | 0dp
 qrcv_isBarcode         | 是否是扫条形码        | false
 qrcv_tipText         | 提示文案        | null
 qrcv_tipTextSize         | 提示文案字体大小        | 14sp
