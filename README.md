@@ -2,19 +2,18 @@
 ============
 
 ## 目录
-* [说明及功能介绍](#说明及功能介绍)
+* [功能介绍](#功能介绍)
 * [常见问题](#常见问题)
-* [效果图与示例 apk](#效果图与示例-apk)
-* [Gradle 依赖](#gradle-依赖)
+* [效果图与示例 apk](#效果图与示例 apk)
+* [Gradle 依赖](#Gradle 依赖)
 * [布局文件](#布局文件)
 * [自定义属性说明](#自定义属性说明)
 * [接口说明](#接口说明)
 * [关于我](#关于我)
 
-## 说明及功能介绍
+## 功能介绍
 根据[之前公司](http://www.iqegg.com)的产品需求，参考这个项目改的 [barcodescanner](https://github.com/dm77/barcodescanner)，希望能帮助到有生成二维码、扫描二维码、识别图片二维码等需求的猿友。修改幅度较大，也就没准备针对[barcodescanner](https://github.com/dm77/barcodescanner)库提交PR。
 
-主要功能：
 * ZXing 生成可自定义颜色、带 logo 的二维码
 * ZXing 扫描二维码
 * ZXing 识别图库中的二维码图片
@@ -29,11 +28,11 @@
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 ```
-#### 2.Gradle依赖时提示找不到cn.bingoogolapple:bga-libraryname:「latestVersion」@aar
+#### 2.Gradle 依赖时提示找不到cn.bingoogolapple:bga-libraryname:「latestVersion」@aar
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore) 「latestVersion」指的是左边这个 maven-central 徽章后面的「数字」，请自行替换。***请不要再来问我「latestVersion」是什么了***
 
-#### 3.ZBar混淆规则
+#### 3.ZBar 混淆规则
 
 ```java
 -keep class net.sourceforge.zbar.** { *; }
@@ -41,7 +40,7 @@ android:layout_height="match_parent"
 -dontwarn net.sourceforge.zbar.**
 ```
 
-## 效果图与示例apk
+## 效果图与示例 apk
 
 | ZXingDemo | ZBarDemo | [之前公司的 Android 客户端扫描二维码添加设备](http://www.iqegg.com) |
 | :------------: | :------------: | :------------: |
