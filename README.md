@@ -42,11 +42,11 @@ android:layout_height="match_parent"
 
 ## 效果图与示例 apk
 
-![Image of zxingdecode](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zxingdecode109.gif?imageView2/2/w/300)
-![Image of zxingqrcode](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zxingqrcode109.gif?imageView2/2/w/300)
-![Image of zbar](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zbar109.gif?imageView2/2/w/300)
-![Image of zxingbarcode](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zxingbarcode109.gif?imageView2/2/w/300)
-![Image of 小蛋空气净化器](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/iqegg.gif?imageView2/2/w/300)
+![Image of zbar](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zbar109.gif?imageView2/2/w/250)
+![Image of zxingbarcode](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zxingbarcode109.gif?imageView2/2/w/250)
+![Image of zxingdecode](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zxingdecode109.gif?imageView2/2/w/250)
+![Image of zxingqrcode](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zxingqrcode109.gif?imageView2/2/w/250)
+![Image of 小蛋空气净化器](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/iqegg.gif?imageView2/2/w/250)
 
 | [点击下载 ZXingDemo.apk](http://fir.im/ZXingDemo)或扫描下面的二维码安装 | [点击下载 ZBarDemo.apk](http://fir.im/ZBarDemo)或扫描下面的二维码安装 |
 | :------------: | :------------: |
