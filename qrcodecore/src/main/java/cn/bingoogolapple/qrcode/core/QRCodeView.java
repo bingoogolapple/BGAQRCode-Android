@@ -15,6 +15,7 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
     protected Delegate mDelegate;
     protected Handler mHandler;
     protected boolean mSpotAble = false;
+    protected ProcessDataTask mProcessDataTask;
 
     public QRCodeView(Context context, AttributeSet attributeSet) {
         this(context, attributeSet, 0);
@@ -26,10 +27,6 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         initView(context, attrs);
     }
 
-    public void setResultHandler(Delegate delegate) {
-        mDelegate = delegate;
-    }
-
     private void initView(Context context, AttributeSet attrs) {
         mPreview = new CameraPreview(getContext());
 
@@ -38,6 +35,15 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
 
         addView(mPreview);
         addView(mScanBoxView);
+    }
+
+    /**
+     * 设置扫描二维码的代理
+     *
+     * @param delegate 扫描二维码的代理
+     */
+    public void setDelegate(Delegate delegate) {
+        mDelegate = delegate;
     }
 
     /**
@@ -73,10 +79,7 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
                 mDelegate.onScanQRCodeOpenCameraError();
             }
         }
-        if (mCamera != null) {
-            mPreview.setCamera(mCamera);
-            mPreview.initCameraPreview();
-        }
+        mPreview.setCamera(mCamera);
     }
 
     /**
@@ -117,6 +120,8 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
      * 停止识别
      */
     public void stopSpot() {
+        cancelProcessDataTask();
+
         mSpotAble = false;
 
         if (mCamera != null) {
@@ -157,24 +162,75 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         mPreview.closeFlashlight();
     }
 
+    /**
+     * 销毁二维码扫描控件
+     */
+    public void onDestroy() {
+        stopCamera();
+        mHandler = null;
+        mDelegate = null;
+        mOneShotPreviewCallbackTask = null;
+    }
+
+    /**
+     * 取消数据处理任务
+     */
+    protected void cancelProcessDataTask() {
+        if (mProcessDataTask != null) {
+            mProcessDataTask.cancelTask();
+            mProcessDataTask = null;
+        }
+    }
+
+    /**
+     * 切换成扫描条码样式
+     */
+    public void changeToScanBarcodeStyle() {
+        if (!mScanBoxView.getIsBarcode()) {
+            mScanBoxView.setIsBarcode(true);
+        }
+    }
+
+    /**
+     * 切换成扫描二维码样式
+     */
+    public void changeToScanQRCodeStyle() {
+        if (mScanBoxView.getIsBarcode()) {
+            mScanBoxView.setIsBarcode(false);
+        }
+    }
+
+    /**
+     * 当前是否为条码扫描样式
+     *
+     * @return
+     */
+    public boolean getIsScanBarcodeStyle() {
+        return mScanBoxView.getIsBarcode();
+    }
+
     @Override
     public void onPreviewFrame(final byte[] data, final Camera camera) {
         if (mSpotAble) {
-            new ProcessDataTask(camera, data, this) {
+            cancelProcessDataTask();
+            mProcessDataTask = new ProcessDataTask(camera, data, this) {
                 @Override
                 protected void onPostExecute(String result) {
                     if (mSpotAble) {
                         if (mDelegate != null && !TextUtils.isEmpty(result)) {
-                            mDelegate.onScanQRCodeSuccess(result);
+                            try {
+                                mDelegate.onScanQRCodeSuccess(result);
+                            } catch (Exception e) {
+                            }
                         } else {
                             try {
                                 camera.setOneShotPreviewCallback(QRCodeView.this);
-                            } catch (RuntimeException e) {
+                            } catch (Exception e) {
                             }
                         }
                     }
                 }
-            }.execute();
+            }.perform();
         }
     }
 

@@ -3,7 +3,6 @@ package cn.bingoogolapple.qrcode.core;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.os.Handler;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -11,7 +10,6 @@ import android.view.SurfaceView;
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private static final String TAG = CameraPreview.class.getSimpleName();
     private Camera mCamera;
-    private Handler mAutoFocusHandler;
     private boolean mPreviewing = true;
     private boolean mAutoFocus = true;
     private boolean mSurfaceCreated = false;
@@ -24,14 +22,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public void setCamera(Camera camera) {
         mCamera = camera;
         if (mCamera != null) {
-            mAutoFocusHandler = new Handler();
             mCameraConfigurationManager = new CameraConfigurationManager(getContext());
             mCameraConfigurationManager.initFromCameraParameters(mCamera);
-        }
-    }
 
-    public void initCameraPreview() {
-        if (mCamera != null) {
             getHolder().addCallback(this);
             if (mPreviewing) {
                 requestLayout();
@@ -81,6 +74,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public void stopCameraPreview() {
         if (mCamera != null) {
             try {
+                removeCallbacks(doAutoFocus);
+
                 mPreviewing = false;
                 mCamera.cancelAutoFocus();
                 mCamera.setOneShotPreviewCallback(null);
@@ -117,7 +112,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     Camera.AutoFocusCallback autoFocusCB = new Camera.AutoFocusCallback() {
         public void onAutoFocus(boolean success, Camera camera) {
-            mAutoFocusHandler.postDelayed(doAutoFocus, 1000);
+            postDelayed(doAutoFocus, 1000);
         }
     };
 

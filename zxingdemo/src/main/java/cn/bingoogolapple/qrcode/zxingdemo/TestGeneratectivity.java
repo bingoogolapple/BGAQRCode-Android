@@ -10,11 +10,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import cn.bingoogolapple.qrcode.core.DisplayUtils;
+import cn.bingoogolapple.qrcode.core.BGAQRCodeUtil;
 import cn.bingoogolapple.qrcode.zxing.QRCodeDecoder;
 import cn.bingoogolapple.qrcode.zxing.QRCodeEncoder;
 
-public class Generatectivity extends AppCompatActivity {
+public class TestGeneratectivity extends AppCompatActivity {
     private ImageView mChineseIv;
     private ImageView mEnglishIv;
     private ImageView mChineseLogoIv;
@@ -23,7 +23,7 @@ public class Generatectivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_generate);
+        setContentView(R.layout.activity_test_generate);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         initView();
@@ -45,7 +45,7 @@ public class Generatectivity extends AppCompatActivity {
     }
 
     private void createChineseQRCode() {
-        QRCodeEncoder.encodeQRCode("王浩", DisplayUtils.dp2px(Generatectivity.this, 150), new QRCodeEncoder.Delegate() {
+        QRCodeEncoder.encodeQRCode("王浩", BGAQRCodeUtil.dp2px(TestGeneratectivity.this, 150), new QRCodeEncoder.Delegate() {
             @Override
             public void onEncodeQRCodeSuccess(Bitmap bitmap) {
                 mChineseIv.setImageBitmap(bitmap);
@@ -53,13 +53,13 @@ public class Generatectivity extends AppCompatActivity {
 
             @Override
             public void onEncodeQRCodeFailure() {
-                Toast.makeText(Generatectivity.this, "生成中文二维码失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TestGeneratectivity.this, "生成中文二维码失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void createEnglishQRCode() {
-        QRCodeEncoder.encodeQRCode("bingoogolapple", DisplayUtils.dp2px(Generatectivity.this, 150), Color.parseColor("#ff0000"), new QRCodeEncoder.Delegate() {
+        QRCodeEncoder.encodeQRCode("bingoogolapple", BGAQRCodeUtil.dp2px(TestGeneratectivity.this, 150), Color.parseColor("#ff0000"), new QRCodeEncoder.Delegate() {
             @Override
             public void onEncodeQRCodeSuccess(Bitmap bitmap) {
                 mEnglishIv.setImageBitmap(bitmap);
@@ -67,13 +67,13 @@ public class Generatectivity extends AppCompatActivity {
 
             @Override
             public void onEncodeQRCodeFailure() {
-                Toast.makeText(Generatectivity.this, "生成英文二维码失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TestGeneratectivity.this, "生成英文二维码失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void createChineseQRCodeWithLogo() {
-        QRCodeEncoder.encodeQRCode("王浩", DisplayUtils.dp2px(Generatectivity.this, 150), Color.parseColor("#795dbf"), BitmapFactory.decodeResource(Generatectivity.this.getResources(), R.mipmap.logo), new QRCodeEncoder.Delegate() {
+        QRCodeEncoder.encodeQRCode("王浩", BGAQRCodeUtil.dp2px(TestGeneratectivity.this, 150), Color.parseColor("#795dbf"), BitmapFactory.decodeResource(TestGeneratectivity.this.getResources(), R.mipmap.logo), new QRCodeEncoder.Delegate() {
             @Override
             public void onEncodeQRCodeSuccess(Bitmap bitmap) {
                 mChineseLogoIv.setImageBitmap(bitmap);
@@ -81,13 +81,13 @@ public class Generatectivity extends AppCompatActivity {
 
             @Override
             public void onEncodeQRCodeFailure() {
-                Toast.makeText(Generatectivity.this, "生成带logo的中文二维码失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TestGeneratectivity.this, "生成带logo的中文二维码失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void createEnglishQRCodeWithLogo() {
-        QRCodeEncoder.encodeQRCode("bingoogolapple", DisplayUtils.dp2px(Generatectivity.this, 150), Color.parseColor("#0000ff"), BitmapFactory.decodeResource(Generatectivity.this.getResources(), R.mipmap.logo), new QRCodeEncoder.Delegate() {
+        QRCodeEncoder.encodeQRCode("bingoogolapple", BGAQRCodeUtil.dp2px(TestGeneratectivity.this, 150), Color.parseColor("#0000ff"), BitmapFactory.decodeResource(TestGeneratectivity.this.getResources(), R.mipmap.logo), new QRCodeEncoder.Delegate() {
             @Override
             public void onEncodeQRCodeSuccess(Bitmap bitmap) {
                 mEnglishLogoIv.setImageBitmap(bitmap);
@@ -95,7 +95,7 @@ public class Generatectivity extends AppCompatActivity {
 
             @Override
             public void onEncodeQRCodeFailure() {
-                Toast.makeText(Generatectivity.this, "生成带logo的英文二维码失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TestGeneratectivity.this, "生成带logo的英文二维码失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -133,12 +133,12 @@ public class Generatectivity extends AppCompatActivity {
         QRCodeDecoder.decodeQRCode(bitmap, new QRCodeDecoder.Delegate() {
             @Override
             public void onDecodeQRCodeSuccess(String result) {
-                Toast.makeText(Generatectivity.this, result, Toast.LENGTH_SHORT).show();
+                Toast.makeText(TestGeneratectivity.this, result, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onDecodeQRCodeFailure() {
-                Toast.makeText(Generatectivity.this, errorTip, Toast.LENGTH_SHORT).show();
+                Toast.makeText(TestGeneratectivity.this, errorTip, Toast.LENGTH_SHORT).show();
             }
         });
     }

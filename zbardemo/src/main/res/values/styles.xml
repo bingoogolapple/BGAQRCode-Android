@@ -18,7 +18,7 @@
         <item name="android:background">@drawable/selector_btn_orange</item>
         <item name="android:layout_margin">10dp</item>
         <item name="android:onClick">onClick</item>
-        <item name="android:padding">10dp</item>
+        <item name="android:padding">8dp</item>
     </style>
 
     <style name="AutoWrapTv" parent="AutoWrap">
@@ -28,7 +28,10 @@
         <item name="android:background">@drawable/selector_btn_orange</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:onClick">onClick</item>
-        <item name="android:padding">10dp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
     </style>
 
 </resources>

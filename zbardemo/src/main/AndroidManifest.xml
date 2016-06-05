@@ -23,7 +23,7 @@
         </activity>
 
         <activity
-            android:name=".ScanActivity"
+            android:name=".TestScanActivity"
             android:screenOrientation="portrait" />
     </application>
 

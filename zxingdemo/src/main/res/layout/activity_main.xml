@@ -5,13 +5,13 @@
     <include layout="@layout/toolbar" />
 
     <TextView
-        android:id="@+id/scan_qrcode"
+        android:id="@+id/test_scan_qrcode"
         style="@style/MatchWrapTv"
-        android:text="扫描二维码" />
+        android:text="测试扫描二维码" />
 
     <TextView
-        android:id="@+id/generate_qrcode"
+        android:id="@+id/test_generate_qrcode"
         style="@style/MatchWrapTv"
-        android:text="生成和识别图片二维码" />
+        android:text="测试生成和识别图片二维码" />
 
 </LinearLayout>

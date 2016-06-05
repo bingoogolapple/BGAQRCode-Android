@@ -11,19 +11,18 @@ import android.widget.Toast;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zbar.ZBarView;
 
-public class ScanActivity extends AppCompatActivity implements QRCodeView.Delegate {
-    private static final String TAG = ScanActivity.class.getSimpleName();
+public class TestScanActivity extends AppCompatActivity implements QRCodeView.Delegate {
+    private static final String TAG = TestScanActivity.class.getSimpleName();
 
-    private static final int REQUEST_CODE_QRCODE_PERMISSIONS = 1;
     private QRCodeView mQRCodeView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scan);
+        setContentView(R.layout.activity_test_scan);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         mQRCodeView = (ZBarView) findViewById(R.id.zbarview);
-        mQRCodeView.setResultHandler(this);
+        mQRCodeView.setDelegate(this);
     }
 
     @Override
@@ -36,6 +35,12 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
     protected void onStop() {
         mQRCodeView.stopCamera();
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mQRCodeView.onDestroy();
+        super.onDestroy();
     }
 
     private void vibrate() {
@@ -87,6 +92,12 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
                 break;
             case R.id.close_flashlight:
                 mQRCodeView.closeFlashlight();
+                break;
+            case R.id.scan_barcode:
+                mQRCodeView.changeToScanBarcodeStyle();
+                break;
+            case R.id.scan_qrcode:
+                mQRCodeView.changeToScanQRCodeStyle();
                 break;
         }
     }
