@@ -3,9 +3,11 @@ package cn.bingoogolapple.qrcode.core;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.os.Handler;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private static final String TAG = CameraPreview.class.getSimpleName();
@@ -14,6 +16,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private boolean mAutoFocus = true;
     private boolean mSurfaceCreated = false;
     private CameraConfigurationManager mCameraConfigurationManager;
+	private Handler mshowCameraHandler = new Handler();
 
     public CameraPreview(Context context) {
         super(context);
@@ -45,7 +48,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             return;
         }
         stopCameraPreview();
-        showCameraPreview();
+
+		mshowCameraHandler.post(new Runnable(){
+			public void run(){
+				showCameraPreview();
+			}
+		});
     }
 
     @Override
