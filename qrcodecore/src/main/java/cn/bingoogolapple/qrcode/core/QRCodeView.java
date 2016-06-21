@@ -79,13 +79,12 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         if (mCamera != null) {
             return;
         }
-        int cameraCount;
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-        cameraCount = Camera.getNumberOfCameras();
-        for (int cameraId = 0; cameraId < cameraCount; cameraId++) {
+        for (int cameraId = 0; cameraId < Camera.getNumberOfCameras(); cameraId++) {
             Camera.getCameraInfo(cameraId, cameraInfo);
             if (cameraInfo.facing == cameraFacing) {
                 startCameraById(cameraId);
+                break;
             }
         }
     }
