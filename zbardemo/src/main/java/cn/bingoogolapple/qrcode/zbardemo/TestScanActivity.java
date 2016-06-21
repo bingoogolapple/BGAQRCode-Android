@@ -29,6 +29,7 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
     protected void onStart() {
         super.onStart();
         mQRCodeView.startCamera();
+//        mQRCodeView.startCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
     }
 
     @Override
