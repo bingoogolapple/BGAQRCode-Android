@@ -16,7 +16,7 @@
         app:qrcv_cornerSize="3dp"
         app:qrcv_isBarcode="false"
         app:qrcv_isScanLineReverse="true"
-        app:qrcv_isShowDefaultGridScanLineDrawable="false"
+        app:qrcv_isShowDefaultGridScanLineDrawable="true"
         app:qrcv_isShowDefaultScanLineDrawable="false"
         app:qrcv_isShowTipBackground="true"
         app:qrcv_isShowTipTextAsSingleLine="false"

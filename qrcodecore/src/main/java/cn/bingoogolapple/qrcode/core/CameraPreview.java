@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private static final String TAG = CameraPreview.class.getSimpleName();
     private Camera mCamera;
@@ -45,7 +46,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             return;
         }
         stopCameraPreview();
-        showCameraPreview();
+
+		post(new Runnable(){
+			public void run(){
+				showCameraPreview();
+			}
+		});
     }
 
     @Override

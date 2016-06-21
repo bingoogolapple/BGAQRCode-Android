@@ -19,7 +19,7 @@ dependencies {
 
     // -------------------- 以下三个库是必须依赖的 ----------------------------
     compile 'com.google.zxing:core:3.2.1'
-    compile 'cn.bingoogolapple:bga-qrcodecore:1.0.9@aar'
-    compile 'cn.bingoogolapple:bga-zxing:1.0.9@aar'
+    compile 'cn.bingoogolapple:bga-qrcodecore:1.1.0@aar'
+    compile 'cn.bingoogolapple:bga-zxing:1.1.0@aar'
     // -------------------- 以上三个库是必须依赖的 ----------------------------
 }

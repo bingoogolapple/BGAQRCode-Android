@@ -65,21 +65,40 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
     }
 
     /**
-     * 打开摄像头开始预览，但是并未开始识别
+     * 打开后置摄像头开始预览，但是并未开始识别
      */
     public void startCamera() {
+        startCamera(Camera.CameraInfo.CAMERA_FACING_BACK);
+    }
+
+    /**
+     * 打开指定摄像头开始预览，但是并未开始识别
+     *
+     * @param cameraFacing
+     */
+    public void startCamera(int cameraFacing) {
         if (mCamera != null) {
             return;
         }
+        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+        for (int cameraId = 0; cameraId < Camera.getNumberOfCameras(); cameraId++) {
+            Camera.getCameraInfo(cameraId, cameraInfo);
+            if (cameraInfo.facing == cameraFacing) {
+                startCameraById(cameraId);
+                break;
+            }
+        }
+    }
 
+    private void startCameraById(int cameraId) {
         try {
-            mCamera = Camera.open();
+            mCamera = Camera.open(cameraId);
+            mPreview.setCamera(mCamera);
         } catch (Exception e) {
             if (mDelegate != null) {
                 mDelegate.onScanQRCodeOpenCameraError();
             }
         }
-        mPreview.setCamera(mCamera);
     }
 
     /**
