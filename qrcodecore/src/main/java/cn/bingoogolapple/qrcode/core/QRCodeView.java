@@ -72,7 +72,7 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
     }
 
     /**
-     * * 打开指定摄像头开始预览，但是并未开始识别
+     * 打开指定摄像头开始预览，但是并未开始识别
      *
      * @param cameraFacing
      */

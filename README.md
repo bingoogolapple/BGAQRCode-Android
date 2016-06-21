@@ -14,12 +14,13 @@
 ## 功能介绍
 根据[之前公司](http://www.iqegg.com)的产品需求，参考 [barcodescanner](https://github.com/dm77/barcodescanner) 改的，希望能帮助到有生成二维码、扫描二维码、识别图片二维码等需求的猿友。修改幅度较大，也就没准备针对 [barcodescanner](https://github.com/dm77/barcodescanner) 库提交PR。
 
-* ZXing 生成可自定义颜色、带 logo 的二维码
-* ZXing 扫描二维码
-* ZXing 识别图库中的二维码图片
-* 可以控制闪光灯，方便夜间使用
-* 可以定制各式各样的扫描框
-* ZBar 扫描二维码「扫描中文会有乱码，如果对中文有要求，请使用 ZXing」
+- [x] ZXing 生成可自定义颜色、带 logo 的二维码
+- [x] ZXing 扫描二维码
+- [x] ZXing 识别图库中的二维码图片
+- [x] 可以设置用前置摄像头扫描
+- [x] 可以控制闪光灯，方便夜间使用
+- [x] 可以定制各式各样的扫描框
+- [x] ZBar 扫描二维码「扫描中文会有乱码，如果对中文有要求，请使用 ZXing」
 
 ## 常见问题
 #### 1.宽高一定要填充除了状态栏以外的其余部分
@@ -167,9 +168,16 @@ public void showScanRect()
 public void hiddenScanRect()
 
 /**
- * 打开摄像头开始预览，但是并未开始识别
+ * 打开后置摄像头开始预览，但是并未开始识别
  */
 public void startCamera()
+
+/**
+ * 打开指定摄像头开始预览，但是并未开始识别
+ *
+ * @param cameraFacing  Camera.CameraInfo.CAMERA_FACING_BACK or Camera.CameraInfo.CAMERA_FACING_FRONT
+ */
+public void startCamera(int cameraFacing)
 
 /**
  * 关闭摄像头预览，并且隐藏扫描框
