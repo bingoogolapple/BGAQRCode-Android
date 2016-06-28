@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
     @AfterPermissionGranted(REQUEST_CODE_QRCODE_PERMISSIONS)
     private void requestCodeQrcodePermissions() {
-        String[] perms = {Manifest.permission.CAMERA, Manifest.permission.FLASHLIGHT};
+        String[] perms = {Manifest.permission.CAMERA};
         if (!EasyPermissions.hasPermissions(this, perms)) {
             EasyPermissions.requestPermissions(this, "扫描二维码需要打开相机和散光灯的权限", REQUEST_CODE_QRCODE_PERMISSIONS, perms);
         }
