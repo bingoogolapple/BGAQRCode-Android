@@ -1,6 +1,7 @@
 package cn.bingoogolapple.qrcode.zbar;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
@@ -44,6 +45,12 @@ public class ZBarView extends QRCodeView {
     public String processData(byte[] data, int width, int height) {
         String result = null;
         Image barcode = new Image(width, height, "Y800");
+
+        Rect rect = mScanBoxView.getScanBoxAreaRect(height);
+        if (rect != null) {
+            barcode.setCrop(rect.left, rect.top, rect.width(), rect.height());
+        }
+
         barcode.setData(data);
         if (mScanner.scanImage(barcode) != 0) {
             SymbolSet syms = mScanner.getResults();

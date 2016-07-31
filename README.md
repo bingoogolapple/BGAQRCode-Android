@@ -20,6 +20,7 @@
 - [x] 可以设置用前置摄像头扫描
 - [x] 可以控制闪光灯，方便夜间使用
 - [x] 可以定制各式各样的扫描框
+- [x] 可定制全屏扫描或只识别扫描框区域内的二维码
 - [x] ZBar 扫描二维码「扫描中文会有乱码，如果对中文有要求，请使用 ZXing」
 
 ## 常见问题
@@ -144,6 +145,7 @@ qrcv_tipBackgroundColor         | 提示文案的背景色        | #22000000
 qrcv_isScanLineReverse         | 扫描线是否来回移动        | true
 qrcv_isShowDefaultGridScanLineDrawable         | 是否显示默认的网格图片扫描线        | false
 qrcv_customGridScanLineDrawable         | 扫描线的网格图片资源        | nulll
+qrcv_isOnlyDecodeScanBoxArea         | 是否只识别扫描框区域的二维码        | false
 
 ## 接口说明
 

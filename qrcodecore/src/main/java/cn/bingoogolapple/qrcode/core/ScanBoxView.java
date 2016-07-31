@@ -76,6 +76,8 @@ public class ScanBoxView extends View {
     private StaticLayout mTipTextSl;
     private int mTipBackgroundRadius;
 
+    private boolean mIsOnlyDecodeScanBoxArea;
+
     public ScanBoxView(Context context) {
         super(context);
         mPaint = new Paint();
@@ -115,6 +117,8 @@ public class ScanBoxView extends View {
         mTipPaint.setAntiAlias(true);
 
         mTipBackgroundRadius = BGAQRCodeUtil.dp2px(context, 4);
+
+        mIsOnlyDecodeScanBoxArea = false;
     }
 
     public void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -189,6 +193,8 @@ public class ScanBoxView extends View {
             mIsShowDefaultGridScanLineDrawable = typedArray.getBoolean(attr, mIsShowDefaultGridScanLineDrawable);
         } else if (attr == R.styleable.QRCodeView_qrcv_customGridScanLineDrawable) {
             mCustomGridScanLineDrawable = typedArray.getDrawable(attr);
+        } else if (attr == R.styleable.QRCodeView_qrcv_isOnlyDecodeScanBoxArea) {
+            mIsOnlyDecodeScanBoxArea = typedArray.getBoolean(attr, mIsOnlyDecodeScanBoxArea);
         }
     }
 
@@ -485,6 +491,17 @@ public class ScanBoxView extends View {
             mGridScanLineRight = mScanLineLeft = mFramingRect.left + mHalfCornerSize + 0.5f;
         } else {
             mGridScanLineBottom = mScanLineTop = mFramingRect.top + mHalfCornerSize + 0.5f;
+        }
+    }
+
+    public Rect getScanBoxAreaRect(int previewHeight) {
+        if (mIsOnlyDecodeScanBoxArea) {
+            Rect rect = new Rect(mFramingRect);
+            rect.top = (int) (1.0f * rect.top * previewHeight / getMeasuredHeight());
+            rect.bottom = (int) (1.0f * rect.bottom * previewHeight / getMeasuredHeight());
+            return rect;
+        } else {
+            return null;
         }
     }
 
