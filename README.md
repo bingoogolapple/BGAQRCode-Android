@@ -15,11 +15,12 @@
 根据[之前公司](http://www.iqegg.com)的产品需求，参考 [barcodescanner](https://github.com/dm77/barcodescanner) 改的，希望能帮助到有生成二维码、扫描二维码、识别图片二维码等需求的猿友。修改幅度较大，也就没准备针对 [barcodescanner](https://github.com/dm77/barcodescanner) 库提交PR。
 
 - [x] ZXing 生成可自定义颜色、带 logo 的二维码
-- [x] ZXing 扫描二维码「全屏识别二维码、只识别扫描框区域内的二维码」
+- [x] ZXing 扫描二维码
 - [x] ZXing 识别图库中的二维码图片
 - [x] 可以设置用前置摄像头扫描
 - [x] 可以控制闪光灯，方便夜间使用
 - [x] 可以定制各式各样的扫描框
+- [x] 可定制全屏扫描或只识别扫描框区域内的二维码
 - [x] ZBar 扫描二维码「扫描中文会有乱码，如果对中文有要求，请使用 ZXing」
 
 ## 常见问题
