@@ -10,12 +10,10 @@ import com.google.zxing.PlanarYUVLuminanceSource;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 
-import cn.bingoogolapple.qrcode.core.BGAQRCodeUtil;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 
 public class ZXingView extends QRCodeView {
     private MultiFormatReader mMultiFormatReader;
-    private int mStatusBarHeight;
 
     public ZXingView(Context context, AttributeSet attributeSet) {
         this(context, attributeSet, 0);
@@ -32,24 +30,14 @@ public class ZXingView extends QRCodeView {
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        mStatusBarHeight = BGAQRCodeUtil.getStatusBarHeight(this);
-    }
-
-    @Override
     public String processData(byte[] data, int width, int height) {
         String result = null;
         Result rawResult = null;
 
         try {
             PlanarYUVLuminanceSource source = null;
-            if (mScanBoxView.getScanBoxAreaRect() != null) {
-
-                Rect rect = new Rect(mScanBoxView.getScanBoxAreaRect());
-                rect.top = rect.top * height / mScanBoxView.getMeasuredHeight();
-                rect.bottom = rect.bottom * height / mScanBoxView.getMeasuredHeight();
-
+            Rect rect = mScanBoxView.getScanBoxAreaRect(height);
+            if (rect != null) {
                 source = new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top, rect.width(), rect.height(), false);
             } else {
                 source = new PlanarYUVLuminanceSource(data, width, height, 0, 0, width, height, false);

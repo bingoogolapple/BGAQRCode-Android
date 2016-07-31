@@ -16,6 +16,7 @@
         app:qrcv_cornerSize="3dp"
         app:qrcv_customGridScanLineDrawable="@mipmap/custom_grid_scan_line"
         app:qrcv_isBarcode="false"
+        app:qrcv_isOnlyDecodeScanBoxArea="true"
         app:qrcv_isShowDefaultGridScanLineDrawable="true"
         app:qrcv_isShowDefaultScanLineDrawable="true"
         app:qrcv_isShowTipBackground="true"

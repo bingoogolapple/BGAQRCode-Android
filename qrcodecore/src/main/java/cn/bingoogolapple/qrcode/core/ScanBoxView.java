@@ -494,9 +494,12 @@ public class ScanBoxView extends View {
         }
     }
 
-    public Rect getScanBoxAreaRect() {
+    public Rect getScanBoxAreaRect(int previewHeight) {
         if (mIsOnlyDecodeScanBoxArea) {
-            return mFramingRect;
+            Rect rect = new Rect(mFramingRect);
+            rect.top = (int) (1.0f * rect.top * previewHeight / getMeasuredHeight());
+            rect.bottom = (int) (1.0f * rect.bottom * previewHeight / getMeasuredHeight());
+            return rect;
         } else {
             return null;
         }
