@@ -61,5 +61,7 @@
         <attr name="qrcv_isShowDefaultGridScanLineDrawable" format="boolean" />
         <!-- 扫描线的网格图片资源，默认值为null -->
         <attr name="qrcv_customGridScanLineDrawable" format="reference" />
+        <!-- 是否只识别扫描框区域的二维码，默认值为false -->
+        <attr name="qrcv_isOnlyDecodeScanBoxArea" format="boolean" />
     </declare-styleable>
 </resources>

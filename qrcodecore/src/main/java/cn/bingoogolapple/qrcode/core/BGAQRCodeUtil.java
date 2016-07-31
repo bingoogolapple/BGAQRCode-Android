@@ -8,8 +8,10 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.Rect;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
 
 public class BGAQRCodeUtil {
@@ -24,6 +26,12 @@ public class BGAQRCodeUtil {
             screenResolution.set(display.getWidth(), display.getHeight());
         }
         return screenResolution;
+    }
+
+    public static int getStatusBarHeight(View view) {
+        Rect rectangle = new Rect();
+        view.getRootView().getWindowVisibleDisplayFrame(rectangle);
+        return rectangle.top;
     }
 
     public static int dp2px(Context context, float dpValue) {

@@ -15,7 +15,7 @@
 根据[之前公司](http://www.iqegg.com)的产品需求，参考 [barcodescanner](https://github.com/dm77/barcodescanner) 改的，希望能帮助到有生成二维码、扫描二维码、识别图片二维码等需求的猿友。修改幅度较大，也就没准备针对 [barcodescanner](https://github.com/dm77/barcodescanner) 库提交PR。
 
 - [x] ZXing 生成可自定义颜色、带 logo 的二维码
-- [x] ZXing 扫描二维码
+- [x] ZXing 扫描二维码「全屏识别二维码、只识别扫描框区域内的二维码」
 - [x] ZXing 识别图库中的二维码图片
 - [x] 可以设置用前置摄像头扫描
 - [x] 可以控制闪光灯，方便夜间使用
@@ -144,6 +144,7 @@ qrcv_tipBackgroundColor         | 提示文案的背景色        | #22000000
 qrcv_isScanLineReverse         | 扫描线是否来回移动        | true
 qrcv_isShowDefaultGridScanLineDrawable         | 是否显示默认的网格图片扫描线        | false
 qrcv_customGridScanLineDrawable         | 扫描线的网格图片资源        | nulll
+qrcv_isOnlyDecodeScanBoxArea         | 是否只识别扫描框区域的二维码        | false
 
 ## 接口说明
 
