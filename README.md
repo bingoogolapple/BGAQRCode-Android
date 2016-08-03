@@ -272,7 +272,7 @@ void onDecodeQRCodeFailure()
 
 ```java
 /**
- * 创建黑色的二维码图片
+ * 创建黑色前景色、白色背景色的二维码图片
  *
  * @param content
  * @param size     图片宽高，单位为px
@@ -281,25 +281,37 @@ void onDecodeQRCodeFailure()
 public static void encodeQRCode(String content, int size, Delegate delegate)
 
 /**
- * 创建指定颜色的二维码图片
+ * 创建指定前景色、白色背景色的二维码图片
  *
  * @param content
  * @param size     图片宽高，单位为px
- * @param color    二维码图片的颜色
+ * @param foregroundColor 二维码图片的前景色
  * @param delegate 创建二维码图片的代理
  */
-public static void encodeQRCode(String content, int size, int color, Delegate delegate)
+public static void encodeQRCode(String content, int size, int foregroundColor, Delegate delegate)
 
 /**
- * 创建指定颜色的、带logo的二维码图片
+ * 创建指定前景色、白色背景色、带logo的二维码图片
  *
  * @param content
  * @param size     图片宽高，单位为px
- * @param color    二维码图片的颜色
+ * @param foregroundColor 二维码图片的前景色
  * @param logo     二维码图片的logo
  * @param delegate 创建二维码图片的代理
  */
-public static void encodeQRCode(final String content, final int size, final int color, final Bitmap logo, final Delegate delegate)
+public static void encodeQRCode(final String content, final int size, final int foregroundColor, final Bitmap logo, final Delegate delegate)
+
+/**
+ * 创建指定前景色、指定背景色、带logo的二维码图片
+ *
+ * @param content
+ * @param size            图片宽高，单位为px
+ * @param foregroundColor 二维码图片的前景色
+ * @param backgroundColor 二维码图片的背景色
+ * @param logo            二维码图片的logo
+ * @param delegate        创建二维码图片的代理
+ */
+public static void encodeQRCode(final String content, final int size, final int foregroundColor, final int backgroundColor, final Bitmap logo, final Delegate delegate)
 ```
 
 >QRCodeEncoder.Delegate   创建二维码图片的代理
