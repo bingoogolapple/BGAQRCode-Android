@@ -87,7 +87,7 @@ public class TestGeneratectivity extends AppCompatActivity {
     }
 
     private void createEnglishQRCodeWithLogo() {
-        QRCodeEncoder.encodeQRCode("bingoogolapple", BGAQRCodeUtil.dp2px(TestGeneratectivity.this, 150), Color.parseColor("#0000ff"), BitmapFactory.decodeResource(TestGeneratectivity.this.getResources(), R.mipmap.logo), new QRCodeEncoder.Delegate() {
+        QRCodeEncoder.encodeQRCode("bingoogolapple", BGAQRCodeUtil.dp2px(TestGeneratectivity.this, 150), Color.parseColor("#ff0000"), Color.parseColor("#0000ff"), BitmapFactory.decodeResource(TestGeneratectivity.this.getResources(), R.mipmap.logo), new QRCodeEncoder.Delegate() {
             @Override
             public void onEncodeQRCodeSuccess(Bitmap bitmap) {
                 mEnglishLogoIv.setImageBitmap(bitmap);

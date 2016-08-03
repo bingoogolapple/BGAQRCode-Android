@@ -20,11 +20,12 @@ import java.util.Map;
  * 描述:创建二维码图片
  */
 public class QRCodeEncoder {
-    public static final Map<EncodeHintType, Object> HINTS = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
+    public static final Map<EncodeHintType, Object> HINTS = new EnumMap<>(EncodeHintType.class);
 
     static {
         HINTS.put(EncodeHintType.CHARACTER_SET, "utf-8");
         HINTS.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+        HINTS.put(EncodeHintType.MARGIN, 0);
     }
 
     private QRCodeEncoder() {
@@ -45,24 +46,38 @@ public class QRCodeEncoder {
      * 创建指定颜色的二维码图片
      *
      * @param content
-     * @param size     图片宽高，单位为px
-     * @param color    二维码图片的颜色
-     * @param delegate 创建二维码图片的代理
+     * @param size            图片宽高，单位为px
+     * @param foregroundColor 二维码图片的前景色
+     * @param delegate        创建二维码图片的代理
      */
-    public static void encodeQRCode(final String content, final int size, final int color, final Delegate delegate) {
-        encodeQRCode(content, size, color, null, delegate);
+    public static void encodeQRCode(final String content, final int size, final int foregroundColor, final Delegate delegate) {
+        encodeQRCode(content, size, foregroundColor, Color.WHITE, null, delegate);
     }
 
     /**
      * 创建指定颜色的、带logo的二维码图片
      *
      * @param content
-     * @param size     图片宽高，单位为px
-     * @param color    二维码图片的颜色
-     * @param logo     二维码图片的logo
-     * @param delegate 创建二维码图片的代理
+     * @param size            图片宽高，单位为px
+     * @param foregroundColor 二维码图片的前景色
+     * @param logo            二维码图片的logo
+     * @param delegate        创建二维码图片的代理
      */
-    public static void encodeQRCode(final String content, final int size, final int color, final Bitmap logo, final Delegate delegate) {
+    public static void encodeQRCode(final String content, final int size, final int foregroundColor, final Bitmap logo, final Delegate delegate) {
+        encodeQRCode(content, size, foregroundColor, Color.WHITE, logo, delegate);
+    }
+
+    /**
+     * 创建指定颜色的、带logo的二维码图片
+     *
+     * @param content
+     * @param size            图片宽高，单位为px
+     * @param foregroundColor 二维码图片的前景色
+     * @param backgroundColor 二维码图片的背景色
+     * @param logo            二维码图片的logo
+     * @param delegate        创建二维码图片的代理
+     */
+    public static void encodeQRCode(final String content, final int size, final int foregroundColor, final int backgroundColor, final Bitmap logo, final Delegate delegate) {
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... params) {
@@ -72,9 +87,9 @@ public class QRCodeEncoder {
                     for (int y = 0; y < size; y++) {
                         for (int x = 0; x < size; x++) {
                             if (matrix.get(x, y)) {
-                                pixels[y * size + x] = color;
+                                pixels[y * size + x] = foregroundColor;
                             } else {
-                                pixels[y * size + x] = Color.WHITE;
+                                pixels[y * size + x] = backgroundColor;
                             }
                         }
                     }

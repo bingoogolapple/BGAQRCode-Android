@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="cn.bingoogolapple.qrcode.zxingdemo">
+
+    <!--
+        为了方便写demo，引入了 https://github.com/bingoogolapple/BGAPhotoPicker-Android
+        和 https://github.com/bingoogolapple/BGAAdapter-Android 这两个库
+        你自己项目里没用这两个库的话不需要加这个
+    -->
+    <uses-sdk tools:overrideLibrary="cn.bingoogolapple.photopicker,cn.bingoogolapple.androidcommon.adapter" />
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />

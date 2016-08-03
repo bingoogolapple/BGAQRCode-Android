@@ -2,21 +2,17 @@ package cn.bingoogolapple.qrcode.zxingdemo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import java.io.File;
-
+import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.QRCodeDecoder;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
@@ -112,7 +108,12 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
                 mQRCodeView.changeToScanQRCodeStyle();
                 break;
             case R.id.choose_qrcde_from_gallery:
-                startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY);
+                /*
+                从相册选取二维码图片，这里为了方便演示，使用的是
+                https://github.com/bingoogolapple/BGAPhotoPicker-Android
+                这个库来从图库中选择二维码图片，这个库不是必须的，你也可以通过自己的方式从图库中选择图片
+                 */
+                startActivityForResult(BGAPhotoPickerActivity.newIntent(this, null, 1, null), REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY);
                 break;
         }
     }
@@ -123,47 +124,39 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
 
         mQRCodeView.showScanRect();
 
-        if (requestCode == REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY && resultCode == Activity.RESULT_OK && null != data) {
-            String picturePath;
-            try {
-                Uri selectedImage = data.getData();
-                String[] filePathColumns = {MediaStore.Images.Media.DATA};
-                Cursor c = getContentResolver().query(selectedImage, filePathColumns, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePathColumns[0]);
-                picturePath = c.getString(columnIndex);
-                c.close();
-            } catch (Exception e) {
-                picturePath = data.getData().getPath();
-            }
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY) {
+            String picturePath = BGAPhotoPickerActivity.getSelectedImages(data).get(0);
 
-            if (new File(picturePath).exists()) {
+            QRCodeDecoder.decodeQRCode(getDecodeAbleBitmap(picturePath), new QRCodeDecoder.Delegate() {
+                @Override
+                public void onDecodeQRCodeSuccess(String result) {
+                    Toast.makeText(TestScanActivity.this, result, Toast.LENGTH_SHORT).show();
+                }
 
-                QRCodeDecoder.decodeQRCode(getBitmap(picturePath), new QRCodeDecoder.Delegate() {
-                    @Override
-                    public void onDecodeQRCodeSuccess(String result) {
-                        Toast.makeText(TestScanActivity.this, result, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onDecodeQRCodeFailure() {
-                        Toast.makeText(TestScanActivity.this, "未发现二维码", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
+                @Override
+                public void onDecodeQRCodeFailure() {
+                    Toast.makeText(TestScanActivity.this, "未发现二维码", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
-    public Bitmap getBitmap(String path) {
+    /**
+     * 将本地图片文件转换成可解码二维码的 Bitmap。为了避免图片太大，这里对图片进行了压缩。感谢 https://github.com/devilsen 提的 PR
+     *
+     * @param picturePath 本地图片文件路径
+     * @return
+     */
+    public Bitmap getDecodeAbleBitmap(String picturePath) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
+        BitmapFactory.decodeFile(picturePath, options);
         int sampleSize = options.outHeight / 400;
         if (sampleSize <= 0)
             sampleSize = 1;
         options.inSampleSize = sampleSize;
         options.inJustDecodeBounds = false;
 
-        return BitmapFactory.decodeFile(path, options);
+        return BitmapFactory.decodeFile(picturePath, options);
     }
 }
