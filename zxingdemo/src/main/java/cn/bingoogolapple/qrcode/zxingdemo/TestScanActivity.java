@@ -3,6 +3,7 @@ package cn.bingoogolapple.qrcode.zxingdemo;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -137,7 +138,8 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
             }
 
             if (new File(picturePath).exists()) {
-                QRCodeDecoder.decodeQRCode(BitmapFactory.decodeFile(picturePath), new QRCodeDecoder.Delegate() {
+
+                QRCodeDecoder.decodeQRCode(getBitmap(picturePath), new QRCodeDecoder.Delegate() {
                     @Override
                     public void onDecodeQRCodeSuccess(String result) {
                         Toast.makeText(TestScanActivity.this, result, Toast.LENGTH_SHORT).show();
@@ -150,5 +152,18 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
                 });
             }
         }
+    }
+
+    public Bitmap getBitmap(String path) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+        int sampleSize = options.outHeight / 400;
+        if (sampleSize <= 0)
+            sampleSize = 1;
+        options.inSampleSize = sampleSize;
+        options.inJustDecodeBounds = false;
+
+        return BitmapFactory.decodeFile(path, options);
     }
 }
