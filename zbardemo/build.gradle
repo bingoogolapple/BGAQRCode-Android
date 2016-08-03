@@ -22,12 +22,15 @@ android {
 }
 
 dependencies {
+    // -------------------- 以下几个库是为了方便编写演示案例添加进来的，集成到你自己项目时可以不依赖这些库 --------------------
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'pub.devrel:easypermissions:0.1.7'
+    // -------------------- 以上几个库是为了方便编写演示案例添加进来的，集成到你自己项目时可以不依赖这些库 --------------------
+
 //    compile project(':zbar')
 
     // -------------------- 以下两个库是必须依赖的 ----------------------------
-    compile 'cn.bingoogolapple:bga-qrcodecore:1.1.1@aar'
-    compile 'cn.bingoogolapple:bga-zbar:1.1.1@aar'
+    compile 'cn.bingoogolapple:bga-qrcodecore:1.1.2@aar'
+    compile 'cn.bingoogolapple:bga-zbar:1.1.2@aar'
     // -------------------- 以上两个库是必须依赖的 ----------------------------
 }
