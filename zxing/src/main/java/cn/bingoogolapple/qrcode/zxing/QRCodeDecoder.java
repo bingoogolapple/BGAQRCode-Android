@@ -1,8 +1,7 @@
 package cn.bingoogolapple.qrcode.zxing;
 
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.text.TextUtils;
+import android.graphics.BitmapFactory;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
@@ -23,10 +22,10 @@ import java.util.Map;
  * 描述:解析二维码图片
  */
 public class QRCodeDecoder {
-    public static final Map<DecodeHintType, Object> HINTS = new EnumMap<DecodeHintType, Object>(DecodeHintType.class);
+    public static final Map<DecodeHintType, Object> HINTS = new EnumMap<>(DecodeHintType.class);
 
     static {
-        List<BarcodeFormat> allFormats = new ArrayList<BarcodeFormat>();
+        List<BarcodeFormat> allFormats = new ArrayList<>();
         allFormats.add(BarcodeFormat.AZTEC);
         allFormats.add(BarcodeFormat.CODABAR);
         allFormats.add(BarcodeFormat.CODE_39);
@@ -53,52 +52,55 @@ public class QRCodeDecoder {
     }
 
     /**
-     * 解析二维码图片
+     * 同步解析本地图片二维码。该方法是耗时操作，请在子线程中调用。
      *
-     * @param bitmap   要解析的二维码图片
-     * @param delegate 解析二位码图片的代理
+     * @param picturePath 要解析的二维码图片本地路径
+     * @return 返回二维码图片里的内容 或 null
      */
-    public static void decodeQRCode(final Bitmap bitmap, final Delegate delegate) {
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... params) {
-                try {
-                    int width = bitmap.getWidth();
-                    int height = bitmap.getHeight();
-                    int[] pixels = new int[width * height];
-                    bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
-                    RGBLuminanceSource source = new RGBLuminanceSource(width, height, pixels);
-                    Result result = new MultiFormatReader().decode(new BinaryBitmap(new HybridBinarizer(source)), HINTS);
-                    return result.getText();
-                } catch (Exception e) {
-                    return null;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(String result) {
-                if (delegate != null) {
-                    if (TextUtils.isEmpty(result)) {
-                        delegate.onDecodeQRCodeFailure();
-                    } else {
-                        delegate.onDecodeQRCodeSuccess(result);
-                    }
-                }
-            }
-        }.execute();
+    public static String syncDecodeQRCode(String picturePath) {
+        return syncDecodeQRCode(getDecodeAbleBitmap(picturePath));
     }
 
-    public interface Delegate {
-        /**
-         * 解析二维码成功
-         *
-         * @param result 从二维码中解析的文本，如果该方法有被调用，result不会为空
-         */
-        void onDecodeQRCodeSuccess(String result);
+    /**
+     * 同步解析bitmap二维码。该方法是耗时操作，请在子线程中调用。
+     *
+     * @param bitmap 要解析的二维码图片
+     * @return 返回二维码图片里的内容 或 null
+     */
+    public static String syncDecodeQRCode(Bitmap bitmap) {
+        try {
+            int width = bitmap.getWidth();
+            int height = bitmap.getHeight();
+            int[] pixels = new int[width * height];
+            bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
+            RGBLuminanceSource source = new RGBLuminanceSource(width, height, pixels);
+            Result result = new MultiFormatReader().decode(new BinaryBitmap(new HybridBinarizer(source)), HINTS);
+            return result.getText();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
-        /**
-         * 解析二维码失败
-         */
-        void onDecodeQRCodeFailure();
+    /**
+     * 将本地图片文件转换成可解码二维码的 Bitmap。为了避免图片太大，这里对图片进行了压缩。感谢 https://github.com/devilsen 提的 PR
+     *
+     * @param picturePath 本地图片文件路径
+     * @return
+     */
+    private static Bitmap getDecodeAbleBitmap(String picturePath) {
+        try {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(picturePath, options);
+            int sampleSize = options.outHeight / 400;
+            if (sampleSize <= 0)
+                sampleSize = 1;
+            options.inSampleSize = sampleSize;
+            options.inJustDecodeBounds = false;
+
+            return BitmapFactory.decodeFile(picturePath, options);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

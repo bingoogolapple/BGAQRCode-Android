@@ -2,12 +2,12 @@ package cn.bingoogolapple.qrcode.zxingdemo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -125,38 +125,29 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
         mQRCodeView.showScanRect();
 
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY) {
-            String picturePath = BGAPhotoPickerActivity.getSelectedImages(data).get(0);
+            final String picturePath = BGAPhotoPickerActivity.getSelectedImages(data).get(0);
 
-            QRCodeDecoder.decodeQRCode(getDecodeAbleBitmap(picturePath), new QRCodeDecoder.Delegate() {
+            /*
+            这里为了偷懒，就没有处理匿名 AsyncTask 内部类导致 Activity 泄漏的问题
+            请开发在使用时自行处理匿名内部类导致Activity内存泄漏的问题，处理方式可参考 https://github.com/GeniusVJR/LearningNotes/blob/master/Part1/Android/Android%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E6%80%BB%E7%BB%93.md
+             */
+            new AsyncTask<Void, Void, String>() {
                 @Override
-                public void onDecodeQRCodeSuccess(String result) {
-                    Toast.makeText(TestScanActivity.this, result, Toast.LENGTH_SHORT).show();
+                protected String doInBackground(Void... params) {
+                    return QRCodeDecoder.syncDecodeQRCode(picturePath);
                 }
 
                 @Override
-                public void onDecodeQRCodeFailure() {
-                    Toast.makeText(TestScanActivity.this, "未发现二维码", Toast.LENGTH_SHORT).show();
+                protected void onPostExecute(String result) {
+                    if (TextUtils.isEmpty(result)) {
+                        Toast.makeText(TestScanActivity.this, "未发现二维码", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(TestScanActivity.this, result, Toast.LENGTH_SHORT).show();
+                    }
                 }
-            });
+            }.execute();
         }
     }
 
-    /**
-     * 将本地图片文件转换成可解码二维码的 Bitmap。为了避免图片太大，这里对图片进行了压缩。感谢 https://github.com/devilsen 提的 PR
-     *
-     * @param picturePath 本地图片文件路径
-     * @return
-     */
-    public Bitmap getDecodeAbleBitmap(String picturePath) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(picturePath, options);
-        int sampleSize = options.outHeight / 400;
-        if (sampleSize <= 0)
-            sampleSize = 1;
-        options.inSampleSize = sampleSize;
-        options.inJustDecodeBounds = false;
 
-        return BitmapFactory.decodeFile(picturePath, options);
-    }
 }
