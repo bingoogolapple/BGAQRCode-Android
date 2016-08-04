@@ -240,94 +240,66 @@ void onScanQRCodeSuccess(String result)
 void onScanQRCodeOpenCameraError()
 ```
 
->QRCodeDecoder  解析二维码图片
+>QRCodeDecoder  解析二维码图片。几个重载方法都是耗时操作，请在子线程中调用。
 
 ```java
 /**
- * 解析二维码图片
+ * 同步解析本地图片二维码。该方法是耗时操作，请在子线程中调用。
  *
- * @param bitmap   要解析的二维码图片
- * @param delegate 解析二位码图片的代理
+ * @param picturePath 要解析的二维码图片本地路径
+ * @return 返回二维码图片里的内容 或 null
  */
-public static void decodeQRCode(Bitmap bitmap, Delegate delegate)
+public static String syncDecodeQRCode(String picturePath)
+
+/**
+ * 同步解析bitmap二维码。该方法是耗时操作，请在子线程中调用。
+ *
+ * @param bitmap 要解析的二维码图片
+ * @return 返回二维码图片里的内容 或 null
+ */
+public static String syncDecodeQRCode(Bitmap bitmap)
 ```
 
->QRCodeDecoder.Delegate  解析二位码图片的代理
+>QRCodeEncoder  创建二维码图片。几个重载方法都是耗时操作，请在子线程中调用。
 
 ```java
 /**
- * 解析二维码成功
+ * 同步创建黑色前景色、白色背景色的二维码图片。该方法是耗时操作，请在子线程中调用。
  *
- * @param result 从二维码中解析的文本，如果该方法有被调用，result不会为空
+ * @param content 要生成的二维码图片内容
+ * @param size    图片宽高，单位为px
  */
-void onDecodeQRCodeSuccess(String result)
+public static Bitmap syncEncodeQRCode(String content, int size)
 
 /**
- * 解析二维码失败
- */
-void onDecodeQRCodeFailure()
-```
-
->QRCodeEncoder  创建二维码图片
-
-```java
-/**
- * 创建黑色前景色、白色背景色的二维码图片
+ * 同步创建指定前景色、白色背景色的二维码图片。该方法是耗时操作，请在子线程中调用。
  *
- * @param content
- * @param size     图片宽高，单位为px
- * @param delegate 创建二维码图片的代理
- */
-public static void encodeQRCode(String content, int size, Delegate delegate)
-
-/**
- * 创建指定前景色、白色背景色的二维码图片
- *
- * @param content
- * @param size     图片宽高，单位为px
+ * @param content         要生成的二维码图片内容
+ * @param size            图片宽高，单位为px
  * @param foregroundColor 二维码图片的前景色
- * @param delegate 创建二维码图片的代理
  */
-public static void encodeQRCode(String content, int size, int foregroundColor, Delegate delegate)
+public static Bitmap syncEncodeQRCode(String content, int size, int foregroundColor)
 
 /**
- * 创建指定前景色、白色背景色、带logo的二维码图片
+ * 同步创建指定前景色、白色背景色、带logo的二维码图片。该方法是耗时操作，请在子线程中调用。
  *
- * @param content
- * @param size     图片宽高，单位为px
+ * @param content         要生成的二维码图片内容
+ * @param size            图片宽高，单位为px
  * @param foregroundColor 二维码图片的前景色
- * @param logo     二维码图片的logo
- * @param delegate 创建二维码图片的代理
+ * @param logo            二维码图片的logo
  */
-public static void encodeQRCode(final String content, final int size, final int foregroundColor, final Bitmap logo, final Delegate delegate)
+public static Bitmap syncEncodeQRCode(String content, int size, int foregroundColor, Bitmap logo)
 
 /**
- * 创建指定前景色、指定背景色、带logo的二维码图片
+ * 同步创建指定前景色、指定背景色、带logo的二维码图片。该方法是耗时操作，请在子线程中调用。
  *
- * @param content
+ * @param content         要生成的二维码图片内容
  * @param size            图片宽高，单位为px
  * @param foregroundColor 二维码图片的前景色
  * @param backgroundColor 二维码图片的背景色
  * @param logo            二维码图片的logo
- * @param delegate        创建二维码图片的代理
  */
-public static void encodeQRCode(final String content, final int size, final int foregroundColor, final int backgroundColor, final Bitmap logo, final Delegate delegate)
-```
-
->QRCodeEncoder.Delegate   创建二维码图片的代理
-
-```java
-/**
- * 创建二维码图片成功
- *
- * @param bitmap
- */
-void onEncodeQRCodeSuccess(Bitmap bitmap)
-
-/**
- * 创建二维码图片失败
- */
-void onEncodeQRCodeFailure()
+public static Bitmap syncEncodeQRCode(String content, int size, int foregroundColor, int backgroundColor, Bitmap logo)
 ```
 
 #### 详细用法请查看[ZBarDemo](https://github.com/bingoogolapple/BGAQRCode-Android/tree/master/zbardemo):feet:
