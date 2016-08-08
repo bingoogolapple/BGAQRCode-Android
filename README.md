@@ -44,11 +44,11 @@ android:layout_height="match_parent"
 
 ## 效果图与示例 apk
 
-![Image of zbar](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zbar109.gif?imageView2/2/w/250)
-![Image of zxingbarcode](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zxingbarcode109.gif?imageView2/2/w/250)
-![Image of zxingdecode](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zxingdecode109.gif?imageView2/2/w/250)
-![Image of zxingqrcode](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/zxingqrcode109.gif?imageView2/2/w/250)
-![Image of 小蛋空气净化器](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/screenshots/iqegg.gif?imageView2/2/w/250)
+![zbar109](https://cloud.githubusercontent.com/assets/8949716/17475203/5d788730-5d8c-11e6-836a-61e885e05453.gif)
+![zxingbarcode109](https://cloud.githubusercontent.com/assets/8949716/17475222/76339bd4-5d8c-11e6-934f-96db6917f69b.gif)
+![zxingdecode109](https://cloud.githubusercontent.com/assets/8949716/17475235/8c03b2be-5d8c-11e6-931d-a50942a8ab75.gif)
+![zxingqrcode109](https://cloud.githubusercontent.com/assets/8949716/17475249/a551cc06-5d8c-11e6-85dc-4e2e07051cae.gif)
+![iqegg](https://cloud.githubusercontent.com/assets/8949716/17475267/bd9c0a60-5d8c-11e6-8487-c732306debe2.gif)
 
 | [点击下载 ZXingDemo.apk](http://fir.im/ZXingDemo)或扫描下面的二维码安装 | [点击下载 ZBarDemo.apk](http://fir.im/ZBarDemo)或扫描下面的二维码安装 |
 | :------------: | :------------: |
