@@ -24,12 +24,10 @@
 - [x] ZBar 扫描二维码「扫描中文会有乱码，如果对中文有要求，请使用 ZXing」
 
 ## 常见问题
-#### 1.宽高一定要填充除了状态栏以外的其余部分
+#### 1.部分手机无法扫描出结果，扫描预览界面二维码被压缩
 
-```xml
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-```
+使用的时候将 Toolbar 或者其他 View 盖在 ZBarView 或者 ZXingView 的上面，让 ZBarView 或者 ZXingView 填充屏幕宽高。[ZXing 布局文件参考](https://github.com/bingoogolapple/BGAQRCode-Android/blob/master/zxingdemo/src/main/res/layout/activity_test_scan.xml) [ZBar 布局文件参考](https://github.com/bingoogolapple/BGAQRCode-Android/blob/master/zbardemo/src/main/res/layout/activity_test_scan.xml)
+
 #### 2.Gradle 依赖时提示找不到cn.bingoogolapple:bga-libraryname:「latestVersion」@aar
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore) 「latestVersion」指的是左边这个 maven-central 徽章后面的「数字」，请自行替换。***请不要再来问我「latestVersion」是什么了***

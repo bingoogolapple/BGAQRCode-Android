@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/MatchMatch.Vertical">
+              style="@style/MatchMatch.Vertical"
+              android:background="@android:color/white">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <TextView
         android:id="@+id/test_scan_qrcode"
         style="@style/MatchWrapTv"
-        android:text="测试扫描二维码" />
+        android:text="测试扫描二维码"/>
 
     <TextView
         android:id="@+id/test_generate_qrcode"
         style="@style/MatchWrapTv"
-        android:text="测试生成和识别图片二维码" />
+        android:text="测试生成和识别图片二维码"/>
 
 </LinearLayout>
