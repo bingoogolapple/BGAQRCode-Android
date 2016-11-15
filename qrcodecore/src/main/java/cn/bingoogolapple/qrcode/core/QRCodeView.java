@@ -46,6 +46,10 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
         mDelegate = delegate;
     }
 
+    public ScanBoxView getScanBoxView() {
+        return mScanBoxView;
+    }
+
     /**
      * 显示扫描框
      */
