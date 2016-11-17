@@ -1,5 +1,10 @@
 package cn.bingoogolapple.qrcode.zxing;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -9,12 +14,8 @@ import com.google.zxing.DecodeHintType;
 import com.google.zxing.MultiFormatReader;
 import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Result;
+import com.google.zxing.common.GlobalHistogramBinarizer;
 import com.google.zxing.common.HybridBinarizer;
-
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -44,6 +45,7 @@ public class QRCodeDecoder {
         allFormats.add(BarcodeFormat.UPC_E);
         allFormats.add(BarcodeFormat.UPC_EAN_EXTENSION);
 
+        HINTS.put(DecodeHintType.TRY_HARDER, BarcodeFormat.QR_CODE);
         HINTS.put(DecodeHintType.POSSIBLE_FORMATS, allFormats);
         HINTS.put(DecodeHintType.CHARACTER_SET, "utf-8");
     }
@@ -68,15 +70,26 @@ public class QRCodeDecoder {
      * @return 返回二维码图片里的内容 或 null
      */
     public static String syncDecodeQRCode(Bitmap bitmap) {
+        Result result = null;
+        RGBLuminanceSource source = null;
         try {
             int width = bitmap.getWidth();
             int height = bitmap.getHeight();
             int[] pixels = new int[width * height];
             bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
-            RGBLuminanceSource source = new RGBLuminanceSource(width, height, pixels);
-            Result result = new MultiFormatReader().decode(new BinaryBitmap(new HybridBinarizer(source)), HINTS);
+            source = new RGBLuminanceSource(width, height, pixels);
+            result = new MultiFormatReader().decode(new BinaryBitmap(new HybridBinarizer(source)), HINTS);
             return result.getText();
         } catch (Exception e) {
+            e.printStackTrace();
+            if (source != null) {
+                try {
+                    result = new MultiFormatReader().decode(new BinaryBitmap(new GlobalHistogramBinarizer(source)), HINTS);
+                    return result.getText();
+                } catch (Throwable e2) {
+                    e2.printStackTrace();
+                }
+            }
             return null;
         }
     }
