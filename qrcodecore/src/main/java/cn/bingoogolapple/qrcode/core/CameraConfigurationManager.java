@@ -124,7 +124,6 @@ final class CameraConfigurationManager {
         }
         Point cameraResolution = null;
         if (previewSizeValueString != null) {
-            previewSizeValueString += ",2224x1668,2560x1440";
             cameraResolution = findBestPreviewSizeValue(previewSizeValueString, screenResolution);
         }
         if (cameraResolution == null) {

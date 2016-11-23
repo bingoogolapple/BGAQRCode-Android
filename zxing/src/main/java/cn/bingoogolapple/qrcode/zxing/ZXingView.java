@@ -30,20 +30,20 @@ public class ZXingView extends QRCodeView {
     }
 
     @Override
-    public String processData(byte[] data, int width, int height) {
+    public String processData(byte[] data, int width, int height, boolean isRetry) {
         String result = null;
         Result rawResult = null;
 
         try {
             PlanarYUVLuminanceSource source = null;
             Rect rect = mScanBoxView.getScanBoxAreaRect(height);
-            if (rect != null) {
+            if (rect != null && !isRetry && rect.left + rect.width() <= width && rect.top + rect.height() <= height) {
                 source = new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top, rect.width(), rect.height(), false);
             } else {
                 source = new PlanarYUVLuminanceSource(data, width, height, 0, 0, width, height, false);
             }
             rawResult = mMultiFormatReader.decodeWithState(new BinaryBitmap(new HybridBinarizer(source)));
-        } catch (Exception e) {
+        } catch (Exception e1) {
         } finally {
             mMultiFormatReader.reset();
         }
