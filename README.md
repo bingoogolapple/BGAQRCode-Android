@@ -312,7 +312,7 @@ public static Bitmap syncEncodeQRCode(String content, int size, int foregroundCo
 
 ## 打赏支持
 
-如果觉得 BGA 系列开源库对您有用，请随意打赏。
+如果觉得 BGA 系列开源库对您有用，请随意打赏。如果猿友有打算购买 [Lantern](https://github.com/getlantern/forum)，可以使用我的邀请码「YFQ9Q3B」购买，双方都赠送三个月的专业版使用时间。
 
 <p align="center">
   <img src="http://7xk9dj.com1.z0.glb.clouddn.com/bga_pay.png" width="450">

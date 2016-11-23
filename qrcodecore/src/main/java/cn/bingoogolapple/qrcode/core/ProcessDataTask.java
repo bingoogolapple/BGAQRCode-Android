@@ -4,7 +4,7 @@ import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Build;
 
-public class ProcessDataTask extends AsyncTask<Void,Void,String> {
+public class ProcessDataTask extends AsyncTask<Void, Void, String> {
     private Camera mCamera;
     private byte[] mData;
     private Delegate mDelegate;
@@ -16,7 +16,7 @@ public class ProcessDataTask extends AsyncTask<Void,Void,String> {
     }
 
     public ProcessDataTask perform() {
-        if (Build.VERSION.SDK_INT >= 11 ) {
+        if (Build.VERSION.SDK_INT >= 11) {
             executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else {
             execute();
@@ -57,13 +57,17 @@ public class ProcessDataTask extends AsyncTask<Void,Void,String> {
             if (mDelegate == null) {
                 return null;
             }
-            return mDelegate.processData(rotatedData, width, height);
-        } catch (Exception e) {
-            return null;
+            return mDelegate.processData(rotatedData, width, height, false);
+        } catch (Exception e1) {
+            try {
+                return mDelegate.processData(rotatedData, width, height, true);
+            } catch (Exception e2) {
+                return null;
+            }
         }
     }
 
     public interface Delegate {
-        String processData(byte[] data, int width, int height);
+        String processData(byte[] data, int width, int height, boolean isRetry);
     }
 }
