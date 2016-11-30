@@ -30,6 +30,11 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
 
         mQRCodeView = (ZXingView) findViewById(R.id.zxingview);
         mQRCodeView.setDelegate(this);
+//        mQRCodeView.getScanBoxView().setShowDefaultGridScanLineDrawable(false);
+//        mQRCodeView.getScanBoxView().setShowDefaultScanLineDrawable(false);
+//        mQRCodeView.getScanBoxView()
+//            .setCustomScanLineDrawable(getResources().getDrawable(R.drawable.scan_icon_scanline));
+//        mQRCodeView.getScanBoxView().setIsBarcode(false);
     }
 
     @Override

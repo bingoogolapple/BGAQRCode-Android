@@ -483,8 +483,7 @@ public class ScanBoxView extends View {
     }
 
     private void calFramingRect() {
-        Point screenResolution = BGAQRCodeUtil.getScreenResolution(getContext());
-        int leftOffset = (screenResolution.x - mRectWidth) / 2;
+        int leftOffset = (getWidth() - mRectWidth) / 2;
         mFramingRect = new Rect(leftOffset, mTopOffset, leftOffset + mRectWidth, mTopOffset + mRectHeight);
 
         if (mIsBarcode) {
@@ -497,8 +496,11 @@ public class ScanBoxView extends View {
     public Rect getScanBoxAreaRect(int previewHeight) {
         if (mIsOnlyDecodeScanBoxArea) {
             Rect rect = new Rect(mFramingRect);
-            rect.top = (int) (1.0f * rect.top * previewHeight / getMeasuredHeight());
-            rect.bottom = (int) (1.0f * rect.bottom * previewHeight / getMeasuredHeight());
+            float ratio = 1.0f * previewHeight / getMeasuredHeight();
+            rect.left = (int) (rect.left * ratio);
+            rect.right = (int) (rect.right * ratio);
+            rect.top = (int) (rect.top * ratio);
+            rect.bottom = (int) (rect.bottom * ratio);
             return rect;
         } else {
             return null;

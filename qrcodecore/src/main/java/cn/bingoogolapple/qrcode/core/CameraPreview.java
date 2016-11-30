@@ -104,6 +104,17 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
+    @Override
+    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
+        float mRatio = mCameraConfigurationManager.getCameraResolution().y * 1f
+        / mCameraConfigurationManager.getCameraResolution().x;
+        int height = (int) (width / mRatio + 0.5f);
+        super.onMeasure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
+    }
+
+
     private boolean flashLightAvaliable() {
         return mCamera != null && mPreviewing && mSurfaceCreated && getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     }

@@ -44,6 +44,7 @@ public class ZXingView extends QRCodeView {
             }
             rawResult = mMultiFormatReader.decodeWithState(new BinaryBitmap(new HybridBinarizer(source)));
         } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             mMultiFormatReader.reset();
         }

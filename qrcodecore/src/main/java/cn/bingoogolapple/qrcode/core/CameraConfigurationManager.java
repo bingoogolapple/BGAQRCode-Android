@@ -39,6 +39,10 @@ final class CameraConfigurationManager {
         cameraResolution = getCameraResolution(parameters, screenResolutionForCamera);
     }
 
+    public Point getCameraResolution() {
+        return  cameraResolution;
+    }
+
     public void setDesiredCameraParameters(Camera camera) {
         Camera.Parameters parameters = camera.getParameters();
         parameters.setPreviewSize(cameraResolution.x, cameraResolution.y);

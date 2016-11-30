@@ -6,9 +6,9 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
-public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCallback, ProcessDataTask.Delegate {
+public abstract class QRCodeView extends RelativeLayout implements Camera.PreviewCallback, ProcessDataTask.Delegate {
     protected Camera mCamera;
     protected CameraPreview mPreview;
     protected ScanBoxView mScanBoxView;
@@ -32,9 +32,12 @@ public abstract class QRCodeView extends FrameLayout implements Camera.PreviewCa
 
         mScanBoxView = new ScanBoxView(getContext());
         mScanBoxView.initCustomAttrs(context, attrs);
-
+        mPreview.setId(R.id.bgaqrcode_camera_preview);
         addView(mPreview);
-        addView(mScanBoxView);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(context, attrs);
+        layoutParams.addRule(RelativeLayout.ALIGN_TOP, mPreview.getId());
+        layoutParams.addRule(RelativeLayout.ALIGN_BOTTOM, mPreview.getId());
+        addView(mScanBoxView, layoutParams);
     }
 
     /**
