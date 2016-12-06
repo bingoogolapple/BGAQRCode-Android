@@ -2,6 +2,7 @@ package cn.bingoogolapple.qrcode.core;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.hardware.Camera;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -107,9 +108,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
-        float mRatio = mCameraConfigurationManager.getCameraResolution().y * 1f
-        / mCameraConfigurationManager.getCameraResolution().x;
-        int height = (int) (width / mRatio + 0.5f);
+        int height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
+        if (mCameraConfigurationManager != null
+            && mCameraConfigurationManager.getCameraResolution() != null) {
+            Point cameraResolution = mCameraConfigurationManager.getCameraResolution();
+            float mRatio = cameraResolution.y * 1f / cameraResolution.x;
+            height = (int) (width / mRatio + 0.5f);
+        }
         super.onMeasure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
             MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
     }
