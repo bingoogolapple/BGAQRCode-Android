@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/MatchWrap.Vertical"
-    android:layout_alignParentBottom="true">
+              style="@style/MatchWrap.Vertical"
+              android:layout_alignParentBottom="true">
 
     <LinearLayout style="@style/MatchWrap.Horizontal">
 
         <TextView
             android:id="@+id/start_spot"
             style="@style/AutoWrapTv"
-            android:text="开始识别" />
+            android:text="开始识别"/>
 
         <TextView
             android:id="@+id/stop_spot"
             style="@style/AutoWrapTv"
-            android:text="暂停识别" />
+            android:text="暂停识别"/>
 
         <TextView
             android:id="@+id/show_rect"
             style="@style/AutoWrapTv"
-            android:text="显示扫描框" />
+            android:text="显示扫描框"/>
 
         <TextView
             android:id="@+id/hidden_rect"
             style="@style/AutoWrapTv"
-            android:text="隐藏扫描框" />
+            android:text="隐藏扫描框"/>
     </LinearLayout>
 
     <LinearLayout style="@style/MatchWrap.Horizontal">
@@ -31,12 +31,12 @@
         <TextView
             android:id="@+id/start_spot_showrect"
             style="@style/AutoWrapTv"
-            android:text="开始识别显示扫描框" />
+            android:text="开始识别显示扫描框"/>
 
         <TextView
             android:id="@+id/stop_spot_hiddenrect"
             style="@style/AutoWrapTv"
-            android:text="暂停识别隐藏扫描框" />
+            android:text="暂停识别隐藏扫描框"/>
     </LinearLayout>
 
     <LinearLayout style="@style/MatchWrap.Horizontal">
@@ -44,22 +44,22 @@
         <TextView
             android:id="@+id/start_preview"
             style="@style/AutoWrapTv"
-            android:text="开始预览" />
+            android:text="开始预览"/>
 
         <TextView
             android:id="@+id/stop_preview"
             style="@style/AutoWrapTv"
-            android:text="停止预览" />
+            android:text="停止预览"/>
 
         <TextView
             android:id="@+id/scan_barcode"
             style="@style/AutoWrapTv"
-            android:text="扫条码" />
+            android:text="扫条码"/>
 
         <TextView
             android:id="@+id/scan_qrcode"
             style="@style/AutoWrapTv"
-            android:text="扫二维码" />
+            android:text="扫二维码"/>
     </LinearLayout>
 
     <LinearLayout style="@style/MatchWrap.Horizontal">
@@ -67,11 +67,16 @@
         <TextView
             android:id="@+id/open_flashlight"
             style="@style/AutoWrapTv"
-            android:text="开灯" />
+            android:text="开灯"/>
 
         <TextView
             android:id="@+id/close_flashlight"
             style="@style/AutoWrapTv"
-            android:text="关灯" />
+            android:text="关灯"/>
+
+        <TextView
+            android:id="@+id/choose_qrcde_from_gallery"
+            style="@style/AutoWrapTv"
+            android:text="从相册选取扫描"/>
     </LinearLayout>
 </LinearLayout>

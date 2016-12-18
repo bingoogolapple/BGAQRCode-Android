@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     @Override
     protected void onStart() {
         super.onStart();
-        requestCodeQrcodePermissions();
+        requestCodeQRCodePermissions();
     }
 
     @Override
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     }
 
     @AfterPermissionGranted(REQUEST_CODE_QRCODE_PERMISSIONS)
-    private void requestCodeQrcodePermissions() {
+    private void requestCodeQRCodePermissions() {
         String[] perms = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (!EasyPermissions.hasPermissions(this, perms)) {
             EasyPermissions.requestPermissions(this, "扫描二维码需要打开相机和散光灯的权限", REQUEST_CODE_QRCODE_PERMISSIONS, perms);

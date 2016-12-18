@@ -2,6 +2,7 @@ package cn.bingoogolapple.qrcode.core;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.hardware.Camera;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -103,6 +104,29 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCameraConfigurationManager.closeFlashlight(mCamera);
         }
     }
+
+    @Override
+    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
+        int height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
+        if (mCameraConfigurationManager != null
+            && mCameraConfigurationManager.getCameraResolution() != null) {
+            Point cameraResolution = mCameraConfigurationManager.getCameraResolution();
+            // 取出来的cameraResolution高宽值与屏幕的高宽顺序是相反的
+            int cameraPreviewWidth = cameraResolution.y;
+            int cameraPreviewHeight = cameraResolution.x;
+            if (width * 1f / height < cameraPreviewWidth * 1f / cameraPreviewHeight) {
+                float ratio = cameraPreviewHeight * 1f / cameraPreviewWidth;
+                width = (int) (height / ratio + 0.5f);
+            } else {
+                float ratio = cameraPreviewWidth * 1f / cameraPreviewHeight;
+                height = (int) (width / ratio + 0.5f);
+            }
+        }
+        super.onMeasure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
+    }
+
 
     private boolean flashLightAvaliable() {
         return mCamera != null && mPreviewing && mSurfaceCreated && getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);

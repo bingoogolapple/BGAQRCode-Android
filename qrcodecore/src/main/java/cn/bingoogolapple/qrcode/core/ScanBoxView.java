@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
@@ -483,8 +482,7 @@ public class ScanBoxView extends View {
     }
 
     private void calFramingRect() {
-        Point screenResolution = BGAQRCodeUtil.getScreenResolution(getContext());
-        int leftOffset = (screenResolution.x - mRectWidth) / 2;
+        int leftOffset = (getWidth() - mRectWidth) / 2;
         mFramingRect = new Rect(leftOffset, mTopOffset, leftOffset + mRectWidth, mTopOffset + mRectHeight);
 
         if (mIsBarcode) {
@@ -497,8 +495,11 @@ public class ScanBoxView extends View {
     public Rect getScanBoxAreaRect(int previewHeight) {
         if (mIsOnlyDecodeScanBoxArea) {
             Rect rect = new Rect(mFramingRect);
-            rect.top = (int) (1.0f * rect.top * previewHeight / getMeasuredHeight());
-            rect.bottom = (int) (1.0f * rect.bottom * previewHeight / getMeasuredHeight());
+            float ratio = 1.0f * previewHeight / getMeasuredHeight();
+            rect.left = (int) (rect.left * ratio);
+            rect.right = (int) (rect.right * ratio);
+            rect.top = (int) (rect.top * ratio);
+            rect.bottom = (int) (rect.bottom * ratio);
             return rect;
         } else {
             return null;
@@ -556,5 +557,285 @@ public class ScanBoxView extends View {
 
     public boolean getIsBarcode() {
         return mIsBarcode;
+    }
+
+    public int getMaskColor() {
+        return mMaskColor;
+    }
+
+    public void setMaskColor(int maskColor) {
+        mMaskColor = maskColor;
+    }
+
+    public int getCornerColor() {
+        return mCornerColor;
+    }
+
+    public void setCornerColor(int cornerColor) {
+        mCornerColor = cornerColor;
+    }
+
+    public int getCornerLength() {
+        return mCornerLength;
+    }
+
+    public void setCornerLength(int cornerLength) {
+        mCornerLength = cornerLength;
+    }
+
+    public int getCornerSize() {
+        return mCornerSize;
+    }
+
+    public void setCornerSize(int cornerSize) {
+        mCornerSize = cornerSize;
+    }
+
+    public int getRectWidth() {
+        return mRectWidth;
+    }
+
+    public void setRectWidth(int rectWidth) {
+        mRectWidth = rectWidth;
+    }
+
+    public int getRectHeight() {
+        return mRectHeight;
+    }
+
+    public void setRectHeight(int rectHeight) {
+        mRectHeight = rectHeight;
+    }
+
+    public int getBarcodeRectHeight() {
+        return mBarcodeRectHeight;
+    }
+
+    public void setBarcodeRectHeight(int barcodeRectHeight) {
+        mBarcodeRectHeight = barcodeRectHeight;
+    }
+
+    public int getTopOffset() {
+        return mTopOffset;
+    }
+
+    public void setTopOffset(int topOffset) {
+        mTopOffset = topOffset;
+    }
+
+    public int getScanLineSize() {
+        return mScanLineSize;
+    }
+
+    public void setScanLineSize(int scanLineSize) {
+        mScanLineSize = scanLineSize;
+    }
+
+    public int getScanLineColor() {
+        return mScanLineColor;
+    }
+
+    public void setScanLineColor(int scanLineColor) {
+        mScanLineColor = scanLineColor;
+    }
+
+    public int getScanLineMargin() {
+        return mScanLineMargin;
+    }
+
+    public void setScanLineMargin(int scanLineMargin) {
+        mScanLineMargin = scanLineMargin;
+    }
+
+    public boolean isShowDefaultScanLineDrawable() {
+        return mIsShowDefaultScanLineDrawable;
+    }
+
+    public void setShowDefaultScanLineDrawable(boolean showDefaultScanLineDrawable) {
+        mIsShowDefaultScanLineDrawable = showDefaultScanLineDrawable;
+    }
+
+    public Drawable getCustomScanLineDrawable() {
+        return mCustomScanLineDrawable;
+    }
+
+    public void setCustomScanLineDrawable(Drawable customScanLineDrawable) {
+        mCustomScanLineDrawable = customScanLineDrawable;
+    }
+
+    public Bitmap getScanLineBitmap() {
+        return mScanLineBitmap;
+    }
+
+    public void setScanLineBitmap(Bitmap scanLineBitmap) {
+        mScanLineBitmap = scanLineBitmap;
+    }
+
+    public int getBorderSize() {
+        return mBorderSize;
+    }
+
+    public void setBorderSize(int borderSize) {
+        mBorderSize = borderSize;
+    }
+
+    public int getBorderColor() {
+        return mBorderColor;
+    }
+
+    public void setBorderColor(int borderColor) {
+        mBorderColor = borderColor;
+    }
+
+    public int getAnimTime() {
+        return mAnimTime;
+    }
+
+    public void setAnimTime(int animTime) {
+        mAnimTime = animTime;
+    }
+
+    public boolean isCenterVertical() {
+        return mIsCenterVertical;
+    }
+
+    public void setCenterVertical(boolean centerVertical) {
+        mIsCenterVertical = centerVertical;
+    }
+
+    public int getToolbarHeight() {
+        return mToolbarHeight;
+    }
+
+    public void setToolbarHeight(int toolbarHeight) {
+        mToolbarHeight = toolbarHeight;
+    }
+
+    public String getQRCodeTipText() {
+        return mQRCodeTipText;
+    }
+
+    public void setQRCodeTipText(String qrCodeTipText) {
+        mQRCodeTipText = qrCodeTipText;
+    }
+
+    public String getBarCodeTipText() {
+        return mBarCodeTipText;
+    }
+
+    public void setBarCodeTipText(String barCodeTipText) {
+        mBarCodeTipText = barCodeTipText;
+    }
+
+    public String getTipText() {
+        return mTipText;
+    }
+
+    public void setTipText(String tipText) {
+        mTipText = tipText;
+    }
+
+    public int getTipTextColor() {
+        return mTipTextColor;
+    }
+
+    public void setTipTextColor(int tipTextColor) {
+        mTipTextColor = tipTextColor;
+    }
+
+    public int getTipTextSize() {
+        return mTipTextSize;
+    }
+
+    public void setTipTextSize(int tipTextSize) {
+        mTipTextSize = tipTextSize;
+    }
+
+    public boolean isTipTextBelowRect() {
+        return mIsTipTextBelowRect;
+    }
+
+    public void setTipTextBelowRect(boolean tipTextBelowRect) {
+        mIsTipTextBelowRect = tipTextBelowRect;
+    }
+
+    public int getTipTextMargin() {
+        return mTipTextMargin;
+    }
+
+    public void setTipTextMargin(int tipTextMargin) {
+        mTipTextMargin = tipTextMargin;
+    }
+
+    public boolean isShowTipTextAsSingleLine() {
+        return mIsShowTipTextAsSingleLine;
+    }
+
+    public void setShowTipTextAsSingleLine(boolean showTipTextAsSingleLine) {
+        mIsShowTipTextAsSingleLine = showTipTextAsSingleLine;
+    }
+
+    public boolean isShowTipBackground() {
+        return mIsShowTipBackground;
+    }
+
+    public void setShowTipBackground(boolean showTipBackground) {
+        mIsShowTipBackground = showTipBackground;
+    }
+
+    public int getTipBackgroundColor() {
+        return mTipBackgroundColor;
+    }
+
+    public void setTipBackgroundColor(int tipBackgroundColor) {
+        mTipBackgroundColor = tipBackgroundColor;
+    }
+
+    public boolean isScanLineReverse() {
+        return mIsScanLineReverse;
+    }
+
+    public void setScanLineReverse(boolean scanLineReverse) {
+        mIsScanLineReverse = scanLineReverse;
+    }
+
+    public boolean isShowDefaultGridScanLineDrawable() {
+        return mIsShowDefaultGridScanLineDrawable;
+    }
+
+    public void setShowDefaultGridScanLineDrawable(boolean showDefaultGridScanLineDrawable) {
+        mIsShowDefaultGridScanLineDrawable = showDefaultGridScanLineDrawable;
+    }
+
+    public float getHalfCornerSize() {
+        return mHalfCornerSize;
+    }
+
+    public void setHalfCornerSize(float halfCornerSize) {
+        mHalfCornerSize = halfCornerSize;
+    }
+
+    public StaticLayout getTipTextSl() {
+        return mTipTextSl;
+    }
+
+    public void setTipTextSl(StaticLayout tipTextSl) {
+        mTipTextSl = tipTextSl;
+    }
+
+    public int getTipBackgroundRadius() {
+        return mTipBackgroundRadius;
+    }
+
+    public void setTipBackgroundRadius(int tipBackgroundRadius) {
+        mTipBackgroundRadius = tipBackgroundRadius;
+    }
+
+    public boolean isOnlyDecodeScanBoxArea() {
+        return mIsOnlyDecodeScanBoxArea;
+    }
+
+    public void setOnlyDecodeScanBoxArea(boolean onlyDecodeScanBoxArea) {
+        mIsOnlyDecodeScanBoxArea = onlyDecodeScanBoxArea;
     }
 }
