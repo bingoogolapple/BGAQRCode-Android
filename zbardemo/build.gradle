@@ -11,6 +11,10 @@ android {
         versionName VERSION_NAME
     }
 
+    dataBinding {
+        enabled = true
+    }
+
     buildTypes {
         buildTypes {
             release {

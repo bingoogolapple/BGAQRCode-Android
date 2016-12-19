@@ -7,6 +7,7 @@ android {
     defaultConfig {
         minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
         targetSdkVersion ANDROID_BUILD_TARGET_SDK_VERSION as int
+        consumerProguardFiles 'consumer-proguard-rules.pro'
     }
 }
 

@@ -40,6 +40,8 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
         super.onStart();
         mQRCodeView.startCamera();
 //        mQRCodeView.startCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
+
+        mQRCodeView.showScanRect();
     }
 
     @Override
@@ -118,7 +120,7 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
                  */
 
                 // 识别图片中的二维码还有问题，占时不要用
-                startActivityForResult(BGAPhotoPickerActivity.newIntent(this, null, 1, null, false), REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY);
+//                startActivityForResult(BGAPhotoPickerActivity.newIntent(this, null, 1, null, false), REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY);
                 break;
         }
     }
@@ -127,8 +129,6 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        mQRCodeView.showScanRect();
 
         // 识别图片中的二维码还有问题，占时不要用
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY) {

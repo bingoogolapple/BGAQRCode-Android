@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/MatchMatch">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                style="@style/MatchMatch">
 
     <cn.bingoogolapple.qrcode.zxing.ZXingView
         android:id="@+id/zxingview"
@@ -14,11 +14,12 @@
         app:qrcv_cornerColor="@color/colorPrimaryDark"
         app:qrcv_cornerLength="20dp"
         app:qrcv_cornerSize="3dp"
+        app:qrcv_customScanLineDrawable="@drawable/scan_icon_scanline"
         app:qrcv_isBarcode="false"
-        app:qrcv_isOnlyDecodeScanBoxArea="true"
+        app:qrcv_isCenterVertical="false"
+        app:qrcv_isOnlyDecodeScanBoxArea="false"
         app:qrcv_isScanLineReverse="true"
         app:qrcv_isShowDefaultGridScanLineDrawable="false"
-        app:qrcv_customScanLineDrawable="@drawable/scan_icon_scanline"
         app:qrcv_isShowDefaultScanLineDrawable="true"
         app:qrcv_isShowTipBackground="true"
         app:qrcv_isShowTipTextAsSingleLine="false"
@@ -32,9 +33,9 @@
         app:qrcv_tipTextColor="@android:color/white"
         app:qrcv_tipTextSize="12sp"
         app:qrcv_toolbarHeight="56dp"
-        app:qrcv_topOffset="90dp" />
+        app:qrcv_topOffset="90dp"/>
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
-    <include layout="@layout/view_control" />
+    <include layout="@layout/view_control"/>
 </RelativeLayout>

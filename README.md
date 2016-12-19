@@ -32,14 +32,6 @@
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore) 「latestVersion」指的是左边这个 maven-central 徽章后面的「数字」，请自行替换。***请不要再来问我「latestVersion」是什么了***
 
-#### 3.ZBar 混淆规则
-
-```java
--keep class net.sourceforge.zbar.** { *; }
--keep interface net.sourceforge.zbar.** { *; }
--dontwarn net.sourceforge.zbar.**
-```
-
 ## 效果图与示例 apk
 
 ![zbar109](https://cloud.githubusercontent.com/assets/8949716/17475203/5d788730-5d8c-11e6-836a-61e885e05453.gif)
@@ -312,7 +304,9 @@ public static Bitmap syncEncodeQRCode(String content, int size, int foregroundCo
 
 ## 打赏支持
 
-如果觉得 BGA 系列开源库对您有用，请随意打赏。如果猿友有打算购买 [Lantern](https://github.com/getlantern/forum)，可以使用我的邀请码「YFQ9Q3B」购买，双方都赠送三个月的专业版使用时间。
+如果您觉得 BGA 系列开源库帮你节省了大量的开发时间，请扫描下方的二维码随意打赏，要是能打赏个 10.24 :monkey_face:就太:thumbsup:了。您的支持将鼓励我继续创作:octocat:
+
+如果您目前正打算购买通往墙外的梯子，可以使用我的邀请码「YFQ9Q3B」购买 [Lantern](https://github.com/getlantern/forum)，双方都赠送三个月的专业版使用时间:beers:
 
 <p align="center">
   <img src="http://7xk9dj.com1.z0.glb.clouddn.com/bga_pay.png" width="450">

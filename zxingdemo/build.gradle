@@ -10,6 +10,19 @@ android {
         versionCode VERSION_CODE as int
         versionName VERSION_NAME
     }
+
+    dataBinding {
+        enabled = true
+    }
+
+    buildTypes {
+        buildTypes {
+            release {
+                minifyEnabled true
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
+        }
+    }
 }
 
 dependencies {

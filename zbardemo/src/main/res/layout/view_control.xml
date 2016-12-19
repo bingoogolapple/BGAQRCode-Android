@@ -77,6 +77,7 @@
         <TextView
             android:id="@+id/choose_qrcde_from_gallery"
             style="@style/AutoWrapTv"
-            android:text="从相册选取扫描"/>
+            android:text="从相册选取扫描"
+            android:visibility="gone"/>
     </LinearLayout>
 </LinearLayout>
