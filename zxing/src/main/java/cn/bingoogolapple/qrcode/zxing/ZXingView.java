@@ -37,13 +37,14 @@ public class ZXingView extends QRCodeView {
         try {
             PlanarYUVLuminanceSource source = null;
             Rect rect = mScanBoxView.getScanBoxAreaRect(height);
-            if (rect != null && !isRetry && rect.left + rect.width() <= width && rect.top + rect.height() <= height) {
+            if (rect != null) {
                 source = new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top, rect.width(), rect.height(), false);
             } else {
                 source = new PlanarYUVLuminanceSource(data, width, height, 0, 0, width, height, false);
             }
             rawResult = mMultiFormatReader.decodeWithState(new BinaryBitmap(new HybridBinarizer(source)));
-        } catch (Exception e1) {
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             mMultiFormatReader.reset();
         }

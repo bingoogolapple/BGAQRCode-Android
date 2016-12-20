@@ -8,6 +8,7 @@ import android.view.Surface;
 import android.view.WindowManager;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.regex.Pattern;
 
 final class CameraConfigurationManager {
@@ -37,6 +38,10 @@ final class CameraConfigurationManager {
         }
 
         cameraResolution = getCameraResolution(parameters, screenResolutionForCamera);
+    }
+
+    public Point getCameraResolution() {
+        return  cameraResolution;
     }
 
     public void setDesiredCameraParameters(Camera camera) {
@@ -118,40 +123,22 @@ final class CameraConfigurationManager {
     }
 
     private static Point getCameraResolution(Camera.Parameters parameters, Point screenResolution) {
-        String previewSizeValueString = parameters.get("preview-size-values");
-        if (previewSizeValueString == null) {
-            previewSizeValueString = parameters.get("preview-size-value");
-        }
-        Point cameraResolution = null;
-        if (previewSizeValueString != null) {
-            cameraResolution = findBestPreviewSizeValue(previewSizeValueString, screenResolution);
-        }
+        Point cameraResolution =
+            findBestPreviewSizeValue(parameters.getSupportedPreviewSizes(), screenResolution);
         if (cameraResolution == null) {
             cameraResolution = new Point((screenResolution.x >> 3) << 3, (screenResolution.y >> 3) << 3);
         }
         return cameraResolution;
     }
 
-    private static Point findBestPreviewSizeValue(CharSequence previewSizeValueString, Point screenResolution) {
+    private static Point findBestPreviewSizeValue(List<Camera.Size> supportSizeList, Point screenResolution) {
         int bestX = 0;
         int bestY = 0;
         int diff = Integer.MAX_VALUE;
-        for (String previewSize : COMMA_PATTERN.split(previewSizeValueString)) {
+        for (Camera.Size previewSize : supportSizeList) {
 
-            previewSize = previewSize.trim();
-            int dimPosition = previewSize.indexOf('x');
-            if (dimPosition < 0) {
-                continue;
-            }
-
-            int newX;
-            int newY;
-            try {
-                newX = Integer.parseInt(previewSize.substring(0, dimPosition));
-                newY = Integer.parseInt(previewSize.substring(dimPosition + 1));
-            } catch (NumberFormatException nfe) {
-                continue;
-            }
+            int newX = previewSize.width;
+            int newY = previewSize.height;
 
             int newDiff = Math.abs(newX - screenResolution.x) + Math.abs(newY - screenResolution.y);
             if (newDiff == 0) {
