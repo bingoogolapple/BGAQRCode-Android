@@ -30,7 +30,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:recyclerview-v7:25.1.0'
     compile 'pub.devrel:easypermissions:0.1.7'
-    compile 'cn.bingoogolapple:bga-photopicker:1.2.1@aar'
+    compile 'cn.bingoogolapple:bga-photopicker:1.2.2@aar'
     compile 'cn.bingoogolapple:bga-adapter:1.1.5@aar'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     // -------------------- 以上几个库是为了方便编写演示案例添加进来的，集成到你自己项目时可以不依赖这些库 --------------------
