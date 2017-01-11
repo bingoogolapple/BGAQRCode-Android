@@ -48,11 +48,11 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
         stopCameraPreview();
 
-		post(new Runnable(){
-			public void run(){
-				showCameraPreview();
-			}
-		});
+        post(new Runnable() {
+            public void run() {
+                showCameraPreview();
+            }
+        });
     }
 
     @Override
@@ -94,13 +94,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void openFlashlight() {
-        if (flashLightAvaliable()) {
+        if (flashLightAvailable()) {
             mCameraConfigurationManager.openFlashlight(mCamera);
         }
     }
 
     public void closeFlashlight() {
-        if (flashLightAvaliable()) {
+        if (flashLightAvailable()) {
             mCameraConfigurationManager.closeFlashlight(mCamera);
         }
     }
@@ -110,7 +110,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
         int height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
         if (mCameraConfigurationManager != null
-            && mCameraConfigurationManager.getCameraResolution() != null) {
+                && mCameraConfigurationManager.getCameraResolution() != null) {
             Point cameraResolution = mCameraConfigurationManager.getCameraResolution();
             // 取出来的cameraResolution高宽值与屏幕的高宽顺序是相反的
             int cameraPreviewWidth = cameraResolution.y;
@@ -124,18 +124,21 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }
         }
         super.onMeasure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
+                MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
     }
 
 
-    private boolean flashLightAvaliable() {
+    private boolean flashLightAvailable() {
         return mCamera != null && mPreviewing && mSurfaceCreated && getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     }
 
     private Runnable doAutoFocus = new Runnable() {
         public void run() {
             if (mCamera != null && mPreviewing && mAutoFocus && mSurfaceCreated) {
-                mCamera.autoFocus(autoFocusCB);
+                try {
+                    mCamera.autoFocus(autoFocusCB);
+                } catch (Exception e) {
+                }
             }
         }
     };

@@ -112,12 +112,15 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
      * 关闭摄像头预览，并且隐藏扫描框
      */
     public void stopCamera() {
-        stopSpotAndHiddenRect();
-        if (mCamera != null) {
-            mPreview.stopCameraPreview();
-            mPreview.setCamera(null);
-            mCamera.release();
-            mCamera = null;
+        try {
+            stopSpotAndHiddenRect();
+            if (mCamera != null) {
+                mPreview.stopCameraPreview();
+                mPreview.setCamera(null);
+                mCamera.release();
+                mCamera = null;
+            }
+        } catch (Exception e) {
         }
     }
 
@@ -151,7 +154,10 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         mSpotAble = false;
 
         if (mCamera != null) {
-            mCamera.setOneShotPreviewCallback(null);
+            try {
+                mCamera.setOneShotPreviewCallback(null);
+            } catch (Exception e) {
+            }
         }
         if (mHandler != null) {
             mHandler.removeCallbacks(mOneShotPreviewCallbackTask);
@@ -264,7 +270,11 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         @Override
         public void run() {
             if (mCamera != null && mSpotAble) {
-                mCamera.setOneShotPreviewCallback(QRCodeView.this);
+                try {
+                    mCamera.setOneShotPreviewCallback(QRCodeView.this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     };

@@ -17,4 +17,18 @@ allprojects {
     repositories {
         jcenter()
     }
+
+    tasks.withType(JavaCompile){
+        options.encoding = "UTF-8"
+    }
+
+    tasks.whenTaskAdded { task ->
+        if (task.name.contains('Test')) {
+            task.enabled = false
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
