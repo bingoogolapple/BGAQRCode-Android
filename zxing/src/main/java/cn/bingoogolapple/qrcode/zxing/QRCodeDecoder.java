@@ -48,6 +48,7 @@ public class QRCodeDecoder {
         HINTS.put(DecodeHintType.TRY_HARDER, BarcodeFormat.QR_CODE);
         HINTS.put(DecodeHintType.POSSIBLE_FORMATS, allFormats);
         HINTS.put(DecodeHintType.CHARACTER_SET, "utf-8");
+        HINTS.put(DecodeHintType.CHARACTER_SET, "big5");
     }
 
     private QRCodeDecoder() {
