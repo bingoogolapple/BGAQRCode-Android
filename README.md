@@ -40,30 +40,8 @@
 ![zxingqrcode109](https://cloud.githubusercontent.com/assets/8949716/17475249/a551cc06-5d8c-11e6-85dc-4e2e07051cae.gif)
 ![iqegg](https://cloud.githubusercontent.com/assets/8949716/17475267/bd9c0a60-5d8c-11e6-8487-c732306debe2.gif)
 
-| [点击下载 ZXingDemo.apk](http://fir.im/ZXingDemo)或扫描下面的二维码安装 | [点击下载 ZBarDemo.apk](http://fir.im/ZBarDemo)或扫描下面的二维码安装 |
-| :------------: | :------------: |
-| ![ZXingDemo apk文件二维码](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/zxingdemoapk.png) | ![ZBarDemo apk文件二维码](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/zbardemoapk.png) |
 
-## Gradle 依赖
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore) 「latestVersion」指的是左边这个 maven-central 徽章后面的「数字」，请自行替换。
 
->ZXing
-
-```groovy
-dependencies {
-    compile 'com.google.zxing:core:3.2.1'
-    compile 'cn.bingoogolapple:bga-qrcodecore:latestVersion@aar'
-    compile 'cn.bingoogolapple:bga-zxing:latestVersion@aar'
-}
-```
->ZBar
-
-```groovy
-dependencies {
-    compile 'cn.bingoogolapple:bga-qrcodecore:latestVersion@aar'
-    compile 'cn.bingoogolapple:bga-zbar:latestVersion@aar'
-}
-```
 ## 布局文件
 >ZXing
 
@@ -296,18 +274,7 @@ public static Bitmap syncEncodeQRCode(String content, int size, int foregroundCo
 
 #### 详细用法请查看[ZXingDemo](https://github.com/bingoogolapple/BGAQRCode-Android/tree/master/zxingdemo):feet:
 
-## 关于我
-
-| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群
-| ------------ | ------------- | ------------ | ------------ |
-| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
-
-## 打赏支持
-
-如果您觉得 BGA 系列开源库帮你节省了大量的开发时间，请扫描下方的二维码随意打赏，要是能打赏个 10.24 :monkey_face:就太:thumbsup:了。您的支持将鼓励我继续创作:octocat:
-
-如果您目前正打算购买通往墙外的梯子，可以使用我的邀请码「YFQ9Q3B」购买 [Lantern](https://github.com/getlantern/forum)，双方都赠送三个月的专业版使用时间:beers:
-
-<p align="center">
-  <img src="http://7xk9dj.com1.z0.glb.clouddn.com/bga_pay.png" width="450">
-</p>
+--------------------
+####以上是原作者的readme，在原作者的基础上替换了zbar的so库，把so库体积从7.2M减少到500Kb 
+####感谢原作者的开源 [原地址](https://github.com/bingoogolapple/BGAQRCode-Android)
+####感谢精简zbar [so库的作者](https://github.com/chentao0707/ZBarScanProj)
