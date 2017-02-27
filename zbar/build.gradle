@@ -9,6 +9,12 @@ android {
         targetSdkVersion ANDROID_BUILD_TARGET_SDK_VERSION as int
         consumerProguardFiles 'consumer-proguard-rules.pro'
     }
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+        }
+
+    }
 }
 
 dependencies {
