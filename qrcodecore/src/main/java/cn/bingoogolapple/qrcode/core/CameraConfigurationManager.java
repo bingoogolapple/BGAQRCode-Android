@@ -25,25 +25,22 @@ final class CameraConfigurationManager {
 
     public void initFromCameraParameters(Camera camera) {
         Camera.Parameters parameters = camera.getParameters();
-        WindowManager manager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-        Display display = manager.getDefaultDisplay();
-        mScreenResolution = new Point();
-        display.getSize(mScreenResolution);
+        mScreenResolution = BGAQRCodeUtil.getScreenResolution(mContext);
         Point screenResolutionForCamera = new Point();
         screenResolutionForCamera.x = mScreenResolution.x;
         screenResolutionForCamera.y = mScreenResolution.y;
 
         // preview size is always something like 480*320, other 320*480
-        boolean swapped = false;
-        if (mScreenResolution.x < mScreenResolution.y) {
+        int orientation = BGAQRCodeUtil.getOrientation(mContext);
+
+        if (orientation == BGAQRCodeUtil.ORIENTATION_PORTRAIT) {
             screenResolutionForCamera.x = mScreenResolution.y;
             screenResolutionForCamera.y = mScreenResolution.x;
-            swapped = true;
         }
 
         previewResolution = getPreviewResolution(parameters, screenResolutionForCamera);
 
-        if (swapped) cameraResolution = new Point(previewResolution.y, previewResolution.x);
+        if (orientation == BGAQRCodeUtil.ORIENTATION_PORTRAIT) cameraResolution = new Point(previewResolution.y, previewResolution.x);
         else cameraResolution = previewResolution;
     }
 
