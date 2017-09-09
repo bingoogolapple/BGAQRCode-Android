@@ -8,11 +8,13 @@ public class ProcessDataTask extends AsyncTask<Void, Void, String> {
     private Camera mCamera;
     private byte[] mData;
     private Delegate mDelegate;
+    private int orientation;
 
-    public ProcessDataTask(Camera camera, byte[] data, Delegate delegate) {
+    public ProcessDataTask(Camera camera, byte[] data, Delegate delegate, int orientation) {
         mCamera = camera;
         mData = data;
         mDelegate = delegate;
+        this.orientation = orientation;
     }
 
     public ProcessDataTask perform() {
@@ -43,24 +45,28 @@ public class ProcessDataTask extends AsyncTask<Void, Void, String> {
         int width = size.width;
         int height = size.height;
 
-        byte[] rotatedData = new byte[mData.length];
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                rotatedData[x * height + height - y - 1] = mData[x + y * width];
+        byte[] data = mData;
+
+        if (orientation == BGAQRCodeUtil.ORIENTATION_PORTRAIT) {
+            data = new byte[mData.length];
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    data[x * height + height - y - 1] = mData[x + y * width];
+                }
             }
+            int tmp = width;
+            width = height;
+            height = tmp;
         }
-        int tmp = width;
-        width = height;
-        height = tmp;
 
         try {
             if (mDelegate == null) {
                 return null;
             }
-            return mDelegate.processData(rotatedData, width, height, false);
+            return mDelegate.processData(data, width, height, false);
         } catch (Exception e1) {
             try {
-                return mDelegate.processData(rotatedData, width, height, true);
+                return mDelegate.processData(data, width, height, true);
             } catch (Exception e2) {
                 return null;
             }

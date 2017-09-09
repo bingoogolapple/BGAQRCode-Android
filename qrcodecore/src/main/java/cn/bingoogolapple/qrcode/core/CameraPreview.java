@@ -113,8 +113,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 && mCameraConfigurationManager.getCameraResolution() != null) {
             Point cameraResolution = mCameraConfigurationManager.getCameraResolution();
             // 取出来的cameraResolution高宽值与屏幕的高宽顺序是相反的
-            int cameraPreviewWidth = cameraResolution.y;
-            int cameraPreviewHeight = cameraResolution.x;
+            int cameraPreviewWidth = cameraResolution.x;
+            int cameraPreviewHeight = cameraResolution.y;
             if (width * 1f / height < cameraPreviewWidth * 1f / cameraPreviewHeight) {
                 float ratio = cameraPreviewHeight * 1f / cameraPreviewWidth;
                 width = (int) (height / ratio + 0.5f);
