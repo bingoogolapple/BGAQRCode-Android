@@ -13,6 +13,13 @@ import android.view.Display;
 import android.view.WindowManager;
 
 public class BGAQRCodeUtil {
+    public static final int ORIENTATION_PORTRAIT = 0;
+    public static final int ORIENTATION_LANDSCAPE = 1;
+
+    public static final int getOrientation(Context context) {
+        Point screenResolution = getScreenResolution(context);
+        return screenResolution.x > screenResolution.y ? ORIENTATION_LANDSCAPE : ORIENTATION_PORTRAIT;
+    }
 
     public static Point getScreenResolution(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
