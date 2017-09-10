@@ -8,7 +8,7 @@
         style="@style/MatchMatch"
         app:qrcv_animTime="1000"
         app:qrcv_barCodeTipText="将条码放入框内，即可自动扫描"
-        app:qrcv_barcodeRectHeight="140dp"
+        app:qrcv_barcodeRectHeight="120dp"
         app:qrcv_borderColor="@android:color/white"
         app:qrcv_borderSize="1dp"
         app:qrcv_cornerColor="@color/colorPrimaryDark"
@@ -33,7 +33,7 @@
         app:qrcv_tipTextColor="@android:color/white"
         app:qrcv_tipTextSize="12sp"
         app:qrcv_toolbarHeight="56dp"
-        app:qrcv_topOffset="90dp"/>
+        app:qrcv_topOffset="20dp"/>
 
     <include layout="@layout/toolbar"/>
 
