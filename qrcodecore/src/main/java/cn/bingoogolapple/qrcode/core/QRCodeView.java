@@ -16,7 +16,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     protected Handler mHandler;
     protected boolean mSpotAble = false;
     protected ProcessDataTask mProcessDataTask;
-    private int orientation;
+    private int mOrientation;
 
     public QRCodeView(Context context, AttributeSet attributeSet) {
         this(context, attributeSet, 0);
@@ -40,7 +40,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         layoutParams.addRule(RelativeLayout.ALIGN_BOTTOM, mPreview.getId());
         addView(mScanBoxView, layoutParams);
 
-        this.orientation = BGAQRCodeUtil.getOrientation(context);
+        mOrientation = BGAQRCodeUtil.getOrientation(context);
     }
 
     /**
@@ -248,7 +248,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     public void onPreviewFrame(final byte[] data, final Camera camera) {
         if (mSpotAble) {
             cancelProcessDataTask();
-            mProcessDataTask = new ProcessDataTask(camera, data, this, orientation) {
+            mProcessDataTask = new ProcessDataTask(camera, data, this, mOrientation) {
                 @Override
                 protected void onPostExecute(String result) {
                     if (mSpotAble) {

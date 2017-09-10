@@ -16,8 +16,8 @@ final class CameraConfigurationManager {
     private static final Pattern COMMA_PATTERN = Pattern.compile(",");
     private final Context mContext;
     private Point mScreenResolution;
-    private Point cameraResolution;
-    private Point previewResolution;
+    private Point mCameraResolution;
+    private Point mPreviewResolution;
 
     public CameraConfigurationManager(Context context) {
         mContext = context;
@@ -38,19 +38,22 @@ final class CameraConfigurationManager {
             screenResolutionForCamera.y = mScreenResolution.x;
         }
 
-        previewResolution = getPreviewResolution(parameters, screenResolutionForCamera);
+        mPreviewResolution = getPreviewResolution(parameters, screenResolutionForCamera);
 
-        if (orientation == BGAQRCodeUtil.ORIENTATION_PORTRAIT) cameraResolution = new Point(previewResolution.y, previewResolution.x);
-        else cameraResolution = previewResolution;
+        if (orientation == BGAQRCodeUtil.ORIENTATION_PORTRAIT) {
+            mCameraResolution = new Point(mPreviewResolution.y, mPreviewResolution.x);
+        } else {
+            mCameraResolution = mPreviewResolution;
+        }
     }
 
     public Point getCameraResolution() {
-        return  cameraResolution;
+        return mCameraResolution;
     }
 
     public void setDesiredCameraParameters(Camera camera) {
         Camera.Parameters parameters = camera.getParameters();
-        parameters.setPreviewSize(previewResolution.x, previewResolution.y);
+        parameters.setPreviewSize(mPreviewResolution.x, mPreviewResolution.y);
         setZoom(parameters);
 
         camera.setDisplayOrientation(getDisplayOrientation());
@@ -128,7 +131,7 @@ final class CameraConfigurationManager {
 
     private static Point getPreviewResolution(Camera.Parameters parameters, Point screenResolution) {
         Point previewResolution =
-            findBestPreviewSizeValue(parameters.getSupportedPreviewSizes(), screenResolution);
+                findBestPreviewSizeValue(parameters.getSupportedPreviewSizes(), screenResolution);
         if (previewResolution == null) {
             previewResolution = new Point((screenResolution.x >> 3) << 3, (screenResolution.y >> 3) << 3);
         }
