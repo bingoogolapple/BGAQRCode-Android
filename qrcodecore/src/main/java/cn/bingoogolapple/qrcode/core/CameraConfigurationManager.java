@@ -25,6 +25,11 @@ final class CameraConfigurationManager {
 
     public void initFromCameraParameters(Camera camera) {
         Camera.Parameters parameters = camera.getParameters();
+
+        if (CameraConfigurationManager.autoFocusAble(camera)) {
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+        }
+
         mScreenResolution = BGAQRCodeUtil.getScreenResolution(mContext);
         Point screenResolutionForCamera = new Point();
         screenResolutionForCamera.x = mScreenResolution.x;
@@ -45,6 +50,12 @@ final class CameraConfigurationManager {
         } else {
             mCameraResolution = mPreviewResolution;
         }
+    }
+
+    public static boolean autoFocusAble(Camera camera) {
+        List<String> supportedFocusModes = camera.getParameters().getSupportedFocusModes();
+        String focusMode = findSettableValue(supportedFocusModes, Camera.Parameters.FOCUS_MODE_AUTO);
+        return focusMode != null;
     }
 
     public Point getCameraResolution() {

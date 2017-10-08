@@ -10,10 +10,8 @@
     -->
     <uses-sdk tools:overrideLibrary="cn.bingoogolapple.photopicker,cn.bingoogolapple.androidcommon.adapter" />
 
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.FLASHLIGHT" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
