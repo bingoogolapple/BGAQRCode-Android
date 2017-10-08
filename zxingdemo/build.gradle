@@ -31,7 +31,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'pub.devrel:easypermissions:1.0.0'
     compile 'cn.bingoogolapple:bga-photopicker:1.2.3@aar'
-    compile 'cn.bingoogolapple:bga-adapter:1.1.8@aar'
+    compile 'cn.bingoogolapple:bga-adapter:1.2.0@aar'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     // -------------------- 以上几个库是为了方便编写演示案例添加进来的，集成到你自己项目时可以不依赖这些库 --------------------
 
@@ -39,7 +39,7 @@ dependencies {
 
     // -------------------- 以下三个库是必须依赖的 ----------------------------
     compile 'com.google.zxing:core:3.3.0'
-    compile 'cn.bingoogolapple:bga-qrcodecore:1.1.8@aar'
-    compile 'cn.bingoogolapple:bga-zxing:1.1.8@aar'
+    compile 'cn.bingoogolapple:bga-qrcodecore:1.1.9@aar'
+    compile 'cn.bingoogolapple:bga-zxing:1.1.9@aar'
     // -------------------- 以上三个库是必须依赖的 ----------------------------
 }

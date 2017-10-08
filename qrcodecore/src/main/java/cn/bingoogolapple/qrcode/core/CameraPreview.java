@@ -13,7 +13,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private static final String TAG = CameraPreview.class.getSimpleName();
     private Camera mCamera;
     private boolean mPreviewing = true;
-    private boolean mAutoFocus = true;
     private boolean mSurfaceCreated = false;
     private CameraConfigurationManager mCameraConfigurationManager;
 
@@ -42,7 +41,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i2, int i3) {
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
         if (surfaceHolder.getSurface() == null) {
             return;
         }
@@ -69,9 +68,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
                 mCameraConfigurationManager.setDesiredCameraParameters(mCamera);
                 mCamera.startPreview();
-                if (mAutoFocus) {
-                    mCamera.autoFocus(autoFocusCB);
-                }
+
+                mCamera.autoFocus(autoFocusCB);
             } catch (Exception e) {
                 Log.e(TAG, e.toString(), e);
             }
@@ -109,8 +107,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
         int height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
-        if (mCameraConfigurationManager != null
-                && mCameraConfigurationManager.getCameraResolution() != null) {
+        if (mCameraConfigurationManager != null && mCameraConfigurationManager.getCameraResolution() != null) {
             Point cameraResolution = mCameraConfigurationManager.getCameraResolution();
             // 取出来的cameraResolution高宽值与屏幕的高宽顺序是相反的
             int cameraPreviewWidth = cameraResolution.x;
@@ -123,8 +120,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 height = (int) (width / ratio + 0.5f);
             }
         }
-        super.onMeasure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
+        super.onMeasure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
     }
 
 
@@ -134,7 +130,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     private Runnable doAutoFocus = new Runnable() {
         public void run() {
-            if (mCamera != null && mPreviewing && mAutoFocus && mSurfaceCreated) {
+            if (mCamera != null && mPreviewing && mSurfaceCreated) {
                 try {
                     mCamera.autoFocus(autoFocusCB);
                 } catch (Exception e) {
@@ -145,7 +141,11 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     Camera.AutoFocusCallback autoFocusCB = new Camera.AutoFocusCallback() {
         public void onAutoFocus(boolean success, Camera camera) {
-            postDelayed(doAutoFocus, 1000);
+            if (success) {
+                postDelayed(doAutoFocus, 2000);
+            } else {
+                postDelayed(doAutoFocus, 500);
+            }
         }
     };
 
