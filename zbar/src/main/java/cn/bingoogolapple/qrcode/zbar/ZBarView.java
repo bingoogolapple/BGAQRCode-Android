@@ -1,6 +1,7 @@
 package cn.bingoogolapple.qrcode.zbar;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -71,5 +72,20 @@ public class ZBarView extends QRCodeView {
             }
         }
         return result;
+    }
+
+    public String processBitmapData(Bitmap bitmap) {
+        try {
+            int picw = bitmap.getWidth();
+            int pich = bitmap.getHeight();
+            Image barcode = new Image(picw, pich, "RGB4");
+            int[] pix = new int[picw * pich];
+            bitmap.getPixels(pix, 0, picw, 0, 0, picw, pich);
+            barcode.setData(pix);
+            return processData(barcode.convert("Y800"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
