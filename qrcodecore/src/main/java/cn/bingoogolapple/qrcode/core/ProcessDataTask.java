@@ -1,5 +1,6 @@
 package cn.bingoogolapple.qrcode.core;
 
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -75,5 +76,7 @@ public class ProcessDataTask extends AsyncTask<Void, Void, String> {
 
     public interface Delegate {
         String processData(byte[] data, int width, int height, boolean isRetry);
+
+        String processBitmapData(Bitmap bitmap);
     }
 }

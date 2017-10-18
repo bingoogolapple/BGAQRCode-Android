@@ -1,6 +1,7 @@
 package cn.bingoogolapple.qrcode.zxing;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 
@@ -38,7 +39,8 @@ public class ZXingView extends QRCodeView {
             PlanarYUVLuminanceSource source = null;
             Rect rect = mScanBoxView.getScanBoxAreaRect(height);
             if (rect != null) {
-                source = new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top, rect.width(), rect.height(), false);
+                source = new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top, rect.width(), rect
+                        .height(), false);
             } else {
                 source = new PlanarYUVLuminanceSource(data, width, height, 0, 0, width, height, false);
             }
@@ -53,5 +55,10 @@ public class ZXingView extends QRCodeView {
             result = rawResult.getText();
         }
         return result;
+    }
+
+    @Override
+    public String processBitmapData(Bitmap bitmap) {
+        return QRCodeDecoder.syncDecodeQRCode(bitmap);
     }
 }
