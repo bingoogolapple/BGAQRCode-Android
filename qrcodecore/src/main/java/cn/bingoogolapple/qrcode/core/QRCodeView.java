@@ -1,10 +1,12 @@
 package cn.bingoogolapple.qrcode.core;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -16,7 +18,6 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     protected Handler mHandler;
     protected boolean mSpotAble = false;
     protected ProcessDataTask mProcessDataTask;
-    private int mOrientation;
 
     public QRCodeView(Context context, AttributeSet attributeSet) {
         this(context, attributeSet, 0);
@@ -30,7 +31,6 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
 
     private void initView(Context context, AttributeSet attrs) {
         mPreview = new CameraPreview(getContext());
-
         mScanBoxView = new ScanBoxView(getContext());
         mScanBoxView.initCustomAttrs(context, attrs);
         mPreview.setId(R.id.bgaqrcode_camera_preview);
@@ -40,7 +40,6 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         layoutParams.addRule(RelativeLayout.ALIGN_BOTTOM, mPreview.getId());
         addView(mScanBoxView, layoutParams);
 
-        mOrientation = BGAQRCodeUtil.getOrientation(context);
     }
 
     /**
@@ -103,7 +102,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     private void startCameraById(int cameraId) {
         try {
             mCamera = Camera.open(cameraId);
-            mPreview.setCamera(mCamera);
+            mPreview.setCamera(mCamera, this, cameraId);
         } catch (Exception e) {
             if (mDelegate != null) {
                 mDelegate.onScanQRCodeOpenCameraError();
@@ -119,7 +118,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
             stopSpotAndHiddenRect();
             if (mCamera != null) {
                 mPreview.stopCameraPreview();
-                mPreview.setCamera(null);
+                mPreview.setCamera(null, null, -1);
                 mCamera.release();
                 mCamera = null;
             }
@@ -131,7 +130,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
      * 延迟1.5秒后开始识别
      */
     public void startSpot() {
-        startSpotDelay(1500);
+        startSpotDelay(1000);
     }
 
     /**
@@ -248,12 +247,25 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     public void onPreviewFrame(final byte[] data, final Camera camera) {
         if (mSpotAble) {
             cancelProcessDataTask();
-            mProcessDataTask = new ProcessDataTask(camera, data, this, mOrientation) {
+
+            int rotationCount = getRotationCount();
+            int orientation = BGAQRCodeUtil.getScreenOrientation(getContext());
+            byte[] mdata;
+            if (orientation == Configuration.ORIENTATION_PORTRAIT){
+                Log.i("QRCodeView", "mdata=getRotatedData(data, camera)");
+                mdata = getRotatedData(data, camera);
+            }else {
+                Log.i("QRCodeView", "mdata = data");
+                mdata = data;
+            }
+
+            mProcessDataTask = new ProcessDataTask(rotationCount, camera, mdata, this, orientation) {
                 @Override
                 protected void onPostExecute(String result) {
                     if (mSpotAble) {
                         if (mDelegate != null && !TextUtils.isEmpty(result)) {
                             try {
+                                Log.i("QRCodeView", "get result,result=" + result);
                                 mDelegate.onScanQRCodeSuccess(result);
                             } catch (Exception e) {
                             }
@@ -267,6 +279,38 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
                 }
             }.perform();
         }
+    }
+
+    public int getRotationCount() {
+        int displayOrientation = this.mPreview.getDisplayOrientation();
+        return displayOrientation / 90;
+    }
+
+    public byte[] getRotatedData(byte[] data, Camera camera) {
+        Camera.Parameters parameters = camera.getParameters();
+        Camera.Size size = parameters.getPreviewSize();
+        int width = size.width;
+        int height = size.height;
+        int rotationCount = this.getRotationCount();
+        if(rotationCount == 1 || rotationCount == 3) {
+            for(int i = 0; i < rotationCount; ++i) {
+                byte[] rotatedData = new byte[data.length];
+
+                int tmp;
+                for(tmp = 0; tmp < height; ++tmp) {
+                    for(int x = 0; x < width; ++x) {
+                        rotatedData[x * height + height - tmp - 1] = data[x + tmp * width];
+                    }
+                }
+
+                data = rotatedData;
+                tmp = width;
+                width = height;
+                height = tmp;
+            }
+        }
+
+        return data;
     }
 
     private Runnable mOneShotPreviewCallbackTask = new Runnable() {
