@@ -34,11 +34,11 @@ dependencies {
     compile 'cn.bingoogolapple:bga-adapter:1.2.0@aar'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     // -------------------- 以上几个库是为了方便编写演示案例添加进来的，集成到你自己项目时可以不依赖这些库 --------------------
-
-//    compile project(':zbar')
-
+    //    compile project(':zbar')
     // -------------------- 以下两个库是必须依赖的 ----------------------------
-    compile 'cn.bingoogolapple:bga-qrcodecore:1.1.9@aar'
-    compile 'cn.bingoogolapple:bga-zbar:1.1.9@aar'
+    //compile 'cn.bingoogolapple:bga-qrcodecore:1.1.9@aar'
+    //compile 'cn.bingoogolapple:bga-zbar:1.1.9@aar'
     // -------------------- 以上两个库是必须依赖的 ----------------------------
+    compile project(':qrcodecore')
+    compile project(':zbar')
 }

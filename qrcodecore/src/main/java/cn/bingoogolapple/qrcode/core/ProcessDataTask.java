@@ -1,5 +1,6 @@
 package cn.bingoogolapple.qrcode.core;
 
+import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -8,12 +9,14 @@ public class ProcessDataTask extends AsyncTask<Void, Void, String> {
     private Camera mCamera;
     private byte[] mData;
     private Delegate mDelegate;
+    private int rotationCount;
     private int orientation;
 
-    public ProcessDataTask(Camera camera, byte[] data, Delegate delegate, int orientation) {
-        mCamera = camera;
-        mData = data;
-        mDelegate = delegate;
+    public ProcessDataTask(int rotationCount, Camera camera, byte[] data, Delegate delegate, int orientation) {
+        this.mCamera = camera;
+        this.mData = data;
+        this.mDelegate = delegate;
+        this.rotationCount = rotationCount;
         this.orientation = orientation;
     }
 
@@ -45,28 +48,23 @@ public class ProcessDataTask extends AsyncTask<Void, Void, String> {
         int width = size.width;
         int height = size.height;
 
-        byte[] data = mData;
-
-        if (orientation == BGAQRCodeUtil.ORIENTATION_PORTRAIT) {
-            data = new byte[mData.length];
-            for (int y = 0; y < height; y++) {
-                for (int x = 0; x < width; x++) {
-                    data[x * height + height - y - 1] = mData[x + y * width];
-                }
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            if (rotationCount == 1 || rotationCount == 3) {
+                int tmp = width;
+                width = height;
+                height = tmp;
             }
-            int tmp = width;
-            width = height;
-            height = tmp;
+
         }
 
         try {
             if (mDelegate == null) {
                 return null;
             }
-            return mDelegate.processData(data, width, height, false);
+            return mDelegate.processData(mData, width, height, false);
         } catch (Exception e1) {
             try {
-                return mDelegate.processData(data, width, height, true);
+                return mDelegate.processData(mData, width, height, true);
             } catch (Exception e2) {
                 return null;
             }

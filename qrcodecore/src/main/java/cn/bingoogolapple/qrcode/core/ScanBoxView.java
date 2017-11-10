@@ -117,7 +117,7 @@ public class ScanBoxView extends View {
 
         mTipBackgroundRadius = BGAQRCodeUtil.dp2px(context, 4);
 
-        mIsOnlyDecodeScanBoxArea = false;
+        mIsOnlyDecodeScanBoxArea = true;
     }
 
     public void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -496,8 +496,8 @@ public class ScanBoxView extends View {
         if (mIsOnlyDecodeScanBoxArea) {
             Rect rect = new Rect(mFramingRect);
             float ratio = 1.0f * previewHeight / getMeasuredHeight();
-            rect.left = (int) (rect.left * ratio);
-            rect.right = (int) (rect.right * ratio);
+            //rect.left = (int) (rect.left * ratio);
+            //rect.right = (int) (rect.right * ratio);
             rect.top = (int) (rect.top * ratio);
             rect.bottom = (int) (rect.bottom * ratio);
             return rect;
