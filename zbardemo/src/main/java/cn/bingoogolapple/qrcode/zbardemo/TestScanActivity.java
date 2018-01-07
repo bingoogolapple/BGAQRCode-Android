@@ -120,7 +120,13 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
                  */
 
                 // 识别图片中的二维码还有问题，占时不要用
-//                startActivityForResult(BGAPhotoPickerActivity.newIntent(this, null, 1, null, false), REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY);
+//                Intent photoPickerIntent = new BGAPhotoPickerActivity.IntentBuilder(this)
+//                        .cameraFileDir(null)
+//                        .maxChooseCount(1)
+//                        .selectedPhotos(null)
+//                        .pauseOnScroll(false)
+//                        .build();
+//                startActivityForResult(photoPickerIntent, REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY);
                 break;
         }
     }
@@ -132,7 +138,7 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
 
         // 识别图片中的二维码还有问题，占时不要用
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY) {
-            final String picturePath = BGAPhotoPickerActivity.getSelectedImages(data).get(0);
+            final String picturePath = BGAPhotoPickerActivity.getSelectedPhotos(data).get(0);
 
             /*
             这里为了偷懒，就没有处理匿名 AsyncTask 内部类导致 Activity 泄漏的问题

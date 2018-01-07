@@ -2,19 +2,40 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion ANDROID_BUILD_SDK_VERSION as int
-    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
         minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
         targetSdkVersion ANDROID_BUILD_TARGET_SDK_VERSION as int
         consumerProguardFiles 'consumer-proguard-rules.pro'
     }
+
+
+    def isBuildSo = false
+    if (isBuildSo) { // 构建生成 so 文件
+        sourceSets {
+            main {
+                jniLibs.srcDirs = []
+            }
+        }
+        externalNativeBuild {
+            ndkBuild {
+                path 'src/main/jni/Android.mk'
+            }
+        }
+    } else { // 生成 so 文件后，打包时直接使用生成的 so
+        sourceSets {
+            main {
+                jni.srcDirs = []
+            }
+        }
+        delete(file('.externalNativeBuild'), file('src/main/libs'), file('src/main/obj'))
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':qrcodecore')
+//    api project(':qrcodecore')
+    compile 'cn.bingoogolapple:bga-qrcode-core:1.2.0'
 }
 
-// gradle uploadArchives
-//apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/central-publish.gradle'
+// gradle clean build bintrayUpload
+//apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/jcenter-release.gradle'

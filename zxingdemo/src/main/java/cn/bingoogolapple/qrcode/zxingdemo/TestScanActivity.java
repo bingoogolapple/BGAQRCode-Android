@@ -115,7 +115,13 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
                 https://github.com/bingoogolapple/BGAPhotoPicker-Android
                 这个库来从图库中选择二维码图片，这个库不是必须的，你也可以通过自己的方式从图库中选择图片
                  */
-                startActivityForResult(BGAPhotoPickerActivity.newIntent(this, null, 1, null, false), REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY);
+                Intent photoPickerIntent = new BGAPhotoPickerActivity.IntentBuilder(this)
+                        .cameraFileDir(null)
+                        .maxChooseCount(1)
+                        .selectedPhotos(null)
+                        .pauseOnScroll(false)
+                        .build();
+                startActivityForResult(photoPickerIntent, REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY);
                 break;
         }
     }
@@ -127,7 +133,7 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
         mQRCodeView.showScanRect();
 
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY) {
-            final String picturePath = BGAPhotoPickerActivity.getSelectedImages(data).get(0);
+            final String picturePath = BGAPhotoPickerActivity.getSelectedPhotos(data).get(0);
 
             /*
             这里为了偷懒，就没有处理匿名 AsyncTask 内部类导致 Activity 泄漏的问题

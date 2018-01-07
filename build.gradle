@@ -3,29 +3,19 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:3.0.1'
 
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath 'com.novoda:bintray-release:0.8.0'
     }
 }
 
 allprojects {
     repositories {
         jcenter()
-    }
-
-    tasks.withType(JavaCompile){
-        options.encoding = "UTF-8"
-    }
-
-    tasks.whenTaskAdded { task ->
-        if (task.name.contains('Test')) {
-            task.enabled = false
-        }
+        google()
     }
 }
 

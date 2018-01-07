@@ -1,0 +1,255 @@
+Installation on Microsoft Windows:
+
+There are three ways to create binaries of this package for Microsoft Windows:
+1) Native binaries, built using the mingw tool chain.
+2) Native binaries, built using the MS Visual C/C++ tool chain.
+3) Binaries for the Cygwin environment.
+
+===============================================================================
+1) Native binaries, built using the mingw tool chain.
+
+   I recommend to use the Cygwin environment as the development environment
+   and mingw only as the target (runtime, deployment) environment.
+   For this, you need to install
+     * Cygwin (from https://cygwin.com/),
+     * some packages available from the Cygwin package installer:
+         make
+     * the mingw cross-compilation tools and runtime package, available from
+       the Cygwin package installer (setup-x86_64.exe):
+       - for creating 32-bit binaries: packages
+           mingw64-i686-gcc-core,
+           mingw64-i686-headers,
+           mingw64-i686-runtime
+       - for creating 64-bit binaries: packages
+           mingw64-x86_64-gcc-core,
+           mingw64-x86_64-headers,
+           mingw64-x86_64-runtime
+
+   Building 32-bit binaries for mingw is achieved through the following
+   preparation, configure, and build commands:
+
+      PATH=/usr/local/mingw32/bin:$PATH
+      export PATH
+      ./configure --host=i686-w64-mingw32 --prefix=/usr/local/mingw32 \
+            CC=i686-w64-mingw32-gcc \
+            CPPFLAGS="-I/usr/local/mingw32/include -Wall" \
+            LDFLAGS="-L/usr/local/mingw32/lib"
+      make
+      make check
+
+   Building 64-bit binaries for mingw is achieved through the following
+   preparation, configure, and build commands:
+
+      PATH=/usr/local/mingw64/bin:$PATH
+      export PATH
+      ./configure --host=x86_64-w64-mingw32 --prefix=/usr/local/mingw64 \
+            CC=x86_64-w64-mingw32-gcc \
+            CPPFLAGS="-I/usr/local/mingw64/include -Wall" \
+            LDFLAGS="-L/usr/local/mingw64/lib"
+      make
+      make check
+
+   Installation:
+
+      make install
+
+===============================================================================
+2) Native binaries, built using the MS Visual C/C++ tool chain.
+
+   Note that binaries created with MSVC have a distribution constraint: They
+   depend on a closed-source library ('msvcr90.dll' for MSVC 9.0,
+   'vcruntime140.dll' for MSVC 14.0, and so on) which is not normally part of
+   a Windows installation.
+   You cannot distribute 'vcruntime*.dll' with the binaries - this would be a
+   violation of the GPL and of the Microsoft EULA.
+   You can distribute the binaries without including 'vcruntime*.dll'. Users
+   who don't have this library on their system will require to pull some files
+   (api-ms-win*.dll) through the Windows Update mechanism, see
+   https://support.microsoft.com/en-us/kb/2999226 .
+
+   This recipe requires MS Visual C/C++ 9.0 or newer.
+   You don't need the Visual Studio IDE, just the C/C++ tool chain.
+   As of 2016, you can install the MS Visual C/C++ 14.0 tool chain from
+   http://landinghub.visualstudio.com/visual-cpp-build-tools (it's the file
+   visualcppbuildtools_full.exe).
+
+   This recipe requires also a Cygwin environment (with 'bash', the common POSIX
+   commands, and 'make') as a build environment. Building with 'nmake' is not
+   supported.
+   For this, you need to install
+     * Cygwin (from https://cygwin.com/),
+     * some packages available from the Cygwin package installer:
+         make
+
+   You also need the scripts 'ar-lib' and 'compile' from
+     http://git.savannah.gnu.org/gitweb/?p=automake.git;a=blob_plain;f=lib/ar-lib;hb=HEAD
+     http://git.savannah.gnu.org/gitweb/?p=automake.git;a=blob_plain;f=lib/compile;hb=HEAD
+   respectively.
+   They may also be included in this package, in directory 'build-aux/'.
+   Save them; the instructions below assume that you stored them in $HOME/msvc/.
+   Make them executable:
+      chmod a+x ar-lib compile
+
+   Start a bash (from Cygwin).
+
+   Make sure that the MSVC tools ("cl" etc.) are found in PATH and the
+   environment variables INCLUDE and LIB are set appropriately.
+   In a typical MSVC 9.0 installation, it can be achieved by running
+     C:\Program Files\Microsoft Visual Studio 9.0\Common7\Tools\vsvars32.bat
+   In a typical MSVC 14.0 installation on Windows 10, it can be achieved
+   - for creating 32-bit binaries: through the following bash commands:
+
+      # Set environment variables for using MSVC 14,
+      # for creating native 32-bit Windows executables.
+
+      # Windows C library headers and libraries.
+      WindowsCrtIncludeDir='C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt'
+      WindowsCrtLibDir='C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10240.0\ucrt\'
+      INCLUDE="${WindowsCrtIncludeDir};$INCLUDE"
+      LIB="${WindowsCrtLibDir}x86;$LIB"
+
+      # Windows API headers and libraries.
+      WindowsSdkIncludeDir='C:\Program Files (x86)\Windows Kits\8.1\Include\'
+      WindowsSdkLibDir='C:\Program Files (x86)\Windows Kits\8.1\Lib\winv6.3\um\'
+      INCLUDE="${WindowsSdkIncludeDir}um;${WindowsSdkIncludeDir}shared;$INCLUDE"
+      LIB="${WindowsSdkLibDir}x86;$LIB"
+
+      # Visual C++ tools, headers and libraries.
+      VSINSTALLDIR='C:\Program Files (x86)\Microsoft Visual Studio 14.0'
+      VCINSTALLDIR="${VSINSTALLDIR}"'\VC'
+      PATH=`cygpath -u "${VCINSTALLDIR}"`/bin:"$PATH"
+      INCLUDE="${VCINSTALLDIR}"'\include;'"${INCLUDE}"
+      LIB="${VCINSTALLDIR}"'\lib;'"${LIB}"
+
+      export INCLUDE LIB
+
+   - for creating 64-bit binaries: through the following bash commands:
+
+     # Set environment variables for using MSVC 14,
+     # for creating native 64-bit Windows executables.
+
+     # Windows C library headers and libraries.
+     WindowsCrtIncludeDir='C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt'
+     WindowsCrtLibDir='C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10240.0\ucrt\'
+     INCLUDE="${WindowsCrtIncludeDir};$INCLUDE"
+     LIB="${WindowsCrtLibDir}x64;$LIB"
+
+     # Windows API headers and libraries.
+     WindowsSdkIncludeDir='C:\Program Files (x86)\Windows Kits\8.1\Include\'
+     WindowsSdkLibDir='C:\Program Files (x86)\Windows Kits\8.1\Lib\winv6.3\um\'
+     INCLUDE="${WindowsSdkIncludeDir}um;${WindowsSdkIncludeDir}shared;$INCLUDE"
+     LIB="${WindowsSdkLibDir}x64;$LIB"
+
+     # Visual C++ tools, headers and libraries.
+     VSINSTALLDIR='C:\Program Files (x86)\Microsoft Visual Studio 14.0'
+     VCINSTALLDIR="${VSINSTALLDIR}"'\VC'
+     PATH=`cygpath -u "${VCINSTALLDIR}"`/bin/amd64:"$PATH"
+     INCLUDE="${VCINSTALLDIR}"'\include;'"${INCLUDE}"
+     LIB="${VCINSTALLDIR}"'\lib\amd64;'"${LIB}"
+
+     export INCLUDE LIB
+
+   Building 32-bit binaries with MSVC is achieved through the following
+   preparation, configure, and build commands:
+
+      PATH=/usr/local/msvc32/bin:$PATH
+      export PATH
+
+      win32_target=_WIN32_WINNT_WINXP   # for MSVC 9.0
+      win32_target=_WIN32_WINNT_VISTA   # possibly for MSVC >= 10.0
+      win32_target=_WIN32_WINNT_WIN7    # possibly for MSVC >= 10.0
+      win32_target=_WIN32_WINNT_WIN8    # possibly for MSVC >= 10.0
+
+      ./configure --host=i686-w64-mingw32 --prefix=/usr/local/msvc32 \
+            CC="$HOME/msvc/compile cl -nologo" \
+            CFLAGS="-MD" \
+            CXX="$HOME/msvc/compile cl -nologo" \
+            CXXFLAGS="-MD" \
+            CPPFLAGS="-D_WIN32_WINNT=$win32_target -I/usr/local/msvc32/include" \
+            LDFLAGS="-L/usr/local/msvc32/lib" \
+            LD="link" \
+            NM="dumpbin -symbols" \
+            STRIP=":" \
+            AR="$HOME/msvc/ar-lib lib" \
+            RANLIB=":"
+      make
+      make check
+
+   Building 64-bit binaries with MSVC is achieved through the following
+   preparation, configure, and build commands:
+
+      PATH=/usr/local/msvc64/bin:$PATH
+      export PATH
+
+      win32_target=_WIN32_WINNT_WINXP   # for MSVC 9.0
+      win32_target=_WIN32_WINNT_VISTA   # possibly for MSVC >= 10.0
+      win32_target=_WIN32_WINNT_WIN7    # possibly for MSVC >= 10.0
+      win32_target=_WIN32_WINNT_WIN8    # possibly for MSVC >= 10.0
+
+      ./configure --host=x86_64-w64-mingw32 --prefix=/usr/local/msvc64 \
+            CC="$HOME/msvc/compile cl -nologo" \
+            CFLAGS="-MD" \
+            CXX="$HOME/msvc/compile cl -nologo" \
+            CXXFLAGS="-MD" \
+            CPPFLAGS="-D_WIN32_WINNT=$win32_target -I/usr/local/msvc64/include" \
+            LDFLAGS="-L/usr/local/msvc64/lib" \
+            LD="link" \
+            NM="dumpbin -symbols" \
+            STRIP=":" \
+            AR="$HOME/msvc/ar-lib lib" \
+            RANLIB=":"
+      make
+      make check
+
+   Installation:
+
+      make install
+
+===============================================================================
+3) Binaries for the Cygwin environment.
+
+   The generic instructions in the INSTALL file apply. But here are more
+   specific ones.
+
+   You need to install
+     * Cygwin (from https://cygwin.com/),
+     * some packages available from the Cygwin package installer:
+         make
+     * the Cygwin [cross-]compilation tools package, available from
+       the Cygwin package installer (setup-x86_64.exe):
+       - for creating 32-bit binaries: packages
+           cygwin32-gcc-core,
+           cygwin32
+       - for creating 64-bit binaries: packages
+           gcc-core
+
+   Building 32-bit binaries for Cygwin must be done in a directory *outside*
+   the Cygwin /home and /usr hierarchies. It is achieved through the following
+   preparation, configure, and build commands:
+
+      PATH=/usr/local/cygwin32/bin:/usr/i686-pc-cygwin/sys-root/usr/bin:$PATH
+      export PATH
+      ./configure --host=i686-pc-cygwin --prefix=/usr/local/cygwin32 \
+            CC=i686-pc-cygwin-gcc \
+            CPPFLAGS="-I/usr/local/cygwin32/include -Wall" \
+            LDFLAGS="-L/usr/local/cygwin32/lib"
+      make
+      make check
+
+   Building 64-bit binaries for Cygwin is achieved through the following
+   preparation, configure, and build commands:
+
+      PATH=/usr/local/cygwin64/bin:$PATH
+      export PATH
+      ./configure --host=x86_64-pc-cygwin --prefix=/usr/local/cygwin64 \
+            CC=x86_64-pc-cygwin-gcc \
+            CPPFLAGS="-I/usr/local/cygwin64/include -Wall" \
+            LDFLAGS="-L/usr/local/cygwin64/lib"
+      make
+      make check
+
+   Installation:
+
+      make install
+
+===============================================================================

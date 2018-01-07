@@ -21,7 +21,7 @@
 - [x] 可以控制闪光灯，方便夜间使用
 - [x] 可以定制各式各样的扫描框
 - [x] 可定制全屏扫描或只识别扫描框区域内的二维码
-- [x] ZBar 扫描二维码「扫描中文会有乱码，如果对中文有要求，请使用 ZXing」
+- [x] ZBar 扫描二维码「已解决中文乱码问题」
 
 ## 常见问题
 #### 1.部分手机无法扫描出结果，扫描预览界面二维码被压缩
@@ -32,9 +32,9 @@
 
 在自己项目里集成时记得在 onDestroy 方法中调用 mQRCodeView.onDestroy()，在 onStop 方法中调用 mQRCodeView.stopCamera()，否则会出现黑屏。如果没执行前面提到的这两个方法出现黑屏的话，那你就只能加上前面提到的两个方法后，重启手机后重新运行了
 
-#### 3.Gradle 依赖时提示找不到cn.bingoogolapple:bga-libraryname:「latestVersion」@aar
+#### 3.Gradle 依赖时提示找不到cn.bingoogolapple:bga-libraryname:「latestVersion」
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore) 「latestVersion」指的是左边这个 maven-central 徽章后面的「数字」，请自行替换。***请不要再来问我「latestVersion」是什么了***
+[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-qrcode-core/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-qrcode-core/_latestVersion)「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。***请不要再来问我「latestVersion」是什么了***
 
 ## 效果图与示例 apk
 
@@ -49,23 +49,20 @@
 | ![ZXingDemo apk文件二维码](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/zxingdemoapk.png) | ![ZBarDemo apk文件二维码](http://7xk9dj.com1.z0.glb.clouddn.com/qrcode/zbardemoapk.png) |
 
 ## Gradle 依赖
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-qrcodecore) 「latestVersion」指的是左边这个 maven-central 徽章后面的「数字」，请自行替换。
+[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-qrcode-core/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-qrcode-core/_latestVersion)「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。***请不要再来问我「latestVersion」是什么了***
 
 >ZXing
 
 ```groovy
 dependencies {
-    compile 'com.google.zxing:core:3.3.0'
-    compile 'cn.bingoogolapple:bga-qrcodecore:latestVersion@aar'
-    compile 'cn.bingoogolapple:bga-zxing:latestVersion@aar'
+    implementation 'cn.bingoogolapple:bga-qrcode-zxing:latestVersion'
 }
 ```
 >ZBar
 
 ```groovy
 dependencies {
-    compile 'cn.bingoogolapple:bga-qrcodecore:latestVersion@aar'
-    compile 'cn.bingoogolapple:bga-zbar:latestVersion@aar'
+    implementation 'cn.bingoogolapple:bga-qrcode-zbar:latestVersion'
 }
 ```
 ## 布局文件

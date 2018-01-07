@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion ANDROID_BUILD_SDK_VERSION as int
-    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
         minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
@@ -16,30 +15,27 @@ android {
     }
 
     buildTypes {
-        buildTypes {
-            release {
-                minifyEnabled true
-                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
     // -------------------- 以下几个库是为了方便编写演示案例添加进来的，集成到你自己项目时可以不依赖这些库 --------------------
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'pub.devrel:easypermissions:1.0.0'
-    compile 'cn.bingoogolapple:bga-photopicker:1.2.3@aar'
-    compile 'cn.bingoogolapple:bga-adapter:1.2.0@aar'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.android.support:appcompat-v7:27.0.2'
+    implementation 'com.android.support:support-v4:27.0.2'
+    implementation 'com.android.support:recyclerview-v7:27.0.2'
+    implementation 'pub.devrel:easypermissions:1.0.1'
+    implementation 'cn.bingoogolapple:bga-photopicker:1.2.8@aar'
+    implementation 'cn.bingoogolapple:bga-baseadapter:1.2.7@aar'
+    implementation 'com.github.bumptech.glide:glide:4.5.0'
     // -------------------- 以上几个库是为了方便编写演示案例添加进来的，集成到你自己项目时可以不依赖这些库 --------------------
 
-//    compile project(':zxing')
+    implementation project(':zxing')
 
-    // -------------------- 以下三个库是必须依赖的 ----------------------------
-    compile 'com.google.zxing:core:3.3.0'
-    compile 'cn.bingoogolapple:bga-qrcodecore:1.1.9@aar'
-    compile 'cn.bingoogolapple:bga-zxing:1.1.9@aar'
-    // -------------------- 以上三个库是必须依赖的 ----------------------------
+    // -------------------- 以下一个库是必须依赖的 ----------------------------
+//    implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.2.0'
+    // -------------------- 以上一个库是必须依赖的 ----------------------------
 }
