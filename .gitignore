@@ -43,3 +43,7 @@ proguard/
 *.keystore
 
 captures
+
+.externalNativeBuild/
+zbarjni/src/main/obj/
+zbarjni/src/main/libs/

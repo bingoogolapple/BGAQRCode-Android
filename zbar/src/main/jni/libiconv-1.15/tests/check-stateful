@@ -1,0 +1,20 @@
+#!/bin/sh
+# Simple check of a stateful encoding.
+# Usage: check-stateful SRCDIR CHARSET
+srcdir="$1"
+charset="$2"
+set -e
+
+# charset, modified for use in filenames.
+charsetf=`echo "$charset" | sed -e 's,:,-,g'`
+
+if test -f "${srcdir}"/"$charsetf"-snippet.alt; then
+  ../src/iconv_no_i18n -f "$charset" -t UTF-8 < "${srcdir}"/"$charsetf"-snippet.alt > tmp-snippet
+  cmp "${srcdir}"/"$charsetf"-snippet.UTF-8 tmp-snippet
+fi
+../src/iconv_no_i18n -f "$charset" -t UTF-8 < "${srcdir}"/"$charsetf"-snippet > tmp-snippet
+cmp "${srcdir}"/"$charsetf"-snippet.UTF-8 tmp-snippet
+../src/iconv_no_i18n -f UTF-8 -t "$charset" < "${srcdir}"/"$charsetf"-snippet.UTF-8 > tmp-snippet
+cmp "${srcdir}"/"$charsetf"-snippet tmp-snippet
+rm -f tmp-snippet
+exit 0

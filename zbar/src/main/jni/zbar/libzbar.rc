@@ -1,0 +1,32 @@
+#include <config.h>
+#include <winver.h>
+
+#define STR(s) #s
+#define XSTR(s) STR(s)
+
+VS_VERSION_INFO VERSIONINFO
+    FILEVERSION LIB_VERSION_MAJOR, LIB_VERSION_MINOR,  LIB_VERSION_REVISION, 0
+    PRODUCTVERSION  ZBAR_VERSION_MAJOR, ZBAR_VERSION_MINOR,  0, 0
+    FILEOS VOS__WINDOWS32
+    FILETYPE VFT_DLL
+{
+    BLOCK "StringFileInfo" {
+        BLOCK "040904E4" {
+            VALUE "ProductName", "ZBar Bar Code Reader"
+            VALUE "Company Name", "ZBar Bar Code Reader"
+            VALUE "InternalName", "libzbar"
+            VALUE "OriginalFilename", "libzbar-" XSTR(LIB_VERSION_MAJOR) ".dll"
+
+            VALUE "FileVersion", XSTR(LIB_VERSION_MAJOR) "." \
+                XSTR(LIB_VERSION_MINOR) "." XSTR(LIB_VERSION_REVISION)
+            VALUE "ProductVersion", PACKAGE_VERSION
+
+            VALUE "FileDescription", "Bar code reader library"
+
+            VALUE "LegalCopyright", "Copyright 2007-2009 (c) Jeff Brown <spadix@users.sourceforge.net>"
+        }
+    }
+    BLOCK "VarFileInfo" {
+        VALUE "Translation", 0x0409, 0x04e4
+    }
+}
