@@ -40,34 +40,42 @@ public class ProcessDataTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected String doInBackground(Void... params) {
-        Camera.Parameters parameters = mCamera.getParameters();
-        Camera.Size size = parameters.getPreviewSize();
-        int width = size.width;
-        int height = size.height;
-
+        int width = 0;
+        int height = 0;
         byte[] data = mData;
-
-        if (orientation == BGAQRCodeUtil.ORIENTATION_PORTRAIT) {
-            data = new byte[mData.length];
-            for (int y = 0; y < height; y++) {
-                for (int x = 0; x < width; x++) {
-                    data[x * height + height - y - 1] = mData[x + y * width];
-                }
-            }
-            int tmp = width;
-            width = height;
-            height = tmp;
-        }
-
         try {
+            Camera.Parameters parameters = mCamera.getParameters();
+            Camera.Size size = parameters.getPreviewSize();
+            width = size.width;
+            height = size.height;
+
+            if (orientation == BGAQRCodeUtil.ORIENTATION_PORTRAIT) {
+                data = new byte[mData.length];
+                for (int y = 0; y < height; y++) {
+                    for (int x = 0; x < width; x++) {
+                        data[x * height + height - y - 1] = mData[x + y * width];
+                    }
+                }
+                int tmp = width;
+                width = height;
+                height = tmp;
+            }
+
             if (mDelegate == null) {
                 return null;
             }
             return mDelegate.processData(data, width, height, false);
         } catch (Exception e1) {
+            e1.printStackTrace();
             try {
-                return mDelegate.processData(data, width, height, true);
+                if (mDelegate != null && width != 0 && height != 0) {
+                    BGAQRCodeUtil.d("失败失败重试");
+                    return mDelegate.processData(data, width, height, true);
+                } else {
+                    return null;
+                }
             } catch (Exception e2) {
+                e2.printStackTrace();
                 return null;
             }
         }

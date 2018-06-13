@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
@@ -15,8 +16,25 @@ import android.view.WindowManager;
 public class BGAQRCodeUtil {
     public static final int ORIENTATION_PORTRAIT = 0;
     public static final int ORIENTATION_LANDSCAPE = 1;
+    private static boolean debug;
 
-    public static final int getOrientation(Context context) {
+    public static void setDebug(boolean debug) {
+        BGAQRCodeUtil.debug = debug;
+    }
+
+    public static void d(String msg) {
+        if (debug) {
+            Log.d("BGAQRCode", msg);
+        }
+    }
+
+    public static void e(String msg) {
+        if (debug) {
+            Log.e("BGAQRCode", msg);
+        }
+    }
+
+    public static int getOrientation(Context context) {
         Point screenResolution = getScreenResolution(context);
         return screenResolution.x > screenResolution.y ? ORIENTATION_LANDSCAPE : ORIENTATION_PORTRAIT;
     }
