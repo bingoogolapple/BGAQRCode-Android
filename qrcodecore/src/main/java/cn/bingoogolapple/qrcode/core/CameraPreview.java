@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.hardware.Camera;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
-    private static final String TAG = CameraPreview.class.getSimpleName();
     private Camera mCamera;
     private boolean mPreviewing = true;
     private boolean mSurfaceCreated = false;
@@ -71,7 +69,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
                 mCamera.autoFocus(autoFocusCB);
             } catch (Exception e) {
-                Log.e(TAG, e.toString(), e);
+                e.printStackTrace();
             }
         }
     }
@@ -86,7 +84,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 mCamera.setOneShotPreviewCallback(null);
                 mCamera.stopPreview();
             } catch (Exception e) {
-                Log.e(TAG, e.toString(), e);
+                e.printStackTrace();
             }
         }
     }
@@ -134,6 +132,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 try {
                     mCamera.autoFocus(autoFocusCB);
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }

@@ -1,6 +1,7 @@
 package cn.bingoogolapple.qrcode.core;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -16,7 +17,6 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     protected Handler mHandler;
     protected boolean mSpotAble = false;
     protected ProcessDataTask mProcessDataTask;
-    private int mOrientation;
 
     public QRCodeView(Context context, AttributeSet attributeSet) {
         this(context, attributeSet, 0);
@@ -39,8 +39,6 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         layoutParams.addRule(RelativeLayout.ALIGN_TOP, mPreview.getId());
         layoutParams.addRule(RelativeLayout.ALIGN_BOTTOM, mPreview.getId());
         addView(mScanBoxView, layoutParams);
-
-        mOrientation = BGAQRCodeUtil.getOrientation(context);
     }
 
     /**
@@ -83,8 +81,6 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
 
     /**
      * 打开指定摄像头开始预览，但是并未开始识别
-     *
-     * @param cameraFacing
      */
     public void startCamera(int cameraFacing) {
         if (mCamera != null) {
@@ -105,6 +101,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
             mCamera = Camera.open(cameraId);
             mPreview.setCamera(mCamera);
         } catch (Exception e) {
+            e.printStackTrace();
             if (mDelegate != null) {
                 mDelegate.onScanQRCodeOpenCameraError();
             }
@@ -124,20 +121,19 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
                 mCamera = null;
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     /**
-     * 延迟1.5秒后开始识别
+     * 延迟0.5秒后开始识别
      */
     public void startSpot() {
-        startSpotDelay(1500);
+        startSpotDelay(500);
     }
 
     /**
      * 延迟delay毫秒后开始识别
-     *
-     * @param delay
      */
     public void startSpotDelay(int delay) {
         mSpotAble = true;
@@ -160,6 +156,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
             try {
                 mCamera.setOneShotPreviewCallback(null);
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         if (mHandler != null) {
@@ -176,7 +173,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     }
 
     /**
-     * 显示扫描框，并且延迟1.5秒后开始识别
+     * 显示扫描框，并且延迟0.5秒后开始识别
      */
     public void startSpotAndShowRect() {
         startSpot();
@@ -237,8 +234,6 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
 
     /**
      * 当前是否为条码扫描样式
-     *
-     * @return
      */
     public boolean getIsScanBarcodeStyle() {
         return mScanBoxView.getIsBarcode();
@@ -248,7 +243,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     public void onPreviewFrame(final byte[] data, final Camera camera) {
         if (mSpotAble) {
             cancelProcessDataTask();
-            mProcessDataTask = new ProcessDataTask(camera, data, this, mOrientation) {
+            mProcessDataTask = new ProcessDataTask(camera, data, this, BGAQRCodeUtil.isPortrait(getContext())) {
                 @Override
                 protected void onPostExecute(String result) {
                     if (mSpotAble) {
@@ -256,17 +251,51 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
                             try {
                                 mDelegate.onScanQRCodeSuccess(result);
                             } catch (Exception e) {
+                                e.printStackTrace();
                             }
                         } else {
                             try {
                                 camera.setOneShotPreviewCallback(QRCodeView.this);
                             } catch (Exception e) {
+                                e.printStackTrace();
                             }
                         }
                     }
                 }
             }.perform();
         }
+    }
+
+    /**
+     * 解析本地图片二维码。返回二维码图片里的内容 或 null
+     *
+     * @param picturePath 要解析的二维码图片本地路径
+     */
+    public void decodeQRCode(String picturePath) {
+        mProcessDataTask = new ProcessDataTask(picturePath, this) {
+            @Override
+            protected void onPostExecute(String result) {
+                if (mDelegate != null) {
+                    mDelegate.onScanQRCodeSuccess(result);
+                }
+            }
+        }.perform();
+    }
+
+    /**
+     * 解析 Bitmap 二维码。返回二维码图片里的内容 或 null
+     *
+     * @param bitmap 要解析的二维码图片
+     */
+    public void decodeQRCode(Bitmap bitmap) {
+        mProcessDataTask = new ProcessDataTask(bitmap, this) {
+            @Override
+            protected void onPostExecute(String result) {
+                if (mDelegate != null) {
+                    mDelegate.onScanQRCodeSuccess(result);
+                }
+            }
+        }.perform();
     }
 
     private Runnable mOneShotPreviewCallbackTask = new Runnable() {
@@ -286,7 +315,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         /**
          * 处理扫描结果
          *
-         * @param result
+         * @param result 摄像头扫码时只要回调了该方法 result 就一定有值，不会为 null。解析本地图片或 Bitmap 时 result 可能为 null
          */
         void onScanQRCodeSuccess(String result);
 

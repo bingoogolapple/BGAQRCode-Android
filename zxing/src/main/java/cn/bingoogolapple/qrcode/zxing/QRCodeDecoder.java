@@ -1,7 +1,6 @@
 package cn.bingoogolapple.qrcode.zxing;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
@@ -16,6 +15,8 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+
+import cn.bingoogolapple.qrcode.core.BGAQRCodeUtil;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -60,7 +61,7 @@ public class QRCodeDecoder {
      * @return 返回二维码图片里的内容 或 null
      */
     public static String syncDecodeQRCode(String picturePath) {
-        return syncDecodeQRCode(getDecodeAbleBitmap(picturePath));
+        return syncDecodeQRCode(BGAQRCodeUtil.getDecodeAbleBitmap(picturePath));
     }
 
     /**
@@ -70,7 +71,7 @@ public class QRCodeDecoder {
      * @return 返回二维码图片里的内容 或 null
      */
     public static String syncDecodeQRCode(Bitmap bitmap) {
-        Result result = null;
+        Result result;
         RGBLuminanceSource source = null;
         try {
             int width = bitmap.getWidth();
@@ -90,30 +91,6 @@ public class QRCodeDecoder {
                     e2.printStackTrace();
                 }
             }
-            return null;
-        }
-    }
-
-    /**
-     * 将本地图片文件转换成可解码二维码的 Bitmap。为了避免图片太大，这里对图片进行了压缩。感谢 https://github.com/devilsen 提的 PR
-     *
-     * @param picturePath 本地图片文件路径
-     * @return
-     */
-    private static Bitmap getDecodeAbleBitmap(String picturePath) {
-        try {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(picturePath, options);
-            int sampleSize = options.outHeight / 400;
-            if (sampleSize <= 0) {
-                sampleSize = 1;
-            }
-            options.inSampleSize = sampleSize;
-            options.inJustDecodeBounds = false;
-
-            return BitmapFactory.decodeFile(picturePath, options);
-        } catch (Exception e) {
             return null;
         }
     }
