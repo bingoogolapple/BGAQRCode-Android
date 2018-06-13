@@ -14,8 +14,6 @@ import android.view.Display;
 import android.view.WindowManager;
 
 public class BGAQRCodeUtil {
-    public static final int ORIENTATION_PORTRAIT = 0;
-    public static final int ORIENTATION_LANDSCAPE = 1;
     private static boolean debug;
 
     public static void setDebug(boolean debug) {
@@ -34,20 +32,19 @@ public class BGAQRCodeUtil {
         }
     }
 
-    public static int getOrientation(Context context) {
+    /**
+     * 是否为竖屏
+     */
+    public static boolean isPortrait(Context context) {
         Point screenResolution = getScreenResolution(context);
-        return screenResolution.x > screenResolution.y ? ORIENTATION_LANDSCAPE : ORIENTATION_PORTRAIT;
+        return screenResolution.y > screenResolution.x;
     }
 
     public static Point getScreenResolution(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point screenResolution = new Point();
-        if (android.os.Build.VERSION.SDK_INT >= 13) {
-            display.getSize(screenResolution);
-        } else {
-            screenResolution.set(display.getWidth(), display.getHeight());
-        }
+        display.getSize(screenResolution);
         return screenResolution;
     }
 
@@ -55,11 +52,11 @@ public class BGAQRCodeUtil {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
     }
 
-    public static int sp2px(Context context, float spValue) {
+    static int sp2px(Context context, float spValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, context.getResources().getDisplayMetrics());
     }
 
-    public static Bitmap adjustPhotoRotation(Bitmap inputBitmap, int orientationDegree) {
+    static Bitmap adjustPhotoRotation(Bitmap inputBitmap, int orientationDegree) {
         if (inputBitmap == null) {
             return null;
         }
@@ -87,7 +84,7 @@ public class BGAQRCodeUtil {
         return outputBitmap;
     }
 
-    public static Bitmap makeTintBitmap(Bitmap inputBitmap, int tintColor) {
+    static Bitmap makeTintBitmap(Bitmap inputBitmap, int tintColor) {
         if (inputBitmap == null) {
             return null;
         }

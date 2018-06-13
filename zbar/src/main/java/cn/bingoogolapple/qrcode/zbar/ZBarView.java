@@ -11,6 +11,8 @@ import net.sourceforge.zbar.ImageScanner;
 import net.sourceforge.zbar.Symbol;
 import net.sourceforge.zbar.SymbolSet;
 
+import java.nio.charset.StandardCharsets;
+
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 
 public class ZBarView extends QRCodeView {
@@ -43,13 +45,12 @@ public class ZBarView extends QRCodeView {
 
     @Override
     public String processData(byte[] data, int width, int height, boolean isRetry) {
-        String result = null;
+        String result;
         Image barcode = new Image(width, height, "Y800");
 
         Rect rect = mScanBoxView.getScanBoxAreaRect(height);
         if (rect != null && !isRetry && rect.left + rect.width() <= width && rect.top + rect.height() <= height) {
             barcode.setCrop(rect.left, rect.top, rect.width(), rect.height());
-
         }
 
         barcode.setData(data);
@@ -61,9 +62,14 @@ public class ZBarView extends QRCodeView {
     private String processData(Image barcode) {
         String result = null;
         if (mScanner.scanImage(barcode) != 0) {
-            SymbolSet syms = mScanner.getResults();
-            for (Symbol sym : syms) {
-                String symData = sym.getData();
+            SymbolSet symbolSet = mScanner.getResults();
+            for (Symbol symbol : symbolSet) {
+                String symData;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                    symData = new String(symbol.getDataBytes(), StandardCharsets.UTF_8);
+                } else {
+                    symData = symbol.getData();
+                }
                 if (!TextUtils.isEmpty(symData)) {
                     result = symData;
                     break;

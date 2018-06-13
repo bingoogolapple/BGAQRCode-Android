@@ -178,7 +178,7 @@ public void startCamera(int cameraFacing)
 public void stopCamera()
 
 /**
- * 延迟1.5秒后开始识别
+ * 延迟0.5秒后开始识别
  */
 public void startSpot()
 

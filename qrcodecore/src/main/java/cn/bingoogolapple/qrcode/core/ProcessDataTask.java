@@ -2,31 +2,26 @@ package cn.bingoogolapple.qrcode.core;
 
 import android.hardware.Camera;
 import android.os.AsyncTask;
-import android.os.Build;
 
 public class ProcessDataTask extends AsyncTask<Void, Void, String> {
     private Camera mCamera;
     private byte[] mData;
     private Delegate mDelegate;
-    private int orientation;
+    private boolean mIsPortrait;
 
-    public ProcessDataTask(Camera camera, byte[] data, Delegate delegate, int orientation) {
+    ProcessDataTask(Camera camera, byte[] data, Delegate delegate, boolean isPortrait) {
         mCamera = camera;
         mData = data;
         mDelegate = delegate;
-        this.orientation = orientation;
+        mIsPortrait = isPortrait;
     }
 
     public ProcessDataTask perform() {
-        if (Build.VERSION.SDK_INT >= 11) {
-            executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            execute();
-        }
+        executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         return this;
     }
 
-    public void cancelTask() {
+    void cancelTask() {
         if (getStatus() != Status.FINISHED) {
             cancel(true);
         }
@@ -49,7 +44,7 @@ public class ProcessDataTask extends AsyncTask<Void, Void, String> {
             width = size.width;
             height = size.height;
 
-            if (orientation == BGAQRCodeUtil.ORIENTATION_PORTRAIT) {
+            if (mIsPortrait) {
                 data = new byte[mData.length];
                 for (int y = 0; y < height; y++) {
                     for (int x = 0; x < width; x++) {
@@ -69,7 +64,7 @@ public class ProcessDataTask extends AsyncTask<Void, Void, String> {
             e1.printStackTrace();
             try {
                 if (mDelegate != null && width != 0 && height != 0) {
-                    BGAQRCodeUtil.d("失败失败重试");
+                    BGAQRCodeUtil.d("识别失败重试");
                     return mDelegate.processData(data, width, height, true);
                 } else {
                     return null;

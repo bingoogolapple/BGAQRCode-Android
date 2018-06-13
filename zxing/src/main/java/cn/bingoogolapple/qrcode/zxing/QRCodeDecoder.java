@@ -114,6 +114,7 @@ public class QRCodeDecoder {
 
             return BitmapFactory.decodeFile(picturePath, options);
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

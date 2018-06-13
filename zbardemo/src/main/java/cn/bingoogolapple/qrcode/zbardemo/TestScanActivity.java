@@ -207,6 +207,7 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
 
             return BitmapFactory.decodeFile(picturePath, options);
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
