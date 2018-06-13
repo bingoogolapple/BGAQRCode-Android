@@ -9,7 +9,7 @@ android {
     }
 }
 
-// gradle clean build bintrayUpload -PpublishAar
+// ./gradlew :qrcodecore:clean :qrcodecore:build :qrcodecore:bintrayUpload -PpublishAar
 if (hasProperty("publishAar")) {
     apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/jcenter-release.gradle'
 }

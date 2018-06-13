@@ -114,6 +114,7 @@ qrcv_topOffset         | 扫描框距离 toolbar 底部的距离        | 90dp
 qrcv_cornerSize         | 扫描框边角线的宽度        | 3dp
 qrcv_cornerLength         | 扫描框边角线的长度        | 20dp
 qrcv_cornerColor         | 扫描框边角线的颜色        | @android:color/white
+qrcv_cornerDisplayType         | 扫描框边角线显示位置(相对于边框)，默认值为中间        | center
 qrcv_rectWidth         | 扫描框的宽度        | 200dp
 qrcv_barcodeRectHeight         | 条码扫样式描框的高度        | 140dp
 qrcv_maskColor         | 除去扫描框，其余部分阴影颜色        | #33FFFFFF
@@ -125,7 +126,8 @@ qrcv_customScanLineDrawable         | 扫描线的图片资源「默认的扫描
 qrcv_borderSize         | 扫描边框的宽度        | 1dp
 qrcv_borderColor         | 扫描边框的颜色        | @android:color/white
 qrcv_animTime         | 扫描线从顶部移动到底部的动画时间「单位为毫秒」        | 1000
-qrcv_isCenterVertical         | 扫描框是否垂直居中，该属性为true时会忽略 qrcv_topOffset 属性        | false
+qrcv_isCenterVertical（已废弃，如果要垂直居中用 qrcv_verticalBias="0.5"来代替）         | 扫描框是否垂直居中，该属性为true时会忽略 qrcv_topOffset 属性        | false
+qrcv_verticalBias         | 扫描框中心点在屏幕垂直方向的比例，当设置此值时，会忽略 qrcv_topOffset 属性        | -1
 qrcv_toolbarHeight         | Toolbar 的高度，通过该属性来修正由 Toolbar 导致扫描框在垂直方向上的偏差        | 0dp
 qrcv_isBarcode         | 是否是扫条形码        | false
 qrcv_tipText         | 提示文案        | null
@@ -296,9 +298,9 @@ public static Bitmap syncEncodeQRCode(String content, int size, int foregroundCo
 
 ## 关于我
 
-| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群
-| ------------ | ------------- | ------------ | ------------ |
-| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
+| 个人主页 | 邮箱 | BGA系列开源库QQ群
+| ------------- | ------------ | ------------ |
+| <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
 
 ## 打赏支持
 

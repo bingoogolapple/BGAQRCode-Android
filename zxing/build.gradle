@@ -18,7 +18,7 @@ dependencies {
     }
 }
 
-// gradle clean build bintrayUpload -PpublishAar
+// ./gradlew :zxing:clean :zxing:build :zxing:bintrayUpload -PpublishAar
 if (hasProperty("publishAar")) {
     apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/jcenter-release.gradle'
 }
