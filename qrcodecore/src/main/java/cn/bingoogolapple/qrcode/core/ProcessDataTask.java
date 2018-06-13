@@ -1,5 +1,6 @@
 package cn.bingoogolapple.qrcode.core;
 
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 
@@ -8,12 +9,24 @@ public class ProcessDataTask extends AsyncTask<Void, Void, String> {
     private byte[] mData;
     private Delegate mDelegate;
     private boolean mIsPortrait;
+    private String mPicturePath;
+    private Bitmap mBitmap;
 
     ProcessDataTask(Camera camera, byte[] data, Delegate delegate, boolean isPortrait) {
         mCamera = camera;
         mData = data;
         mDelegate = delegate;
         mIsPortrait = isPortrait;
+    }
+
+    ProcessDataTask(String picturePath, Delegate delegate) {
+        mPicturePath = picturePath;
+        mDelegate = delegate;
+    }
+
+    ProcessDataTask(Bitmap bitmap, Delegate delegate) {
+        mBitmap = bitmap;
+        mDelegate = delegate;
     }
 
     public ProcessDataTask perform() {
@@ -31,10 +44,15 @@ public class ProcessDataTask extends AsyncTask<Void, Void, String> {
     protected void onCancelled() {
         super.onCancelled();
         mDelegate = null;
+        mBitmap = null;
+        mData = null;
     }
 
-    @Override
-    protected String doInBackground(Void... params) {
+    private String processData() {
+        if (mData == null) {
+            return null;
+        }
+
         int width = 0;
         int height = 0;
         byte[] data = mData;
@@ -76,7 +94,25 @@ public class ProcessDataTask extends AsyncTask<Void, Void, String> {
         }
     }
 
+    @Override
+    protected String doInBackground(Void... params) {
+        if (mDelegate == null) {
+            return null;
+        }
+        if (mPicturePath != null) {
+            return mDelegate.processBitmapData(BGAQRCodeUtil.getDecodeAbleBitmap(mPicturePath));
+        } else if (mBitmap != null) {
+            String result = mDelegate.processBitmapData(mBitmap);
+            mBitmap = null;
+            return result;
+        } else {
+            return processData();
+        }
+    }
+
     public interface Delegate {
         String processData(byte[] data, int width, int height, boolean isRetry);
+
+        String processBitmapData(Bitmap bitmap);
     }
 }

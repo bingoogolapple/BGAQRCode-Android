@@ -1,6 +1,7 @@
 package cn.bingoogolapple.qrcode.core;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -172,7 +173,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     }
 
     /**
-     * 显示扫描框，并且延迟1.5秒后开始识别
+     * 显示扫描框，并且延迟0.5秒后开始识别
      */
     public void startSpotAndShowRect() {
         startSpot();
@@ -265,6 +266,38 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         }
     }
 
+    /**
+     * 解析本地图片二维码。返回二维码图片里的内容 或 null
+     *
+     * @param picturePath 要解析的二维码图片本地路径
+     */
+    public void decodeQRCode(String picturePath) {
+        mProcessDataTask = new ProcessDataTask(picturePath, this) {
+            @Override
+            protected void onPostExecute(String result) {
+                if (mDelegate != null) {
+                    mDelegate.onScanQRCodeSuccess(result);
+                }
+            }
+        }.perform();
+    }
+
+    /**
+     * 解析 Bitmap 二维码。返回二维码图片里的内容 或 null
+     *
+     * @param bitmap 要解析的二维码图片
+     */
+    public void decodeQRCode(Bitmap bitmap) {
+        mProcessDataTask = new ProcessDataTask(bitmap, this) {
+            @Override
+            protected void onPostExecute(String result) {
+                if (mDelegate != null) {
+                    mDelegate.onScanQRCodeSuccess(result);
+                }
+            }
+        }.perform();
+    }
+
     private Runnable mOneShotPreviewCallbackTask = new Runnable() {
         @Override
         public void run() {
@@ -281,6 +314,8 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     public interface Delegate {
         /**
          * 处理扫描结果
+         *
+         * @param result 摄像头扫码时只要回调了该方法 result 就一定有值，不会为 null。解析本地图片或 Bitmap 时 result 可能为 null
          */
         void onScanQRCodeSuccess(String result);
 

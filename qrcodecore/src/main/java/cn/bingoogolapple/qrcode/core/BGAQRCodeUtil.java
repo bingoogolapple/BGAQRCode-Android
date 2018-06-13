@@ -2,6 +2,7 @@ package cn.bingoogolapple.qrcode.core;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -95,5 +96,29 @@ public class BGAQRCodeUtil {
         paint.setColorFilter(new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(inputBitmap, 0, 0, paint);
         return outputBitmap;
+    }
+
+    /**
+     * 将本地图片文件转换成可解码二维码的 Bitmap。为了避免图片太大，这里对图片进行了压缩。感谢 https://github.com/devilsen 提的 PR
+     *
+     * @param picturePath 本地图片文件路径
+     */
+    public static Bitmap getDecodeAbleBitmap(String picturePath) {
+        try {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(picturePath, options);
+            int sampleSize = options.outHeight / 400;
+            if (sampleSize <= 0) {
+                sampleSize = 1;
+            }
+            options.inSampleSize = sampleSize;
+            options.inJustDecodeBounds = false;
+
+            return BitmapFactory.decodeFile(picturePath, options);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
