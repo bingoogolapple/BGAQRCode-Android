@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 
 public abstract class QRCodeView extends RelativeLayout implements Camera.PreviewCallback, ProcessDataTask.Delegate {
     protected Camera mCamera;
-    protected CameraPreview mPreview;
+    protected CameraPreview mCameraPreview;
     protected ScanBoxView mScanBoxView;
     protected Delegate mDelegate;
     protected Handler mHandler;
@@ -29,15 +29,15 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     }
 
     private void initView(Context context, AttributeSet attrs) {
-        mPreview = new CameraPreview(getContext());
+        mCameraPreview = new CameraPreview(getContext());
 
         mScanBoxView = new ScanBoxView(getContext());
         mScanBoxView.initCustomAttrs(context, attrs);
-        mPreview.setId(R.id.bgaqrcode_camera_preview);
-        addView(mPreview);
+        mCameraPreview.setId(R.id.bgaqrcode_camera_preview);
+        addView(mCameraPreview);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(context, attrs);
-        layoutParams.addRule(RelativeLayout.ALIGN_TOP, mPreview.getId());
-        layoutParams.addRule(RelativeLayout.ALIGN_BOTTOM, mPreview.getId());
+        layoutParams.addRule(RelativeLayout.ALIGN_TOP, mCameraPreview.getId());
+        layoutParams.addRule(RelativeLayout.ALIGN_BOTTOM, mCameraPreview.getId());
         addView(mScanBoxView, layoutParams);
     }
 
@@ -48,6 +48,24 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
      */
     public void setDelegate(Delegate delegate) {
         mDelegate = delegate;
+    }
+
+    public CameraPreview getCameraPreview() {
+        return mCameraPreview;
+    }
+
+    /**
+     * 自动对焦成功后，再次对焦的延迟
+     */
+    public void setAutoFocusSuccessDelay(long autoFocusSuccessDelay) {
+        mCameraPreview.setAutoFocusSuccessDelay(autoFocusSuccessDelay);
+    }
+
+    /**
+     * 自动对焦失败后，再次对焦的延迟
+     */
+    public void setAutoFocusFailureDelay(long autoFocusFailureDelay) {
+        mCameraPreview.setAutoFocusSuccessDelay(autoFocusFailureDelay);
     }
 
     public ScanBoxView getScanBoxView() {
@@ -99,7 +117,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     private void startCameraById(int cameraId) {
         try {
             mCamera = Camera.open(cameraId);
-            mPreview.setCamera(mCamera);
+            mCameraPreview.setCamera(mCamera);
         } catch (Exception e) {
             e.printStackTrace();
             if (mDelegate != null) {
@@ -115,8 +133,8 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         try {
             stopSpotAndHiddenRect();
             if (mCamera != null) {
-                mPreview.stopCameraPreview();
-                mPreview.setCamera(null);
+                mCameraPreview.stopCameraPreview();
+                mCameraPreview.setCamera(null);
                 mCamera.release();
                 mCamera = null;
             }
@@ -184,14 +202,14 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
      * 打开闪光灯
      */
     public void openFlashlight() {
-        mPreview.openFlashlight();
+        mCameraPreview.openFlashlight();
     }
 
     /**
      * 关闭散光灯
      */
     public void closeFlashlight() {
-        mPreview.closeFlashlight();
+        mCameraPreview.closeFlashlight();
     }
 
     /**

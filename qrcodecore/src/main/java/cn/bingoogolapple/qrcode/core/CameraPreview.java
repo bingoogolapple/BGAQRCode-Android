@@ -9,6 +9,18 @@ import android.view.SurfaceView;
 
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
+    /**
+     * 自动对焦成功后，再次对焦的延迟
+     */
+    public static final long DEFAULT_AUTO_FOCUS_SUCCESS_DELAY = 2000L;
+
+    /**
+     * 自动对焦失败后，再次对焦的延迟
+     */
+    public static final long DEFAULT_AUTO_FOCUS_FAILURE_DELAY = 500L;
+
+    private long mAutoFocusSuccessDelay = DEFAULT_AUTO_FOCUS_SUCCESS_DELAY;
+    private long mAutoFocusFailureDelay = DEFAULT_AUTO_FOCUS_FAILURE_DELAY;
     private Camera mCamera;
     private boolean mPreviewing = true;
     private boolean mSurfaceCreated = false;
@@ -18,7 +30,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         super(context);
     }
 
-    public void setCamera(Camera camera) {
+    void setCamera(Camera camera) {
         mCamera = camera;
         if (mCamera != null) {
             mCameraConfigurationManager = new CameraConfigurationManager(getContext());
@@ -141,11 +153,39 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     Camera.AutoFocusCallback autoFocusCB = new Camera.AutoFocusCallback() {
         public void onAutoFocus(boolean success, Camera camera) {
             if (success) {
-                postDelayed(doAutoFocus, 2000);
+                postDelayed(doAutoFocus, getAutoFocusSuccessDelay());
             } else {
-                postDelayed(doAutoFocus, 500);
+                postDelayed(doAutoFocus, getAutoFocusFailureDelay());
             }
         }
     };
+
+    /**
+     * 自动对焦成功后，再次对焦的延迟
+     */
+    public long getAutoFocusSuccessDelay() {
+        return mAutoFocusSuccessDelay;
+    }
+
+    /**
+     * 自动对焦成功后，再次对焦的延迟
+     */
+    public void setAutoFocusSuccessDelay(long autoFocusSuccessDelay) {
+        mAutoFocusSuccessDelay = autoFocusSuccessDelay;
+    }
+
+    /**
+     * 自动对焦失败后，再次对焦的延迟
+     */
+    public long getAutoFocusFailureDelay() {
+        return mAutoFocusFailureDelay;
+    }
+
+    /**
+     * 自动对焦失败后，再次对焦的延迟
+     */
+    public void setAutoFocusFailureDelay(long autoFocusFailureDelay) {
+        mAutoFocusFailureDelay = autoFocusFailureDelay;
+    }
 
 }
