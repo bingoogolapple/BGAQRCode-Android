@@ -33,9 +33,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.5.0'
     // -------------------- 以上几个库是为了方便编写演示案例添加进来的，集成到你自己项目时可以不依赖这些库 --------------------
 
-//    implementation project(':zbar')
+    implementation project(':zbar')
 
     // -------------------- 以下一个库是必须依赖的 ----------------------------
-    implementation 'cn.bingoogolapple:bga-qrcode-zbar:1.2.2'
+//    implementation 'cn.bingoogolapple:bga-qrcode-zbar:1.2.3'
     // -------------------- 以上一个库是必须依赖的 ----------------------------
 }

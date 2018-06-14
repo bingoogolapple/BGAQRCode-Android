@@ -17,7 +17,7 @@
         app:qrcv_cornerSize="3dp"
         app:qrcv_customScanLineDrawable="@drawable/scan_icon_scanline"
         app:qrcv_isBarcode="false"
-        app:qrcv_isOnlyDecodeScanBoxArea="false"
+        app:qrcv_isOnlyDecodeScanBoxArea="true"
         app:qrcv_isScanLineReverse="true"
         app:qrcv_isShowDefaultGridScanLineDrawable="false"
         app:qrcv_isShowDefaultScanLineDrawable="true"
