@@ -78,6 +78,8 @@ public class ScanBoxView extends View {
 
     private boolean mIsOnlyDecodeScanBoxArea;
 
+    private Delegate mDelegate;
+
     public ScanBoxView(Context context) {
         super(context);
         mPaint = new Paint();
@@ -230,6 +232,10 @@ public class ScanBoxView extends View {
         mTipPaint.setColor(mTipTextColor);
 
         setIsBarcode(mIsBarcode);
+    }
+
+    void setDelegate(Delegate delegate) {
+        mDelegate = delegate;
     }
 
     @Override
@@ -530,6 +536,10 @@ public class ScanBoxView extends View {
             mGridScanLineRight = mScanLineLeft = mFramingRect.left + mHalfCornerSize + 0.5f;
         } else {
             mGridScanLineBottom = mScanLineTop = mFramingRect.top + mHalfCornerSize + 0.5f;
+        }
+
+        if (mDelegate != null && isOnlyDecodeScanBoxArea()) {
+            mDelegate.onScanBoxRectChanged(new Rect(mFramingRect));
         }
     }
 
@@ -888,5 +898,9 @@ public class ScanBoxView extends View {
 
     public void setOnlyDecodeScanBoxArea(boolean onlyDecodeScanBoxArea) {
         mIsOnlyDecodeScanBoxArea = onlyDecodeScanBoxArea;
+    }
+
+    interface Delegate {
+        void onScanBoxRectChanged(Rect rect);
     }
 }

@@ -56,12 +56,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             return;
         }
         stopCameraPreview();
-
-        post(new Runnable() {
-            public void run() {
-                showCameraPreview();
-            }
-        });
+        showCameraPreview();
     }
 
     @Override
@@ -70,20 +65,25 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         stopCameraPreview();
     }
 
-    public void showCameraPreview() {
-        if (mCamera != null) {
-            try {
-                mPreviewing = true;
-                mCamera.setPreviewDisplay(getHolder());
+    private void showCameraPreview() {
+        post(new Runnable() {
+            @Override
+            public void run() {
+                if (mCamera != null) {
+                    try {
+                        mPreviewing = true;
+                        mCamera.setPreviewDisplay(getHolder());
 
-                mCameraConfigurationManager.setDesiredCameraParameters(mCamera);
-                mCamera.startPreview();
+                        mCameraConfigurationManager.setDesiredCameraParameters(mCamera);
+                        mCamera.startPreview();
 
-                mCamera.autoFocus(autoFocusCB);
-            } catch (Exception e) {
-                e.printStackTrace();
+                        mCamera.autoFocus(autoFocusCB);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        }
+        });
     }
 
     public void stopCameraPreview() {
