@@ -33,7 +33,7 @@ public class ZBarView extends QRCodeView {
         setupScanner();
     }
 
-    public void setupScanner() {
+    private void setupScanner() {
         mScanner = new ImageScanner();
         mScanner.setConfig(0, Config.X_DENSITY, 3);
         mScanner.setConfig(0, Config.Y_DENSITY, 3);
@@ -45,7 +45,7 @@ public class ZBarView extends QRCodeView {
     }
 
     @Override
-    public String processData(byte[] data, int width, int height, boolean isRetry) {
+    protected String processData(byte[] data, int width, int height, boolean isRetry) {
         String result;
         Image barcode = new Image(width, height, "Y800");
 
@@ -81,7 +81,7 @@ public class ZBarView extends QRCodeView {
     }
 
     @Override
-    public String processBitmapData(Bitmap bitmap) {
+    protected String processBitmapData(Bitmap bitmap) {
         try {
             int picw = bitmap.getWidth();
             int pich = bitmap.getHeight();

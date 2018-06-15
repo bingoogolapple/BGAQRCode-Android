@@ -4,13 +4,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.hardware.Camera;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-public abstract class QRCodeView extends RelativeLayout implements Camera.PreviewCallback, ProcessDataTask.Delegate, ScanBoxView.Delegate {
+public abstract class QRCodeView extends RelativeLayout implements Camera.PreviewCallback {
     protected Camera mCamera;
     protected CameraPreview mCameraPreview;
     protected ScanBoxView mScanBoxView;
@@ -30,11 +31,10 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     }
 
     private void initView(Context context, AttributeSet attrs) {
-        mCameraPreview = new CameraPreview(getContext());
+        mCameraPreview = new CameraPreview(context);
 
-        mScanBoxView = new ScanBoxView(getContext());
-        mScanBoxView.initCustomAttrs(context, attrs);
-        mScanBoxView.setDelegate(this);
+        mScanBoxView = new ScanBoxView(context);
+        mScanBoxView.init(this, attrs);
         mCameraPreview.setId(R.id.bgaqrcode_camera_preview);
         addView(mCameraPreview);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(context, attrs);
@@ -170,9 +170,12 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
      * 停止识别
      */
     public void stopSpot() {
-        cancelProcessDataTask();
-
         mSpotAble = false;
+
+        if (mProcessDataTask != null) {
+            mProcessDataTask.cancelTask();
+            mProcessDataTask = null;
+        }
 
         if (mCamera != null) {
             try {
@@ -181,6 +184,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
                 e.printStackTrace();
             }
         }
+
         if (mHandler != null) {
             mHandler.removeCallbacks(mOneShotPreviewCallbackTask);
         }
@@ -227,16 +231,6 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     }
 
     /**
-     * 取消数据处理任务
-     */
-    protected void cancelProcessDataTask() {
-        if (mProcessDataTask != null) {
-            mProcessDataTask.cancelTask();
-            mProcessDataTask = null;
-        }
-    }
-
-    /**
      * 切换成扫描条码样式
      */
     public void changeToScanBarcodeStyle() {
@@ -263,29 +257,12 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
 
     @Override
     public void onPreviewFrame(final byte[] data, final Camera camera) {
-        if (mSpotAble) {
-            cancelProcessDataTask();
-            mProcessDataTask = new ProcessDataTask(camera, data, this, BGAQRCodeUtil.isPortrait(getContext())) {
-                @Override
-                protected void onPostExecute(String result) {
-                    if (mSpotAble) {
-                        if (mDelegate != null && !TextUtils.isEmpty(result)) {
-                            try {
-                                mDelegate.onScanQRCodeSuccess(result);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            try {
-                                camera.setOneShotPreviewCallback(QRCodeView.this);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-            }.perform();
+        if (!mSpotAble || (mProcessDataTask != null && (mProcessDataTask.getStatus() == AsyncTask.Status.PENDING
+                || mProcessDataTask.getStatus() == AsyncTask.Status.RUNNING))) {
+            return;
         }
+
+        mProcessDataTask = new ProcessDataTask(camera, data, this, BGAQRCodeUtil.isPortrait(getContext())).perform();
     }
 
     /**
@@ -294,14 +271,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
      * @param picturePath 要解析的二维码图片本地路径
      */
     public void decodeQRCode(String picturePath) {
-        mProcessDataTask = new ProcessDataTask(picturePath, this) {
-            @Override
-            protected void onPostExecute(String result) {
-                if (mDelegate != null) {
-                    mDelegate.onScanQRCodeSuccess(result);
-                }
-            }
-        }.perform();
+        mProcessDataTask = new ProcessDataTask(picturePath, this).perform();
     }
 
     /**
@@ -310,14 +280,37 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
      * @param bitmap 要解析的二维码图片
      */
     public void decodeQRCode(Bitmap bitmap) {
-        mProcessDataTask = new ProcessDataTask(bitmap, this) {
-            @Override
-            protected void onPostExecute(String result) {
-                if (mDelegate != null) {
+        mProcessDataTask = new ProcessDataTask(bitmap, this).perform();
+    }
+
+    protected abstract String processData(byte[] data, int width, int height, boolean isRetry);
+
+    protected abstract String processBitmapData(Bitmap bitmap);
+
+    void onPostParseData(String result) {
+        if (mSpotAble) {
+            if (mDelegate != null && !TextUtils.isEmpty(result)) {
+                try {
                     mDelegate.onScanQRCodeSuccess(result);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    if (mCamera != null) {
+                        mCamera.setOneShotPreviewCallback(QRCodeView.this);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-        }.perform();
+        }
+    }
+
+    void onPostParseBitmapOrPicture(String result) {
+        if (mDelegate != null) {
+            mDelegate.onScanQRCodeSuccess(result);
+        }
     }
 
     private Runnable mOneShotPreviewCallbackTask = new Runnable() {
@@ -377,8 +370,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
 //        }
 //    }
 
-    @Override
-    public void onScanBoxRectChanged(Rect rect) {
+    void onScanBoxRectChanged(Rect rect) {
 //        if (mCamera != null && rect.left > 0 && rect.top > 0) {
 //            try {
 //                final Camera.Parameters parameters = mCamera.getParameters();

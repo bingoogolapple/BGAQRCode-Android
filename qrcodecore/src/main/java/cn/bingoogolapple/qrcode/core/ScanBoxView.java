@@ -78,7 +78,7 @@ public class ScanBoxView extends View {
 
     private boolean mIsOnlyDecodeScanBoxArea;
 
-    private Delegate mDelegate;
+    private QRCodeView mQRCodeView;
 
     public ScanBoxView(Context context) {
         super(context);
@@ -124,8 +124,10 @@ public class ScanBoxView extends View {
         mIsOnlyDecodeScanBoxArea = false;
     }
 
-    public void initCustomAttrs(Context context, AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.QRCodeView);
+    void init(QRCodeView qrCodeView, AttributeSet attrs) {
+        mQRCodeView = qrCodeView;
+
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.QRCodeView);
         final int count = typedArray.getIndexCount();
         for (int i = 0; i < count; i++) {
             initCustomAttr(typedArray.getIndex(i), typedArray);
@@ -232,10 +234,6 @@ public class ScanBoxView extends View {
         mTipPaint.setColor(mTipTextColor);
 
         setIsBarcode(mIsBarcode);
-    }
-
-    void setDelegate(Delegate delegate) {
-        mDelegate = delegate;
     }
 
     @Override
@@ -538,8 +536,8 @@ public class ScanBoxView extends View {
             mGridScanLineBottom = mScanLineTop = mFramingRect.top + mHalfCornerSize + 0.5f;
         }
 
-        if (mDelegate != null && isOnlyDecodeScanBoxArea()) {
-            mDelegate.onScanBoxRectChanged(new Rect(mFramingRect));
+        if (mQRCodeView != null && isOnlyDecodeScanBoxArea()) {
+            mQRCodeView.onScanBoxRectChanged(new Rect(mFramingRect));
         }
     }
 
@@ -898,9 +896,5 @@ public class ScanBoxView extends View {
 
     public void setOnlyDecodeScanBoxArea(boolean onlyDecodeScanBoxArea) {
         mIsOnlyDecodeScanBoxArea = onlyDecodeScanBoxArea;
-    }
-
-    interface Delegate {
-        void onScanBoxRectChanged(Rect rect);
     }
 }

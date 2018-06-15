@@ -31,7 +31,7 @@ public class ZXingView extends QRCodeView {
     }
 
     @Override
-    public String processData(byte[] data, int width, int height, boolean isRetry) {
+    protected String processData(byte[] data, int width, int height, boolean isRetry) {
         String result = null;
         Result rawResult = null;
 
@@ -57,7 +57,7 @@ public class ZXingView extends QRCodeView {
     }
 
     @Override
-    public String processBitmapData(Bitmap bitmap) {
+    protected String processBitmapData(Bitmap bitmap) {
         return QRCodeDecoder.syncDecodeQRCode(bitmap);
     }
 }
