@@ -12,6 +12,7 @@ import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 
 import cn.bingoogolapple.qrcode.core.QRCodeView;
+import cn.bingoogolapple.qrcode.core.ScanResult;
 
 public class ZXingView extends QRCodeView {
     private MultiFormatReader mMultiFormatReader;
@@ -31,7 +32,7 @@ public class ZXingView extends QRCodeView {
     }
 
     @Override
-    protected String processData(byte[] data, int width, int height, boolean isRetry) {
+    protected ScanResult processData(byte[] data, int width, int height, boolean isRetry) {
         String result = null;
         Result rawResult = null;
 
@@ -53,11 +54,13 @@ public class ZXingView extends QRCodeView {
         if (rawResult != null) {
             result = rawResult.getText();
         }
-        return result;
+        ScanResult scanResult = new ScanResult(result);
+        // TODO
+        return scanResult;
     }
 
     @Override
-    protected String processBitmapData(Bitmap bitmap) {
-        return QRCodeDecoder.syncDecodeQRCode(bitmap);
+    protected ScanResult processBitmapData(Bitmap bitmap) {
+        return new ScanResult(QRCodeDecoder.syncDecodeQRCode(bitmap));
     }
 }

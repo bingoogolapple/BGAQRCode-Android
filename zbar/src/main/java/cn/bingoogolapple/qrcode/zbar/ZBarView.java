@@ -15,6 +15,7 @@ import net.sourceforge.zbar.SymbolSet;
 import java.nio.charset.StandardCharsets;
 
 import cn.bingoogolapple.qrcode.core.QRCodeView;
+import cn.bingoogolapple.qrcode.core.ScanResult;
 
 public class ZBarView extends QRCodeView {
 
@@ -45,8 +46,7 @@ public class ZBarView extends QRCodeView {
     }
 
     @Override
-    protected String processData(byte[] data, int width, int height, boolean isRetry) {
-        String result;
+    protected ScanResult processData(byte[] data, int width, int height, boolean isRetry) {
         Image barcode = new Image(width, height, "Y800");
 
         Rect rect = mScanBoxView.getScanBoxAreaRect(height);
@@ -55,9 +55,8 @@ public class ZBarView extends QRCodeView {
         }
 
         barcode.setData(data);
-        result = processData(barcode);
-
-        return result;
+        String result = processData(barcode);
+        return new ScanResult(result);
     }
 
     private String processData(Image barcode) {
@@ -81,15 +80,16 @@ public class ZBarView extends QRCodeView {
     }
 
     @Override
-    protected String processBitmapData(Bitmap bitmap) {
+    protected ScanResult processBitmapData(Bitmap bitmap) {
         try {
-            int picw = bitmap.getWidth();
-            int pich = bitmap.getHeight();
-            Image barcode = new Image(picw, pich, "RGB4");
-            int[] pix = new int[picw * pich];
-            bitmap.getPixels(pix, 0, picw, 0, 0, picw, pich);
+            int picWidth = bitmap.getWidth();
+            int picHeight = bitmap.getHeight();
+            Image barcode = new Image(picWidth, picHeight, "RGB4");
+            int[] pix = new int[picWidth * picHeight];
+            bitmap.getPixels(pix, 0, picWidth, 0, 0, picWidth, picHeight);
             barcode.setData(pix);
-            return processData(barcode.convert("Y800"));
+            String result = processData(barcode.convert("Y800"));
+            return new ScanResult(result);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

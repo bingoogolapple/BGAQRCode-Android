@@ -21,13 +21,13 @@ public class BGAQRCodeUtil {
         BGAQRCodeUtil.debug = debug;
     }
 
-    public static void d(String msg) {
+    static void d(String msg) {
         if (debug) {
             Log.d("BGAQRCode", msg);
         }
     }
 
-    public static void e(String msg) {
+    static void e(String msg) {
         if (debug) {
             Log.e("BGAQRCode", msg);
         }
@@ -36,12 +36,12 @@ public class BGAQRCodeUtil {
     /**
      * 是否为竖屏
      */
-    public static boolean isPortrait(Context context) {
+    static boolean isPortrait(Context context) {
         Point screenResolution = getScreenResolution(context);
         return screenResolution.y > screenResolution.x;
     }
 
-    public static Point getScreenResolution(Context context) {
+    static Point getScreenResolution(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point screenResolution = new Point();

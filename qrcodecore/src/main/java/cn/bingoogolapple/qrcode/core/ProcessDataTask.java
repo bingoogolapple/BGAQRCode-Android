@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 
 import java.lang.ref.WeakReference;
 
-class ProcessDataTask extends AsyncTask<Void, Void, String> {
+class ProcessDataTask extends AsyncTask<Void, Void, ScanResult> {
     private Camera mCamera;
     private byte[] mData;
     private boolean mIsPortrait;
@@ -50,7 +50,7 @@ class ProcessDataTask extends AsyncTask<Void, Void, String> {
         mData = null;
     }
 
-    private String processData(QRCodeView qrCodeView) {
+    private ScanResult processData(QRCodeView qrCodeView) {
         if (mData == null) {
             return null;
         }
@@ -94,7 +94,7 @@ class ProcessDataTask extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected String doInBackground(Void... params) {
+    protected ScanResult doInBackground(Void... params) {
         QRCodeView qrCodeView = mQRCodeViewRef.get();
         if (qrCodeView == null) {
             return null;
@@ -103,7 +103,7 @@ class ProcessDataTask extends AsyncTask<Void, Void, String> {
         if (mPicturePath != null) {
             return qrCodeView.processBitmapData(BGAQRCodeUtil.getDecodeAbleBitmap(mPicturePath));
         } else if (mBitmap != null) {
-            String result = qrCodeView.processBitmapData(mBitmap);
+            ScanResult result = qrCodeView.processBitmapData(mBitmap);
             mBitmap = null;
             return result;
         } else {
@@ -112,7 +112,7 @@ class ProcessDataTask extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(ScanResult result) {
         QRCodeView qrCodeView = mQRCodeViewRef.get();
         if (qrCodeView == null) {
             return;

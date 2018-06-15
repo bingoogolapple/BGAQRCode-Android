@@ -283,32 +283,38 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         mProcessDataTask = new ProcessDataTask(bitmap, this).perform();
     }
 
-    protected abstract String processData(byte[] data, int width, int height, boolean isRetry);
+    protected abstract ScanResult processData(byte[] data, int width, int height, boolean isRetry);
 
-    protected abstract String processBitmapData(Bitmap bitmap);
+    protected abstract ScanResult processBitmapData(Bitmap bitmap);
 
-    void onPostParseData(String result) {
-        if (mSpotAble) {
-            if (mDelegate != null && !TextUtils.isEmpty(result)) {
-                try {
+    void onPostParseData(ScanResult scanResult) {
+        if (!mSpotAble) {
+            return;
+        }
+        // TODO 画定位点
+        String result = scanResult == null ? null : scanResult.result;
+        if (TextUtils.isEmpty(result)) {
+            try {
+                if (mCamera != null) {
+                    mCamera.setOneShotPreviewCallback(QRCodeView.this);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                if (mDelegate != null) {
                     mDelegate.onScanQRCodeSuccess(result);
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            } else {
-                try {
-                    if (mCamera != null) {
-                        mCamera.setOneShotPreviewCallback(QRCodeView.this);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
 
-    void onPostParseBitmapOrPicture(String result) {
+    void onPostParseBitmapOrPicture(ScanResult scanResult) {
         if (mDelegate != null) {
+            String result = scanResult == null ? null : scanResult.result;
             mDelegate.onScanQRCodeSuccess(result);
         }
     }
