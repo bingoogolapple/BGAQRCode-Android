@@ -77,6 +77,7 @@ public class ScanBoxView extends View {
     private int mTipBackgroundRadius;
 
     private boolean mIsOnlyDecodeScanBoxArea;
+    private boolean mIsShowLocationPoint;
 
     private QRCodeView mQRCodeView;
 
@@ -122,6 +123,7 @@ public class ScanBoxView extends View {
         mTipBackgroundRadius = BGAQRCodeUtil.dp2px(context, 4);
 
         mIsOnlyDecodeScanBoxArea = false;
+        mIsShowLocationPoint = false;
     }
 
     void init(QRCodeView qrCodeView, AttributeSet attrs) {
@@ -202,6 +204,8 @@ public class ScanBoxView extends View {
             mCustomGridScanLineDrawable = typedArray.getDrawable(attr);
         } else if (attr == R.styleable.QRCodeView_qrcv_isOnlyDecodeScanBoxArea) {
             mIsOnlyDecodeScanBoxArea = typedArray.getBoolean(attr, mIsOnlyDecodeScanBoxArea);
+        } else if (attr == R.styleable.QRCodeView_qrcv_isShowLocationPoint) {
+            mIsShowLocationPoint = typedArray.getBoolean(attr, mIsShowLocationPoint);
         }
     }
 
@@ -896,5 +900,13 @@ public class ScanBoxView extends View {
 
     public void setOnlyDecodeScanBoxArea(boolean onlyDecodeScanBoxArea) {
         mIsOnlyDecodeScanBoxArea = onlyDecodeScanBoxArea;
+    }
+
+    public boolean isShowLocationPoint() {
+        return mIsShowLocationPoint;
+    }
+
+    public void setShowLocationPoint(boolean showLocationPoint) {
+        mIsShowLocationPoint = showLocationPoint;
     }
 }

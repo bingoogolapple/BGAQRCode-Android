@@ -2,6 +2,9 @@ package cn.bingoogolapple.qrcode.core;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.AsyncTask;
@@ -19,6 +22,9 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     protected Handler mHandler;
     protected boolean mSpotAble = false;
     protected ProcessDataTask mProcessDataTask;
+    protected int mCameraId;
+    private PointF[] mLocationPoints;
+    private Paint mPaint;
 
     public QRCodeView(Context context, AttributeSet attributeSet) {
         this(context, attributeSet, 0);
@@ -41,6 +47,10 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         layoutParams.addRule(RelativeLayout.ALIGN_TOP, mCameraPreview.getId());
         layoutParams.addRule(RelativeLayout.ALIGN_BOTTOM, mCameraPreview.getId());
         addView(mScanBoxView, layoutParams);
+
+        mPaint = new Paint();
+        mPaint.setColor(getScanBoxView().getCornerColor());
+        mPaint.setStyle(Paint.Style.FILL);
     }
 
     /**
@@ -118,6 +128,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
 
     private void startCameraById(int cameraId) {
         try {
+            mCameraId = cameraId;
             mCamera = Camera.open(cameraId);
             mCameraPreview.setCamera(mCamera);
         } catch (Exception e) {
@@ -291,7 +302,6 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         if (!mSpotAble) {
             return;
         }
-        // TODO 画定位点
         String result = scanResult == null ? null : scanResult.result;
         if (TextUtils.isEmpty(result)) {
             try {
@@ -408,6 +418,84 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
 //                e.printStackTrace();
 //            }
 //        }
+    }
+
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
+
+
+        if (!isShowLocationPoint() || mLocationPoints == null) {
+            return;
+        }
+
+        for (PointF pointF : mLocationPoints) {
+            canvas.drawCircle(pointF.x, pointF.y, 10, mPaint);
+        }
+        mLocationPoints = null;
+        postInvalidateDelayed(2000);
+    }
+
+    /**
+     * 是否显示定位点
+     */
+    protected boolean isShowLocationPoint() {
+        return mScanBoxView != null && mScanBoxView.isShowLocationPoint();
+    }
+
+    protected void transformToViewCoordinates(final PointF[] pointArr) {
+        if (pointArr == null || pointArr.length == 0) {
+            return;
+        }
+
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    // 不管横屏还是竖屏，size.width 大于 size.height
+                    Camera.Size size = mCamera.getParameters().getPreviewSize();
+                    boolean isMirrorPreview = mCameraId == Camera.CameraInfo.CAMERA_FACING_FRONT;
+                    int statusBarHeight = BGAQRCodeUtil.getStatusBarHeight(getContext());
+
+                    PointF[] transformedPoints = new PointF[pointArr.length];
+                    int index = 0;
+                    for (PointF qrPoint : pointArr) {
+                        transformedPoints[index] = transform(qrPoint.x, qrPoint.y, size.width, size.height, isMirrorPreview, statusBarHeight);
+                        index++;
+                    }
+                    mLocationPoints = transformedPoints;
+                    postInvalidate();
+                } catch (Exception e) {
+                    mLocationPoints = null;
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
+    private PointF transform(float originX, float originY, float cameraPreviewWidth, float cameraPreviewHeight, boolean isMirrorPreview, int statusBarHeight) {
+        int viewWidth = getWidth();
+        int viewHeight = getHeight();
+
+        PointF result;
+        float scaleX;
+        float scaleY;
+
+        if (BGAQRCodeUtil.isPortrait(getContext())) {
+            scaleX = viewWidth / cameraPreviewHeight;
+            scaleY = viewHeight / cameraPreviewWidth;
+            result = new PointF((cameraPreviewHeight - originX) * scaleX, (cameraPreviewWidth - originY) * scaleY);
+            result.y = viewHeight - result.y + statusBarHeight;
+            result.x = viewWidth - result.x;
+        } else {
+            scaleX = viewWidth / cameraPreviewWidth;
+            scaleY = viewHeight / cameraPreviewHeight;
+            result = new PointF(originX * scaleX, originY * scaleY);
+            if (isMirrorPreview) {
+                result.x = viewWidth - result.x;
+            }
+        }
+        return result;
     }
 
     public interface Delegate {

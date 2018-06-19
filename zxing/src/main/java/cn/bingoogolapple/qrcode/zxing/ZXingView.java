@@ -2,6 +2,7 @@ package cn.bingoogolapple.qrcode.zxing;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 
@@ -9,6 +10,7 @@ import com.google.zxing.BinaryBitmap;
 import com.google.zxing.MultiFormatReader;
 import com.google.zxing.PlanarYUVLuminanceSource;
 import com.google.zxing.Result;
+import com.google.zxing.ResultPoint;
 import com.google.zxing.common.HybridBinarizer;
 
 import cn.bingoogolapple.qrcode.core.QRCodeView;
@@ -29,6 +31,11 @@ public class ZXingView extends QRCodeView {
     private void initMultiFormatReader() {
         mMultiFormatReader = new MultiFormatReader();
         mMultiFormatReader.setHints(QRCodeDecoder.HINTS);
+    }
+
+    @Override
+    protected ScanResult processBitmapData(Bitmap bitmap) {
+        return new ScanResult(QRCodeDecoder.syncDecodeQRCode(bitmap));
     }
 
     @Override
@@ -53,14 +60,18 @@ public class ZXingView extends QRCodeView {
 
         if (rawResult != null) {
             result = rawResult.getText();
-        }
-        ScanResult scanResult = new ScanResult(result);
-        // TODO
-        return scanResult;
-    }
 
-    @Override
-    protected ScanResult processBitmapData(Bitmap bitmap) {
-        return new ScanResult(QRCodeDecoder.syncDecodeQRCode(bitmap));
+            if (isShowLocationPoint()) {
+                ResultPoint[] resultPoints = rawResult.getResultPoints();
+                final PointF[] pointArr = new PointF[resultPoints.length];
+                int pointIndex = 0;
+                for (ResultPoint resultPoint : resultPoints) {
+                    pointArr[pointIndex] = new PointF(resultPoint.getX(), resultPoint.getY());
+                    pointIndex++;
+                }
+                transformToViewCoordinates(pointArr);
+            }
+        }
+        return new ScanResult(result);
     }
 }

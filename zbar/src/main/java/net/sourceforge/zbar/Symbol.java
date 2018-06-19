@@ -25,11 +25,13 @@
 
 package net.sourceforge.zbar;
 
-/** Immutable container for decoded result symbols associated with an image
+import android.graphics.PointF;
+
+/**
+ * Immutable container for decoded result symbols associated with an image
  * or a composite symbol.
  */
-public class Symbol
-{
+public class Symbol {
     /** No symbol decoded. */
     public static final int NONE = 0;
     /** Symbol detected but not decoded. */
@@ -72,42 +74,39 @@ public class Symbol
     /** Cached attributes. */
     private int type;
 
-    static
-    {
+    static {
         System.loadLibrary("zbarjni");
         init();
     }
+
     private static native void init();
 
     /** Symbols are only created by other package methods. */
-    Symbol (long peer)
-    {
+    Symbol(long peer) {
         this.peer = peer;
     }
 
-    protected void finalize ()
-    {
+    protected void finalize() {
         destroy();
     }
 
     /** Clean up native data associated with an instance. */
-    public synchronized void destroy ()
-    {
-        if(peer != 0) {
+    public synchronized void destroy() {
+        if (peer != 0) {
             destroy(peer);
             peer = 0;
         }
     }
 
-    /** Release the associated peer instance.  */
+    /** Release the associated peer instance. */
     private native void destroy(long peer);
 
     /** Retrieve type of decoded symbol. */
-    public int getType ()
-    {
-        if(type == 0)
+    public int getType() {
+        if (type == 0) {
             type = getType(peer);
-        return(type);
+        }
+        return (type);
     }
 
     private native int getType(long peer);
@@ -124,29 +123,37 @@ public class Symbol
     /** Retrieve raw data bytes decoded from symbol. */
     public native byte[] getDataBytes();
 
-    /** Retrieve a symbol confidence metric.  Quality is an unscaled,
+    /**
+     * Retrieve a symbol confidence metric.  Quality is an unscaled,
      * relative quantity: larger values are better than smaller
      * values, where "large" and "small" are application dependent.
      */
     public native int getQuality();
 
-    /** Retrieve current cache count.  When the cache is enabled for
+    /**
+     * Retrieve current cache count.  When the cache is enabled for
      * the image_scanner this provides inter-frame reliability and
      * redundancy information for video streams.
+     *
      * @returns < 0 if symbol is still uncertain
      * @returns 0 if symbol is newly verified
      * @returns > 0 for duplicate symbols
      */
     public native int getCount();
 
-    /** Retrieve an approximate, axis-aligned bounding box for the
+    public int getLocationSize() {
+        return getLocationSize(peer);
+    }
+
+    /**
+     * Retrieve an approximate, axis-aligned bounding box for the
      * symbol.
      */
-    public int[] getBounds ()
-    {
+    public int[] getBounds() {
         int n = getLocationSize(peer);
-        if(n <= 0)
-            return(null);
+        if (n <= 0) {
+            return (null);
+        }
 
         int[] bounds = new int[4];
         int xmin = Integer.MAX_VALUE;
@@ -154,43 +161,53 @@ public class Symbol
         int ymin = Integer.MAX_VALUE;
         int ymax = Integer.MIN_VALUE;
 
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             int x = getLocationX(peer, i);
-            if(xmin > x) xmin = x;
-            if(xmax < x) xmax = x;
+            if (xmin > x) xmin = x;
+            if (xmax < x) xmax = x;
 
             int y = getLocationY(peer, i);
-            if(ymin > y) ymin = y;
-            if(ymax < y) ymax = y;
+            if (ymin > y) ymin = y;
+            if (ymax < y) ymax = y;
         }
         bounds[0] = xmin;
         bounds[1] = ymin;
         bounds[2] = xmax - xmin;
         bounds[3] = ymax - ymin;
-        return(bounds);
+        return (bounds);
     }
 
     private native int getLocationSize(long peer);
+
     private native int getLocationX(long peer, int idx);
+
     private native int getLocationY(long peer, int idx);
 
-    public int[] getLocationPoint (int idx)
-    {
+    public int[] getLocationPoint(int idx) {
         int[] p = new int[2];
         p[0] = getLocationX(peer, idx);
         p[1] = getLocationY(peer, idx);
-        return(p);
+        return (p);
     }
 
-    /** Retrieve general axis-aligned, orientation of decoded
+    public PointF[] getLocationPoints() {
+        int locationSize = getLocationSize(peer);
+        final PointF[] pointArr = new PointF[locationSize];
+        for (int pointIndex = 0; pointIndex < locationSize; pointIndex++) {
+            pointArr[pointIndex] = new PointF(getLocationX(peer, pointIndex), getLocationY(peer, pointIndex));
+        }
+        return pointArr;
+    }
+
+    /**
+     * Retrieve general axis-aligned, orientation of decoded
      * symbol.
      */
     public native int getOrientation();
 
     /** Retrieve components of a composite result. */
-    public SymbolSet getComponents ()
-    {
-        return(new SymbolSet(getComponents(peer)));
+    public SymbolSet getComponents() {
+        return (new SymbolSet(getComponents(peer)));
     }
 
     private native long getComponents(long peer);

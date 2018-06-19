@@ -1,6 +1,7 @@
 package cn.bingoogolapple.qrcode.core;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -36,7 +37,7 @@ public class BGAQRCodeUtil {
     /**
      * 是否为竖屏
      */
-    static boolean isPortrait(Context context) {
+    public static boolean isPortrait(Context context) {
         Point screenResolution = getScreenResolution(context);
         return screenResolution.y > screenResolution.x;
     }
@@ -47,6 +48,25 @@ public class BGAQRCodeUtil {
         Point screenResolution = new Point();
         display.getSize(screenResolution);
         return screenResolution;
+    }
+
+    public static int getStatusBarHeight(Context context) {
+        TypedArray typedArray = context.getTheme().obtainStyledAttributes(new int[]{
+                android.R.attr.windowFullscreen
+        });
+        boolean windowFullscreen = typedArray.getBoolean(0, false);
+        typedArray.recycle();
+
+        if (windowFullscreen) {
+            return 0;
+        }
+
+        int height = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            height = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return height;
     }
 
     public static int dp2px(Context context, float dpValue) {

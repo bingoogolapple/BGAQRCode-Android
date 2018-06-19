@@ -142,6 +142,7 @@ qrcv_isScanLineReverse         | 扫描线是否来回移动        | true
 qrcv_isShowDefaultGridScanLineDrawable         | 是否显示默认的网格图片扫描线        | false
 qrcv_customGridScanLineDrawable         | 扫描线的网格图片资源        | nulll
 qrcv_isOnlyDecodeScanBoxArea         | 是否只识别扫描框区域的二维码        | false
+qrcv_isShowLocationPoint         | 是否显示定位点        | false
 
 ## 接口说明
 

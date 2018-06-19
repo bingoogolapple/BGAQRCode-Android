@@ -71,6 +71,10 @@ public class ZBarView extends QRCodeView {
                     symData = symbol.getData();
                 }
                 if (!TextUtils.isEmpty(symData)) {
+                    if (isShowLocationPoint()) {
+                        transformToViewCoordinates(symbol.getLocationPoints());
+                    }
+
                     result = symData;
                     break;
                 }

@@ -68,5 +68,7 @@
         <attr name="qrcv_customGridScanLineDrawable" format="reference" />
         <!-- 是否只识别扫描框区域的二维码，默认值为false -->
         <attr name="qrcv_isOnlyDecodeScanBoxArea" format="boolean" />
+        <!-- 是否显示定位点，默认值为false -->
+        <attr name="qrcv_isShowLocationPoint" format="boolean" />
     </declare-styleable>
 </resources>
