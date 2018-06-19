@@ -77,6 +77,9 @@ public class ScanBoxView extends View {
     private int mTipBackgroundRadius;
 
     private boolean mIsOnlyDecodeScanBoxArea;
+    private boolean mIsShowLocationPoint;
+
+    private QRCodeView mQRCodeView;
 
     public ScanBoxView(Context context) {
         super(context);
@@ -120,10 +123,13 @@ public class ScanBoxView extends View {
         mTipBackgroundRadius = BGAQRCodeUtil.dp2px(context, 4);
 
         mIsOnlyDecodeScanBoxArea = false;
+        mIsShowLocationPoint = false;
     }
 
-    public void initCustomAttrs(Context context, AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.QRCodeView);
+    void init(QRCodeView qrCodeView, AttributeSet attrs) {
+        mQRCodeView = qrCodeView;
+
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.QRCodeView);
         final int count = typedArray.getIndexCount();
         for (int i = 0; i < count; i++) {
             initCustomAttr(typedArray.getIndex(i), typedArray);
@@ -198,6 +204,8 @@ public class ScanBoxView extends View {
             mCustomGridScanLineDrawable = typedArray.getDrawable(attr);
         } else if (attr == R.styleable.QRCodeView_qrcv_isOnlyDecodeScanBoxArea) {
             mIsOnlyDecodeScanBoxArea = typedArray.getBoolean(attr, mIsOnlyDecodeScanBoxArea);
+        } else if (attr == R.styleable.QRCodeView_qrcv_isShowLocationPoint) {
+            mIsShowLocationPoint = typedArray.getBoolean(attr, mIsShowLocationPoint);
         }
     }
 
@@ -531,16 +539,29 @@ public class ScanBoxView extends View {
         } else {
             mGridScanLineBottom = mScanLineTop = mFramingRect.top + mHalfCornerSize + 0.5f;
         }
+
+        if (mQRCodeView != null && isOnlyDecodeScanBoxArea()) {
+            mQRCodeView.onScanBoxRectChanged(new Rect(mFramingRect));
+        }
     }
 
     public Rect getScanBoxAreaRect(int previewHeight) {
         if (mIsOnlyDecodeScanBoxArea) {
             Rect rect = new Rect(mFramingRect);
             float ratio = 1.0f * previewHeight / getMeasuredHeight();
-            rect.left = (int) (rect.left * ratio);
-            rect.right = (int) (rect.right * ratio);
-            rect.top = (int) (rect.top * ratio);
-            rect.bottom = (int) (rect.bottom * ratio);
+
+            float centerX = rect.exactCenterX();
+            float centerY = rect.exactCenterY();
+
+            float halfWidth = rect.width() / 2f;
+            float halfHeight = rect.height() / 2f;
+            float newHalfWidth = halfWidth * ratio;
+            float newHalfHeight = halfHeight * ratio;
+
+            rect.left = (int) (centerX - newHalfWidth);
+            rect.right = (int) (centerX + newHalfWidth);
+            rect.top = (int) (centerY - newHalfHeight);
+            rect.bottom = (int) (centerY + newHalfHeight);
             return rect;
         } else {
             return null;
@@ -879,5 +900,13 @@ public class ScanBoxView extends View {
 
     public void setOnlyDecodeScanBoxArea(boolean onlyDecodeScanBoxArea) {
         mIsOnlyDecodeScanBoxArea = onlyDecodeScanBoxArea;
+    }
+
+    public boolean isShowLocationPoint() {
+        return mIsShowLocationPoint;
+    }
+
+    public void setShowLocationPoint(boolean showLocationPoint) {
+        mIsShowLocationPoint = showLocationPoint;
     }
 }

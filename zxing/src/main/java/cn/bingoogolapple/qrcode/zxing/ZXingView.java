@@ -2,6 +2,7 @@ package cn.bingoogolapple.qrcode.zxing;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 
@@ -9,9 +10,11 @@ import com.google.zxing.BinaryBitmap;
 import com.google.zxing.MultiFormatReader;
 import com.google.zxing.PlanarYUVLuminanceSource;
 import com.google.zxing.Result;
+import com.google.zxing.ResultPoint;
 import com.google.zxing.common.HybridBinarizer;
 
 import cn.bingoogolapple.qrcode.core.QRCodeView;
+import cn.bingoogolapple.qrcode.core.ScanResult;
 
 public class ZXingView extends QRCodeView {
     private MultiFormatReader mMultiFormatReader;
@@ -31,7 +34,12 @@ public class ZXingView extends QRCodeView {
     }
 
     @Override
-    public String processData(byte[] data, int width, int height, boolean isRetry) {
+    protected ScanResult processBitmapData(Bitmap bitmap) {
+        return new ScanResult(QRCodeDecoder.syncDecodeQRCode(bitmap));
+    }
+
+    @Override
+    protected ScanResult processData(byte[] data, int width, int height, boolean isRetry) {
         String result = null;
         Result rawResult = null;
 
@@ -52,12 +60,18 @@ public class ZXingView extends QRCodeView {
 
         if (rawResult != null) {
             result = rawResult.getText();
-        }
-        return result;
-    }
 
-    @Override
-    public String processBitmapData(Bitmap bitmap) {
-        return QRCodeDecoder.syncDecodeQRCode(bitmap);
+            if (isShowLocationPoint()) {
+                ResultPoint[] resultPoints = rawResult.getResultPoints();
+                final PointF[] pointArr = new PointF[resultPoints.length];
+                int pointIndex = 0;
+                for (ResultPoint resultPoint : resultPoints) {
+                    pointArr[pointIndex] = new PointF(resultPoint.getX(), resultPoint.getY());
+                    pointIndex++;
+                }
+                transformToViewCoordinates(pointArr);
+            }
+        }
+        return new ScanResult(result);
     }
 }

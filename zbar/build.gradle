@@ -46,7 +46,7 @@ if (hasProperty("publishAar")) {
 }
 
 tasks.whenTaskAdded {
-    if (it.name.equals('releaseAndroidJavadocs')) {
+    if (it.name == 'releaseAndroidJavadocs') {
         it.enabled = false
     }
 }

@@ -142,6 +142,7 @@ qrcv_isScanLineReverse         | 扫描线是否来回移动        | true
 qrcv_isShowDefaultGridScanLineDrawable         | 是否显示默认的网格图片扫描线        | false
 qrcv_customGridScanLineDrawable         | 扫描线的网格图片资源        | nulll
 qrcv_isOnlyDecodeScanBoxArea         | 是否只识别扫描框区域的二维码        | false
+qrcv_isShowLocationPoint         | 是否显示定位点        | false
 
 ## 接口说明
 
@@ -290,6 +291,16 @@ public static Bitmap syncEncodeQRCode(String content, int size, int foregroundCo
  * @param logo            二维码图片的logo
  */
 public static Bitmap syncEncodeQRCode(String content, int size, int foregroundColor, int backgroundColor, Bitmap logo)
+
+/**
+ * 同步创建条形码图片
+ *
+ * @param content  要生成条形码包含的内容
+ * @param width    条形码的宽度，单位px
+ * @param height   条形码的高度，单位px
+ * @param textSize 字体大小，单位px，如果等于0则不在底部绘制文字
+ */
+public static Bitmap syncEncodeBarcode(String content, int width, int height, int textSize)
 ```
 
 #### 详细用法请查看[ZBarDemo](https://github.com/bingoogolapple/BGAQRCode-Android/tree/master/zbardemo):feet:

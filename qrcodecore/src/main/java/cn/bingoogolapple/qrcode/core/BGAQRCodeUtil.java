@@ -1,6 +1,7 @@
 package cn.bingoogolapple.qrcode.core;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -21,13 +22,13 @@ public class BGAQRCodeUtil {
         BGAQRCodeUtil.debug = debug;
     }
 
-    public static void d(String msg) {
+    static void d(String msg) {
         if (debug) {
             Log.d("BGAQRCode", msg);
         }
     }
 
-    public static void e(String msg) {
+    static void e(String msg) {
         if (debug) {
             Log.e("BGAQRCode", msg);
         }
@@ -41,7 +42,7 @@ public class BGAQRCodeUtil {
         return screenResolution.y > screenResolution.x;
     }
 
-    public static Point getScreenResolution(Context context) {
+    static Point getScreenResolution(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point screenResolution = new Point();
@@ -49,11 +50,30 @@ public class BGAQRCodeUtil {
         return screenResolution;
     }
 
+    public static int getStatusBarHeight(Context context) {
+        TypedArray typedArray = context.getTheme().obtainStyledAttributes(new int[]{
+                android.R.attr.windowFullscreen
+        });
+        boolean windowFullscreen = typedArray.getBoolean(0, false);
+        typedArray.recycle();
+
+        if (windowFullscreen) {
+            return 0;
+        }
+
+        int height = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            height = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return height;
+    }
+
     public static int dp2px(Context context, float dpValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
     }
 
-    static int sp2px(Context context, float spValue) {
+    public static int sp2px(Context context, float spValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, context.getResources().getDisplayMetrics());
     }
 

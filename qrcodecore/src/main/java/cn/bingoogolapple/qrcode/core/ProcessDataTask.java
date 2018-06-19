@@ -4,32 +4,34 @@ import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 
-public class ProcessDataTask extends AsyncTask<Void, Void, String> {
+import java.lang.ref.WeakReference;
+
+class ProcessDataTask extends AsyncTask<Void, Void, ScanResult> {
     private Camera mCamera;
     private byte[] mData;
-    private Delegate mDelegate;
     private boolean mIsPortrait;
     private String mPicturePath;
     private Bitmap mBitmap;
+    private WeakReference<QRCodeView> mQRCodeViewRef;
 
-    ProcessDataTask(Camera camera, byte[] data, Delegate delegate, boolean isPortrait) {
+    ProcessDataTask(Camera camera, byte[] data, QRCodeView qrCodeView, boolean isPortrait) {
         mCamera = camera;
         mData = data;
-        mDelegate = delegate;
+        mQRCodeViewRef = new WeakReference<>(qrCodeView);
         mIsPortrait = isPortrait;
     }
 
-    ProcessDataTask(String picturePath, Delegate delegate) {
+    ProcessDataTask(String picturePath, QRCodeView qrCodeView) {
         mPicturePath = picturePath;
-        mDelegate = delegate;
+        mQRCodeViewRef = new WeakReference<>(qrCodeView);
     }
 
-    ProcessDataTask(Bitmap bitmap, Delegate delegate) {
+    ProcessDataTask(Bitmap bitmap, QRCodeView qrCodeView) {
         mBitmap = bitmap;
-        mDelegate = delegate;
+        mQRCodeViewRef = new WeakReference<>(qrCodeView);
     }
 
-    public ProcessDataTask perform() {
+    ProcessDataTask perform() {
         executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         return this;
     }
@@ -43,12 +45,12 @@ public class ProcessDataTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        mDelegate = null;
+        mQRCodeViewRef.clear();
         mBitmap = null;
         mData = null;
     }
 
-    private String processData() {
+    private ScanResult processData(QRCodeView qrCodeView) {
         if (mData == null) {
             return null;
         }
@@ -74,16 +76,13 @@ public class ProcessDataTask extends AsyncTask<Void, Void, String> {
                 height = tmp;
             }
 
-            if (mDelegate == null) {
-                return null;
-            }
-            return mDelegate.processData(data, width, height, false);
+            return qrCodeView.processData(data, width, height, false);
         } catch (Exception e1) {
             e1.printStackTrace();
             try {
-                if (mDelegate != null && width != 0 && height != 0) {
+                if (width != 0 && height != 0) {
                     BGAQRCodeUtil.d("识别失败重试");
-                    return mDelegate.processData(data, width, height, true);
+                    return qrCodeView.processData(data, width, height, true);
                 } else {
                     return null;
                 }
@@ -95,24 +94,35 @@ public class ProcessDataTask extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected String doInBackground(Void... params) {
-        if (mDelegate == null) {
+    protected ScanResult doInBackground(Void... params) {
+        QRCodeView qrCodeView = mQRCodeViewRef.get();
+        if (qrCodeView == null) {
             return null;
         }
+
         if (mPicturePath != null) {
-            return mDelegate.processBitmapData(BGAQRCodeUtil.getDecodeAbleBitmap(mPicturePath));
+            return qrCodeView.processBitmapData(BGAQRCodeUtil.getDecodeAbleBitmap(mPicturePath));
         } else if (mBitmap != null) {
-            String result = mDelegate.processBitmapData(mBitmap);
+            ScanResult result = qrCodeView.processBitmapData(mBitmap);
             mBitmap = null;
             return result;
         } else {
-            return processData();
+            return processData(qrCodeView);
         }
     }
 
-    public interface Delegate {
-        String processData(byte[] data, int width, int height, boolean isRetry);
+    @Override
+    protected void onPostExecute(ScanResult result) {
+        QRCodeView qrCodeView = mQRCodeViewRef.get();
+        if (qrCodeView == null) {
+            return;
+        }
 
-        String processBitmapData(Bitmap bitmap);
+        if (mPicturePath != null || mBitmap != null) {
+            mBitmap = null;
+            qrCodeView.onPostParseBitmapOrPicture(result);
+        } else {
+            qrCodeView.onPostParseData(result);
+        }
     }
 }
