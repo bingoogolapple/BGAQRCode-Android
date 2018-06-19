@@ -21,6 +21,8 @@ public class TestGeneratectivity extends AppCompatActivity {
     private ImageView mEnglishIv;
     private ImageView mChineseLogoIv;
     private ImageView mEnglishLogoIv;
+    private ImageView mBarcodeWithContentIv;
+    private ImageView mBarcodeWithoutContentIv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +35,12 @@ public class TestGeneratectivity extends AppCompatActivity {
     }
 
     private void initView() {
-        mChineseIv = (ImageView) findViewById(R.id.iv_chinese);
-        mChineseLogoIv = (ImageView) findViewById(R.id.iv_chinese_logo);
-        mEnglishIv = (ImageView) findViewById(R.id.iv_english);
-        mEnglishLogoIv = (ImageView) findViewById(R.id.iv_english_logo);
+        mChineseIv = findViewById(R.id.iv_chinese);
+        mChineseLogoIv = findViewById(R.id.iv_chinese_logo);
+        mEnglishIv = findViewById(R.id.iv_english);
+        mEnglishLogoIv = findViewById(R.id.iv_english_logo);
+        mBarcodeWithContentIv = findViewById(R.id.iv_barcode_with_content);
+        mBarcodeWithoutContentIv = findViewById(R.id.iv_barcode_without_content);
     }
 
     private void createQRCode() {
@@ -44,12 +48,16 @@ public class TestGeneratectivity extends AppCompatActivity {
         createEnglishQRCode();
         createChineseQRCodeWithLogo();
         createEnglishQRCodeWithLogo();
+
+        createBarcodeWidthContent();
+        createBarcodeWithoutContent();
     }
 
     private void createChineseQRCode() {
         /*
         这里为了偷懒，就没有处理匿名 AsyncTask 内部类导致 Activity 泄漏的问题
-        请开发在使用时自行处理匿名内部类导致Activity内存泄漏的问题，处理方式可参考 https://github.com/GeniusVJR/LearningNotes/blob/master/Part1/Android/Android%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E6%80%BB%E7%BB%93.md
+        请开发在使用时自行处理匿名内部类导致Activity内存泄漏的问题，处理方式可参考 https://github
+        .com/GeniusVJR/LearningNotes/blob/master/Part1/Android/Android%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E6%80%BB%E7%BB%93.md
          */
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
@@ -69,10 +77,6 @@ public class TestGeneratectivity extends AppCompatActivity {
     }
 
     private void createEnglishQRCode() {
-        /*
-        这里为了偷懒，就没有处理匿名 AsyncTask 内部类导致 Activity 泄漏的问题
-        请开发在使用时自行处理匿名内部类导致Activity内存泄漏的问题，处理方式可参考 https://github.com/GeniusVJR/LearningNotes/blob/master/Part1/Android/Android%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E6%80%BB%E7%BB%93.md
-         */
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... params) {
@@ -91,10 +95,6 @@ public class TestGeneratectivity extends AppCompatActivity {
     }
 
     private void createChineseQRCodeWithLogo() {
-        /*
-        这里为了偷懒，就没有处理匿名 AsyncTask 内部类导致 Activity 泄漏的问题
-        请开发在使用时自行处理匿名内部类导致Activity内存泄漏的问题，处理方式可参考 https://github.com/GeniusVJR/LearningNotes/blob/master/Part1/Android/Android%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E6%80%BB%E7%BB%93.md
-         */
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... params) {
@@ -114,15 +114,12 @@ public class TestGeneratectivity extends AppCompatActivity {
     }
 
     private void createEnglishQRCodeWithLogo() {
-        /*
-        这里为了偷懒，就没有处理匿名 AsyncTask 内部类导致 Activity 泄漏的问题
-        请开发在使用时自行处理匿名内部类导致Activity内存泄漏的问题，处理方式可参考 https://github.com/GeniusVJR/LearningNotes/blob/master/Part1/Android/Android%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E6%80%BB%E7%BB%93.md
-         */
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... params) {
                 Bitmap logoBitmap = BitmapFactory.decodeResource(TestGeneratectivity.this.getResources(), R.mipmap.logo);
-                return QRCodeEncoder.syncEncodeQRCode("bingoogolapple", BGAQRCodeUtil.dp2px(TestGeneratectivity.this, 150), Color.BLACK, Color.WHITE, logoBitmap);
+                return QRCodeEncoder.syncEncodeQRCode("bingoogolapple", BGAQRCodeUtil.dp2px(TestGeneratectivity.this, 150), Color.BLACK, Color.WHITE,
+                        logoBitmap);
             }
 
             @Override
@@ -131,6 +128,48 @@ public class TestGeneratectivity extends AppCompatActivity {
                     mEnglishLogoIv.setImageBitmap(bitmap);
                 } else {
                     Toast.makeText(TestGeneratectivity.this, "生成带logo的英文二维码失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
+    }
+
+
+    private void createBarcodeWidthContent() {
+        new AsyncTask<Void, Void, Bitmap>() {
+            @Override
+            protected Bitmap doInBackground(Void... params) {
+                int width = BGAQRCodeUtil.dp2px(TestGeneratectivity.this, 150);
+                int height = BGAQRCodeUtil.dp2px(TestGeneratectivity.this, 70);
+                int textSize = BGAQRCodeUtil.sp2px(TestGeneratectivity.this, 14);
+                return QRCodeEncoder.syncEncodeBarcode("bga123", width, height, textSize);
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                if (bitmap != null) {
+                    mBarcodeWithContentIv.setImageBitmap(bitmap);
+                } else {
+                    Toast.makeText(TestGeneratectivity.this, "生成条底部带文字形码失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
+    }
+
+    private void createBarcodeWithoutContent() {
+        new AsyncTask<Void, Void, Bitmap>() {
+            @Override
+            protected Bitmap doInBackground(Void... params) {
+                int width = BGAQRCodeUtil.dp2px(TestGeneratectivity.this, 150);
+                int height = BGAQRCodeUtil.dp2px(TestGeneratectivity.this, 70);
+                return QRCodeEncoder.syncEncodeBarcode("bingoogolapple123", width, height, 0);
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                if (bitmap != null) {
+                    mBarcodeWithoutContentIv.setImageBitmap(bitmap);
+                } else {
+                    Toast.makeText(TestGeneratectivity.this, "生成条底部不带文字形码失败", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
@@ -160,15 +199,23 @@ public class TestGeneratectivity extends AppCompatActivity {
         decode(bitmap, "解析带logo的英文二维码失败");
     }
 
-    public void decodeIsbn(View v) {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.test_isbn);
-        decode(bitmap, "解析ISBN失败");
+    public void decodeBarcodeWithContent(View v) {
+        mBarcodeWithContentIv.setDrawingCacheEnabled(true);
+        Bitmap bitmap = mBarcodeWithContentIv.getDrawingCache();
+        decode(bitmap, "识别底部带文字的条形码失败");
+    }
+
+    public void decodeBarcodeWithoutContent(View v) {
+        mBarcodeWithoutContentIv.setDrawingCacheEnabled(true);
+        Bitmap bitmap = mBarcodeWithoutContentIv.getDrawingCache();
+        decode(bitmap, "识别底部没带文字的条形码失败");
     }
 
     private void decode(final Bitmap bitmap, final String errorTip) {
         /*
         这里为了偷懒，就没有处理匿名 AsyncTask 内部类导致 Activity 泄漏的问题
-        请开发在使用时自行处理匿名内部类导致Activity内存泄漏的问题，处理方式可参考 https://github.com/GeniusVJR/LearningNotes/blob/master/Part1/Android/Android%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E6%80%BB%E7%BB%93.md
+        请开发在使用时自行处理匿名内部类导致Activity内存泄漏的问题，处理方式可参考 https://github
+        .com/GeniusVJR/LearningNotes/blob/master/Part1/Android/Android%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E6%80%BB%E7%BB%93.md
          */
         new AsyncTask<Void, Void, String>() {
             @Override
