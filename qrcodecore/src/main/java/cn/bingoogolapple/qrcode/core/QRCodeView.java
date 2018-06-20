@@ -225,7 +225,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     }
 
     /**
-     * 关闭散光灯
+     * 关闭闪光灯
      */
     public void closeFlashlight() {
         mCameraPreview.closeFlashlight();
@@ -443,7 +443,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         return mScanBoxView != null && mScanBoxView.isShowLocationPoint();
     }
 
-    protected void transformToViewCoordinates(final PointF[] pointArr) {
+    protected void transformToViewCoordinates(final PointF[] pointArr, final Rect scanBoxAreaRect) {
         if (pointArr == null || pointArr.length == 0) {
             return;
         }
@@ -460,7 +460,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
                     PointF[] transformedPoints = new PointF[pointArr.length];
                     int index = 0;
                     for (PointF qrPoint : pointArr) {
-                        transformedPoints[index] = transform(qrPoint.x, qrPoint.y, size.width, size.height, isMirrorPreview, statusBarHeight);
+                        transformedPoints[index] = transform(qrPoint.x, qrPoint.y, size.width, size.height, isMirrorPreview, statusBarHeight, scanBoxAreaRect);
                         index++;
                     }
                     mLocationPoints = transformedPoints;
@@ -473,7 +473,8 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         }.start();
     }
 
-    private PointF transform(float originX, float originY, float cameraPreviewWidth, float cameraPreviewHeight, boolean isMirrorPreview, int statusBarHeight) {
+    private PointF transform(float originX, float originY, float cameraPreviewWidth, float cameraPreviewHeight, boolean isMirrorPreview, int statusBarHeight,
+            final Rect scanBoxAreaRect) {
         int viewWidth = getWidth();
         int viewHeight = getHeight();
 
@@ -485,8 +486,12 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
             scaleX = viewWidth / cameraPreviewHeight;
             scaleY = viewHeight / cameraPreviewWidth;
             result = new PointF((cameraPreviewHeight - originX) * scaleX, (cameraPreviewWidth - originY) * scaleY);
-            result.y = viewHeight - result.y + statusBarHeight;
+            result.y = viewHeight - result.y;
             result.x = viewWidth - result.x;
+
+            if (scanBoxAreaRect == null) {
+                result.y += statusBarHeight;
+            }
         } else {
             scaleX = viewWidth / cameraPreviewWidth;
             scaleY = viewHeight / cameraPreviewHeight;
@@ -495,6 +500,12 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
                 result.x = viewWidth - result.x;
             }
         }
+
+        if (scanBoxAreaRect != null) {
+            result.y += scanBoxAreaRect.top;
+            result.x += scanBoxAreaRect.left;
+        }
+
         return result;
     }
 

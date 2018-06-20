@@ -49,17 +49,18 @@ public class ZBarView extends QRCodeView {
     protected ScanResult processData(byte[] data, int width, int height, boolean isRetry) {
         Image barcode = new Image(width, height, "Y800");
 
-        Rect rect = mScanBoxView.getScanBoxAreaRect(height);
-        if (rect != null && !isRetry && rect.left + rect.width() <= width && rect.top + rect.height() <= height) {
-            barcode.setCrop(rect.left, rect.top, rect.width(), rect.height());
+        Rect scanBoxAreaRect = mScanBoxView.getScanBoxAreaRect(height);
+        if (scanBoxAreaRect != null && !isRetry && scanBoxAreaRect.left + scanBoxAreaRect.width() <= width
+                && scanBoxAreaRect.top + scanBoxAreaRect.height() <= height) {
+            barcode.setCrop(scanBoxAreaRect.left, scanBoxAreaRect.top, scanBoxAreaRect.width(), scanBoxAreaRect.height());
         }
 
         barcode.setData(data);
-        String result = processData(barcode);
+        String result = processData(barcode, scanBoxAreaRect);
         return new ScanResult(result);
     }
 
-    private String processData(Image barcode) {
+    private String processData(Image barcode, Rect scanBoxAreaRect) {
         String result = null;
         if (mScanner.scanImage(barcode) != 0) {
             SymbolSet symbolSet = mScanner.getResults();
@@ -72,7 +73,7 @@ public class ZBarView extends QRCodeView {
                 }
                 if (!TextUtils.isEmpty(symData)) {
                     if (isShowLocationPoint()) {
-                        transformToViewCoordinates(symbol.getLocationPoints());
+                        transformToViewCoordinates(symbol.getLocationPoints(), scanBoxAreaRect);
                     }
 
                     result = symData;
@@ -92,7 +93,7 @@ public class ZBarView extends QRCodeView {
             int[] pix = new int[picWidth * picHeight];
             bitmap.getPixels(pix, 0, picWidth, 0, 0, picWidth, picHeight);
             barcode.setData(pix);
-            String result = processData(barcode.convert("Y800"));
+            String result = processData(barcode.convert("Y800"), null);
             return new ScanResult(result);
         } catch (Exception e) {
             e.printStackTrace();

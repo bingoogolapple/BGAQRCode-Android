@@ -27,7 +27,7 @@ public class BarcodeFormat {
     public static final BarcodeFormat CODE93 = new BarcodeFormat(Symbol.CODE93, "CODE93");
     public static final BarcodeFormat CODE128 = new BarcodeFormat(Symbol.CODE128, "CODE128");
 
-    public static final List<BarcodeFormat> ALL_FORMATS = new ArrayList<BarcodeFormat>();
+    public static final List<BarcodeFormat> ALL_FORMATS = new ArrayList<>();
 
     static {
         ALL_FORMATS.add(BarcodeFormat.PARTIAL);
