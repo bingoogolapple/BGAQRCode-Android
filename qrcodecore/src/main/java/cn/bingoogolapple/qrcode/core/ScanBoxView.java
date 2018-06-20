@@ -546,7 +546,7 @@ public class ScanBoxView extends View {
     }
 
     public Rect getScanBoxAreaRect(int previewHeight) {
-        if (mIsOnlyDecodeScanBoxArea) {
+        if (mIsOnlyDecodeScanBoxArea && getVisibility() == View.VISIBLE) {
             Rect rect = new Rect(mFramingRect);
             float ratio = 1.0f * previewHeight / getMeasuredHeight();
 

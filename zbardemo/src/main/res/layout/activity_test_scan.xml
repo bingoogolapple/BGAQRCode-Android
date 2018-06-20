@@ -28,7 +28,7 @@
         app:qrcv_rectWidth="200dp"
         app:qrcv_scanLineColor="@color/colorPrimaryDark"
         app:qrcv_toolbarHeight="56dp"
-        app:qrcv_topOffset="90dp"
+        app:qrcv_topOffset="80dp"
         app:qrcv_verticalBias="-1" />
 
     <include layout="@layout/toolbar" />

@@ -13,7 +13,11 @@ import net.sourceforge.zbar.Symbol;
 import net.sourceforge.zbar.SymbolSet;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
+import cn.bingoogolapple.qrcode.core.BarcodeType;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.core.ScanResult;
 
@@ -24,6 +28,7 @@ public class ZBarView extends QRCodeView {
     }
 
     private ImageScanner mScanner;
+    private List<BarcodeFormat> mFormatList;
 
     public ZBarView(Context context, AttributeSet attributeSet) {
         this(context, attributeSet, 0);
@@ -31,27 +36,66 @@ public class ZBarView extends QRCodeView {
 
     public ZBarView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setupScanner();
+        setupReader();
     }
 
-    private void setupScanner() {
+    @Override
+    protected void setupReader() {
         mScanner = new ImageScanner();
         mScanner.setConfig(0, Config.X_DENSITY, 3);
         mScanner.setConfig(0, Config.Y_DENSITY, 3);
 
         mScanner.setConfig(Symbol.NONE, Config.ENABLE, 0);
-        for (BarcodeFormat format : BarcodeFormat.ALL_FORMATS) {
+
+        for (BarcodeFormat format : getFormats()) {
             mScanner.setConfig(format.getId(), Config.ENABLE, 1);
         }
+    }
+
+    public Collection<BarcodeFormat> getFormats() {
+        if (mBarcodeType == BarcodeType.ONE_DIMENSION) {
+            return BarcodeFormat.ONE_DIMENSION_FORMAT_LIST;
+        } else if (mBarcodeType == BarcodeType.TWO_DIMENSION) {
+            return BarcodeFormat.TWO_DIMENSION_FORMAT_LIST;
+        } else if (mBarcodeType == BarcodeType.ONLY_QR_CODE) {
+            return Collections.singletonList(BarcodeFormat.QRCODE);
+        } else if (mBarcodeType == BarcodeType.ONLY_CODE_128) {
+            return Collections.singletonList(BarcodeFormat.CODE128);
+        } else if (mBarcodeType == BarcodeType.ONLY_EAN_13) {
+            return Collections.singletonList(BarcodeFormat.EAN13);
+        } else if (mBarcodeType == BarcodeType.HIGH_FREQUENCY) {
+            return BarcodeFormat.HIGH_FREQUENCY_FORMAT_LIST;
+        } else if (mBarcodeType == BarcodeType.CUSTOM) {
+            return mFormatList;
+        } else {
+            return BarcodeFormat.ALL_FORMAT_LIST;
+        }
+    }
+
+    /**
+     * 设置识别的格式
+     *
+     * @param barcodeType 识别的格式
+     * @param formatList  barcodeType 为 BarcodeType.CUSTOM 时，必须指定该值
+     */
+    public void setType(BarcodeType barcodeType, List<BarcodeFormat> formatList) {
+        mBarcodeType = barcodeType;
+        mFormatList = formatList;
+
+        if (mBarcodeType == BarcodeType.CUSTOM && (mFormatList == null || mFormatList.isEmpty())) {
+            throw new RuntimeException("barcodeType 为 BarcodeType.CUSTOM 时 formatList 不能为空");
+        }
+        setupReader();
     }
 
     @Override
     protected ScanResult processData(byte[] data, int width, int height, boolean isRetry) {
         Image barcode = new Image(width, height, "Y800");
 
-        Rect rect = mScanBoxView.getScanBoxAreaRect(height);
-        if (rect != null && !isRetry && rect.left + rect.width() <= width && rect.top + rect.height() <= height) {
-            barcode.setCrop(rect.left, rect.top, rect.width(), rect.height());
+        Rect scanBoxAreaRect = mScanBoxView.getScanBoxAreaRect(height);
+        if (scanBoxAreaRect != null && !isRetry && scanBoxAreaRect.left + scanBoxAreaRect.width() <= width
+                && scanBoxAreaRect.top + scanBoxAreaRect.height() <= height) {
+            barcode.setCrop(scanBoxAreaRect.left, scanBoxAreaRect.top, scanBoxAreaRect.width(), scanBoxAreaRect.height());
         }
 
         barcode.setData(data);
@@ -72,7 +116,7 @@ public class ZBarView extends QRCodeView {
                 }
                 if (!TextUtils.isEmpty(symData)) {
                     if (isShowLocationPoint()) {
-                        transformToViewCoordinates(symbol.getLocationPoints());
+                        transformToViewCoordinates(symbol.getLocationPoints(), null);
                     }
 
                     result = symData;

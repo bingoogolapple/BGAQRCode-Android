@@ -1,4 +1,4 @@
-:running:BGAQRCode-Android:running:
+:running:BGAQRCode-Android:running: [ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-qrcode-core/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-qrcode-core/_latestVersion)
 ============
 
 ## 目录
@@ -14,12 +14,14 @@
 ## 功能介绍
 根据[之前公司](http://www.iqegg.com)的产品需求，参考 [barcodescanner](https://github.com/dm77/barcodescanner) 改的，希望能帮助到有生成二维码、扫描二维码、识别图片二维码等需求的猿友。修改幅度较大，也就没准备针对 [barcodescanner](https://github.com/dm77/barcodescanner) 库提交PR。
 
-- [x] 可以设置用前置摄像头扫描
+- [x] 可定制各式各样的扫描框
+- [x] 可定制全屏扫描或只识别扫描框区域内码
+- [x] 可定制要识别的码的格式（详细用法查看 TestScanActivity 中的 onClick 方法）
 - [x] 可以控制闪光灯，方便夜间使用
-- [x] 可以定制各式各样的扫描框
-- [x] 可定制全屏扫描或只识别扫描框区域内的二维码
+- [x] 可以设置用前置摄像头扫描
 ***
 - [x] ZXing 生成可自定义颜色、带 logo 的二维码
+- [x] ZXing 生成一维码
 - [x] ZXing 扫描条码、二维码
 - [x] ZXing 识别图库中的条码、二维码图片
 ***
@@ -129,7 +131,7 @@ qrcv_animTime         | 扫描线从顶部移动到底部的动画时间「单�
 qrcv_isCenterVertical（已废弃，如果要垂直居中用 qrcv_verticalBias="0.5"来代替）         | 扫描框是否垂直居中，该属性为true时会忽略 qrcv_topOffset 属性        | false
 qrcv_verticalBias         | 扫描框中心点在屏幕垂直方向的比例，当设置此值时，会忽略 qrcv_topOffset 属性        | -1
 qrcv_toolbarHeight         | Toolbar 的高度，通过该属性来修正由 Toolbar 导致扫描框在垂直方向上的偏差        | 0dp
-qrcv_isBarcode         | 是否是扫条形码        | false
+qrcv_isBarcode         | 扫描框的样式是否为扫条形码样式        | false
 qrcv_tipText         | 提示文案        | null
 qrcv_tipTextSize         | 提示文案字体大小        | 14sp
 qrcv_tipTextColor         | 提示文案颜色        | @android:color/white
@@ -141,7 +143,7 @@ qrcv_tipBackgroundColor         | 提示文案的背景色        | #22000000
 qrcv_isScanLineReverse         | 扫描线是否来回移动        | true
 qrcv_isShowDefaultGridScanLineDrawable         | 是否显示默认的网格图片扫描线        | false
 qrcv_customGridScanLineDrawable         | 扫描线的网格图片资源        | nulll
-qrcv_isOnlyDecodeScanBoxArea         | 是否只识别扫描框区域的二维码        | false
+qrcv_isOnlyDecodeScanBoxArea         | 是否只识别扫描框中的码        | false
 qrcv_isShowLocationPoint         | 是否显示定位点        | false
 
 ## 接口说明
@@ -149,6 +151,23 @@ qrcv_isShowLocationPoint         | 是否显示定位点        | false
 >QRCodeView
 
 ```java
+
+/**
+ * ZBarView 设置识别的格式。详细用法请看 zbardemo 的 TestScanActivity 中的 onClick 方法
+ *
+ * @param barcodeType 识别的格式
+ * @param formatList  barcodeType 为 BarcdeType.CUSTOM 时，必须指定该值
+ */
+public void setType(BarcodeType barcodeType, List<BarcodeFormat> formatList)
+
+/**
+ * ZXingView 设置识别的格式。详细用法请看 zxingdemo TestScanActivity 中的 onClick 方法
+ *
+ * @param barcodeType 识别的格式
+ * @param hintMap     barcodeType 为 BarcodeType.CUSTOM 时，必须指定该值
+ */
+public void setType(BarcodeType barcodeType, Map<DecodeHintType, Object> hintMap)
+
 /**
  * 设置扫描二维码的代理
  *
