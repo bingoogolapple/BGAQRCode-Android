@@ -95,6 +95,11 @@
         android:text="仅识别EAN13" />
 
     <TextView
+        android:id="@+id/scan_high_frequency"
+        style="@style/WrapWrapTv"
+        android:text="仅识别高频率格式" />
+
+    <TextView
         android:id="@+id/scan_all"
         style="@style/WrapWrapTv"
         android:text="识别所有码" />

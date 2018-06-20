@@ -31,6 +31,10 @@ public enum BarcodeType {
      */
     ONLY_EAN_13,
     /**
+     * 高频率格式，包括 QR_CODE、EAN_13、CODE_128
+     */
+    HIGH_FREQUENCY,
+    /**
      * 自定义格式
      */
     CUSTOM

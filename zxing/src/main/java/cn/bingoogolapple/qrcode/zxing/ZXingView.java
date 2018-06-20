@@ -22,7 +22,6 @@ import cn.bingoogolapple.qrcode.core.ScanResult;
 
 public class ZXingView extends QRCodeView {
     private MultiFormatReader mMultiFormatReader;
-    private BarcodeType mBarcodeType = BarcodeType.ALL;
     private Map<DecodeHintType, Object> mHintMap;
 
     public ZXingView(Context context, AttributeSet attributeSet) {
@@ -31,10 +30,10 @@ public class ZXingView extends QRCodeView {
 
     public ZXingView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initMultiFormatReader();
     }
 
-    private void initMultiFormatReader() {
+    @Override
+    protected void setupReader() {
         mMultiFormatReader = new MultiFormatReader();
 
         if (mBarcodeType == BarcodeType.ONE_DIMENSION) {
@@ -47,6 +46,8 @@ public class ZXingView extends QRCodeView {
             mMultiFormatReader.setHints(QRCodeDecoder.CODE_128_HINT_MAP);
         } else if (mBarcodeType == BarcodeType.ONLY_EAN_13) {
             mMultiFormatReader.setHints(QRCodeDecoder.EAN_13_HINT_MAP);
+        } else if (mBarcodeType == BarcodeType.HIGH_FREQUENCY) {
+            mMultiFormatReader.setHints(QRCodeDecoder.HIGH_FREQUENCY_HINT_MAP);
         } else if (mBarcodeType == BarcodeType.CUSTOM) {
             mMultiFormatReader.setHints(mHintMap);
         } else {
@@ -63,10 +64,11 @@ public class ZXingView extends QRCodeView {
     public void setType(BarcodeType barcodeType, Map<DecodeHintType, Object> hintMap) {
         mBarcodeType = barcodeType;
         mHintMap = hintMap;
-        if (mBarcodeType == BarcodeType.CUSTOM && mHintMap == null) {
-            throw new RuntimeException("mBarcodeType 为 BarcodeType.CUSTOM 时，必须指定 hintMap");
+
+        if (mBarcodeType == BarcodeType.CUSTOM && (mHintMap == null || mHintMap.isEmpty())) {
+            throw new RuntimeException("barcodeType 为 BarcodeType.CUSTOM 时 hintMap 不能为空");
         }
-        initMultiFormatReader();
+        setupReader();
     }
 
     @Override
@@ -84,7 +86,8 @@ public class ZXingView extends QRCodeView {
             PlanarYUVLuminanceSource source;
             scanBoxAreaRect = mScanBoxView.getScanBoxAreaRect(height);
             if (scanBoxAreaRect != null) {
-                source = new PlanarYUVLuminanceSource(data, width, height, scanBoxAreaRect.left, scanBoxAreaRect.top, scanBoxAreaRect.width(), scanBoxAreaRect.height(), false);
+                source = new PlanarYUVLuminanceSource(data, width, height, scanBoxAreaRect.left, scanBoxAreaRect.top, scanBoxAreaRect.width(),
+                        scanBoxAreaRect.height(), false);
             } else {
                 source = new PlanarYUVLuminanceSource(data, width, height, 0, 0, width, height, false);
             }

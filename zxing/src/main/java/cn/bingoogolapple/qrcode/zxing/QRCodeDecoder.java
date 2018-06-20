@@ -22,7 +22,7 @@ import cn.bingoogolapple.qrcode.core.BGAQRCodeUtil;
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:16/4/8 下午11:22
- * 描述:解析二维码图片
+ * 描述:解析二维码图片。一维条码、二维码各种类型简介 https://blog.csdn.net/xdg_blog/article/details/52932707
  */
 public class QRCodeDecoder {
     static final Map<DecodeHintType, Object> ALL_HINT_MAP = new EnumMap<>(DecodeHintType.class);
@@ -116,6 +116,19 @@ public class QRCodeDecoder {
         EAN_13_HINT_MAP.put(DecodeHintType.POSSIBLE_FORMATS, Collections.singletonList(BarcodeFormat.EAN_13));
         EAN_13_HINT_MAP.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
         EAN_13_HINT_MAP.put(DecodeHintType.CHARACTER_SET, "utf-8");
+    }
+
+    static final Map<DecodeHintType, Object> HIGH_FREQUENCY_HINT_MAP = new EnumMap<>(DecodeHintType.class);
+
+    static {
+        List<BarcodeFormat> highFrequencyFormatList = new ArrayList<>();
+        highFrequencyFormatList.add(BarcodeFormat.QR_CODE);
+        highFrequencyFormatList.add(BarcodeFormat.EAN_13);
+        highFrequencyFormatList.add(BarcodeFormat.CODE_128);
+
+        HIGH_FREQUENCY_HINT_MAP.put(DecodeHintType.POSSIBLE_FORMATS, highFrequencyFormatList);
+        HIGH_FREQUENCY_HINT_MAP.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
+        HIGH_FREQUENCY_HINT_MAP.put(DecodeHintType.CHARACTER_SET, "utf-8");
     }
 
     private QRCodeDecoder() {

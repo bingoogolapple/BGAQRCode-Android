@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
@@ -68,8 +67,9 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
     @Override
     public void onScanQRCodeSuccess(String result) {
         Log.i(TAG, "result:" + result);
-        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+        setTitle("扫描结果为：" + result);
         vibrate();
+
         mZXingView.startSpot(); // 延迟0.5秒后开始识别
     }
 
@@ -139,6 +139,11 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
             case R.id.scan_ean13:
                 mZXingView.changeToScanBarcodeStyle(); // 切换成扫描条码样式
                 mZXingView.setType(BarcodeType.ONLY_EAN_13, null); // 只识别 EAN_13
+                mZXingView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.5秒后开始识别
+                break;
+            case R.id.scan_high_frequency:
+                mZXingView.changeToScanQRCodeStyle(); // 切换成扫描二维码样式
+                mZXingView.setType(BarcodeType.HIGH_FREQUENCY, null); // 只识别高频率格式，包括 QR_CODE、EAN_13、CODE_128
                 mZXingView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.5秒后开始识别
                 break;
             case R.id.scan_all:

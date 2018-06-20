@@ -25,6 +25,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     protected int mCameraId;
     private PointF[] mLocationPoints;
     private Paint mPaint;
+    protected BarcodeType mBarcodeType = BarcodeType.HIGH_FREQUENCY;
 
     public QRCodeView(Context context, AttributeSet attributeSet) {
         this(context, attributeSet, 0);
@@ -34,6 +35,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         super(context, attrs, defStyleAttr);
         mHandler = new Handler();
         initView(context, attrs);
+        setupReader();
     }
 
     private void initView(Context context, AttributeSet attrs) {
@@ -52,6 +54,8 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         mPaint.setColor(getScanBoxView().getCornerColor());
         mPaint.setStyle(Paint.Style.FILL);
     }
+
+    protected abstract void setupReader();
 
     /**
      * 设置扫描二维码的代理
