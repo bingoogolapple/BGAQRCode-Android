@@ -22,10 +22,11 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     protected Handler mHandler;
     protected boolean mSpotAble = false;
     protected ProcessDataTask mProcessDataTask;
-    protected int mCameraId;
+    protected int mCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
     private PointF[] mLocationPoints;
     private Paint mPaint;
     protected BarcodeType mBarcodeType = BarcodeType.HIGH_FREQUENCY;
+    private static long sLastPreviewFrameTime = 0;
 
     public QRCodeView(Context context, AttributeSet attributeSet) {
         this(context, attributeSet, 0);
@@ -110,7 +111,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
      * 打开后置摄像头开始预览，但是并未开始识别
      */
     public void startCamera() {
-        startCamera(Camera.CameraInfo.CAMERA_FACING_BACK);
+        startCamera(mCameraId);
     }
 
     /**
@@ -272,6 +273,11 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
 
     @Override
     public void onPreviewFrame(final byte[] data, final Camera camera) {
+        if (BGAQRCodeUtil.isDebug()) {
+            BGAQRCodeUtil.d("两次 onPreviewFrame 时间间隔：" + (System.currentTimeMillis() - sLastPreviewFrameTime));
+            sLastPreviewFrameTime = System.currentTimeMillis();
+        }
+
         if (!mSpotAble || (mProcessDataTask != null && (mProcessDataTask.getStatus() == AsyncTask.Status.PENDING
                 || mProcessDataTask.getStatus() == AsyncTask.Status.RUNNING))) {
             return;

@@ -3,6 +3,7 @@ package cn.bingoogolapple.qrcode.core;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 
 import java.lang.ref.WeakReference;
 
@@ -13,6 +14,7 @@ class ProcessDataTask extends AsyncTask<Void, Void, ScanResult> {
     private String mPicturePath;
     private Bitmap mBitmap;
     private WeakReference<QRCodeView> mQRCodeViewRef;
+    private static long sLastStartTime = 0;
 
     ProcessDataTask(Camera camera, byte[] data, QRCodeView qrCodeView, boolean isPortrait) {
         mCamera = camera;
@@ -107,7 +109,24 @@ class ProcessDataTask extends AsyncTask<Void, Void, ScanResult> {
             mBitmap = null;
             return result;
         } else {
-            return processData(qrCodeView);
+            if (BGAQRCodeUtil.isDebug()) {
+                BGAQRCodeUtil.d("两次任务执行的时间间隔：" + (System.currentTimeMillis() - sLastStartTime));
+                sLastStartTime = System.currentTimeMillis();
+            }
+            long startTime = System.currentTimeMillis();
+
+            ScanResult scanResult = processData(qrCodeView);
+
+            if (BGAQRCodeUtil.isDebug()) {
+                long time = System.currentTimeMillis() - startTime;
+                if (scanResult != null && !TextUtils.isEmpty(scanResult.result)) {
+                    BGAQRCodeUtil.d("识别成功时间为：" + time);
+                } else {
+                    BGAQRCodeUtil.e("识别失败时间为：" + time);
+                }
+            }
+
+            return scanResult;
         }
     }
 

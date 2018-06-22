@@ -6,16 +6,19 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.MultiFormatReader;
 import com.google.zxing.PlanarYUVLuminanceSource;
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
+import com.google.zxing.common.GlobalHistogramBinarizer;
 import com.google.zxing.common.HybridBinarizer;
 
 import java.util.Map;
 
+import cn.bingoogolapple.qrcode.core.BGAQRCodeUtil;
 import cn.bingoogolapple.qrcode.core.BarcodeType;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.core.ScanResult;
@@ -91,7 +94,14 @@ public class ZXingView extends QRCodeView {
             } else {
                 source = new PlanarYUVLuminanceSource(data, width, height, 0, 0, width, height, false);
             }
-            rawResult = mMultiFormatReader.decodeWithState(new BinaryBitmap(new HybridBinarizer(source)));
+
+            rawResult = mMultiFormatReader.decodeWithState(new BinaryBitmap(new GlobalHistogramBinarizer(source)));
+            if (rawResult == null) {
+                rawResult = mMultiFormatReader.decodeWithState(new BinaryBitmap(new HybridBinarizer(source)));
+                if (rawResult != null) {
+                    BGAQRCodeUtil.d("GlobalHistogramBinarizer 没识别到，HybridBinarizer 能识别到");
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -100,6 +110,9 @@ public class ZXingView extends QRCodeView {
 
         if (rawResult != null) {
             result = rawResult.getText();
+
+            BarcodeFormat barcodeFormat = rawResult.getBarcodeFormat();
+            BGAQRCodeUtil.d("格式为：" + barcodeFormat.name());
 
             if (isShowLocationPoint()) {
                 ResultPoint[] resultPoints = rawResult.getResultPoints();
