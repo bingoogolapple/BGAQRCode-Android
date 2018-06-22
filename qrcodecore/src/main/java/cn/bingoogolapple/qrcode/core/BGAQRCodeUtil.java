@@ -22,13 +22,17 @@ public class BGAQRCodeUtil {
         BGAQRCodeUtil.debug = debug;
     }
 
-    static void d(String msg) {
+    public static boolean isDebug() {
+        return debug;
+    }
+
+    public static void d(String msg) {
         if (debug) {
             Log.d("BGAQRCode", msg);
         }
     }
 
-    static void e(String msg) {
+    public static void e(String msg) {
         if (debug) {
             Log.e("BGAQRCode", msg);
         }

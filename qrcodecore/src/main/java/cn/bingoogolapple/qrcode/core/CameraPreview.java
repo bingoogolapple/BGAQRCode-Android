@@ -7,12 +7,11 @@ import android.hardware.Camera;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     /**
      * 自动对焦成功后，再次对焦的延迟
      */
-    public static final long DEFAULT_AUTO_FOCUS_SUCCESS_DELAY = 2000L;
+    public static final long DEFAULT_AUTO_FOCUS_SUCCESS_DELAY = 1000L;
 
     /**
      * 自动对焦失败后，再次对焦的延迟
@@ -65,6 +64,15 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         stopCameraPreview();
     }
 
+    public void reactNativeShowCameraPreview() {
+        if (getHolder() == null || getHolder().getSurface() == null) {
+            return;
+        }
+
+        stopCameraPreview();
+        showCameraPreview();
+    }
+
     private void showCameraPreview() {
         post(new Runnable() {
             @Override
@@ -86,7 +94,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         });
     }
 
-    public void stopCameraPreview() {
+    void stopCameraPreview() {
         if (mCamera != null) {
             try {
                 removeCallbacks(doAutoFocus);
@@ -101,13 +109,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-    public void openFlashlight() {
+    void openFlashlight() {
         if (flashLightAvailable()) {
             mCameraConfigurationManager.openFlashlight(mCamera);
         }
     }
 
-    public void closeFlashlight() {
+    void closeFlashlight() {
         if (flashLightAvailable()) {
             mCameraConfigurationManager.closeFlashlight(mCamera);
         }
