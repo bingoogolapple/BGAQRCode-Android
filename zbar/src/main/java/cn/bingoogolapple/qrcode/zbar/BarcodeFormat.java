@@ -2,9 +2,13 @@ package cn.bingoogolapple.qrcode.zbar;
 
 import net.sourceforge.zbar.Symbol;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * 一维条码、二维码各种类型简介 https://blog.csdn.net/xdg_blog/article/details/52932707
+ * 在线生成各种码 https://barcode.tec-it.com/zh/
+ */
 public class BarcodeFormat {
     private int mId;
     private String mName;
@@ -27,28 +31,63 @@ public class BarcodeFormat {
     public static final BarcodeFormat CODE93 = new BarcodeFormat(Symbol.CODE93, "CODE93");
     public static final BarcodeFormat CODE128 = new BarcodeFormat(Symbol.CODE128, "CODE128");
 
-    public static final List<BarcodeFormat> ALL_FORMATS = new ArrayList<BarcodeFormat>();
+    static final List<BarcodeFormat> ALL_FORMAT_LIST = new ArrayList<>();
 
     static {
-        ALL_FORMATS.add(BarcodeFormat.PARTIAL);
-        ALL_FORMATS.add(BarcodeFormat.EAN8);
-        ALL_FORMATS.add(BarcodeFormat.UPCE);
-        ALL_FORMATS.add(BarcodeFormat.ISBN10);
-        ALL_FORMATS.add(BarcodeFormat.UPCA);
-        ALL_FORMATS.add(BarcodeFormat.EAN13);
-        ALL_FORMATS.add(BarcodeFormat.ISBN13);
-        ALL_FORMATS.add(BarcodeFormat.I25);
-        ALL_FORMATS.add(BarcodeFormat.DATABAR);
-        ALL_FORMATS.add(BarcodeFormat.DATABAR_EXP);
-        ALL_FORMATS.add(BarcodeFormat.CODABAR);
-        ALL_FORMATS.add(BarcodeFormat.CODE39);
-        ALL_FORMATS.add(BarcodeFormat.PDF417);
-        ALL_FORMATS.add(BarcodeFormat.QRCODE);
-        ALL_FORMATS.add(BarcodeFormat.CODE93);
-        ALL_FORMATS.add(BarcodeFormat.CODE128);
+        ALL_FORMAT_LIST.add(BarcodeFormat.PARTIAL);
+        ALL_FORMAT_LIST.add(BarcodeFormat.EAN8);
+        ALL_FORMAT_LIST.add(BarcodeFormat.UPCE);
+        ALL_FORMAT_LIST.add(BarcodeFormat.ISBN10);
+        ALL_FORMAT_LIST.add(BarcodeFormat.UPCA);
+        ALL_FORMAT_LIST.add(BarcodeFormat.EAN13);
+        ALL_FORMAT_LIST.add(BarcodeFormat.ISBN13);
+        ALL_FORMAT_LIST.add(BarcodeFormat.I25);
+        ALL_FORMAT_LIST.add(BarcodeFormat.DATABAR);
+        ALL_FORMAT_LIST.add(BarcodeFormat.DATABAR_EXP);
+        ALL_FORMAT_LIST.add(BarcodeFormat.CODABAR);
+        ALL_FORMAT_LIST.add(BarcodeFormat.CODE39);
+        ALL_FORMAT_LIST.add(BarcodeFormat.PDF417);
+        ALL_FORMAT_LIST.add(BarcodeFormat.QRCODE);
+        ALL_FORMAT_LIST.add(BarcodeFormat.CODE93);
+        ALL_FORMAT_LIST.add(BarcodeFormat.CODE128);
     }
 
-    public BarcodeFormat(int id, String name) {
+    static final List<BarcodeFormat> ONE_DIMENSION_FORMAT_LIST = new ArrayList<>();
+
+    static {
+        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.PARTIAL);
+        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.EAN8);
+        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.UPCE);
+        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.ISBN10);
+        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.UPCA);
+        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.EAN13);
+        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.ISBN13);
+        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.I25);
+        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.DATABAR);
+        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.DATABAR_EXP);
+        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.CODABAR);
+        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.CODE39);
+        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.PDF417);
+        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.CODE93);
+        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.CODE128);
+    }
+
+    static final List<BarcodeFormat> TWO_DIMENSION_FORMAT_LIST = new ArrayList<>();
+
+    static {
+        TWO_DIMENSION_FORMAT_LIST.add(BarcodeFormat.PDF417);
+        TWO_DIMENSION_FORMAT_LIST.add(BarcodeFormat.QRCODE);
+    }
+
+    static final List<BarcodeFormat> HIGH_FREQUENCY_FORMAT_LIST = new ArrayList<>();
+
+    static {
+        HIGH_FREQUENCY_FORMAT_LIST.add(BarcodeFormat.QRCODE);
+        HIGH_FREQUENCY_FORMAT_LIST.add(BarcodeFormat.EAN13);
+        HIGH_FREQUENCY_FORMAT_LIST.add(BarcodeFormat.CODE128);
+    }
+
+    private BarcodeFormat(int id, String name) {
         mId = id;
         mName = name;
     }
@@ -62,8 +101,8 @@ public class BarcodeFormat {
     }
 
     public static BarcodeFormat getFormatById(int id) {
-        for(BarcodeFormat format : ALL_FORMATS) {
-            if(format.getId() == id) {
+        for (BarcodeFormat format : ALL_FORMAT_LIST) {
+            if (format.getId() == id) {
                 return format;
             }
         }

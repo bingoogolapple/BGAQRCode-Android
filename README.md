@@ -1,4 +1,4 @@
-:running:BGAQRCode-Android:running:
+:running:BGAQRCode-Android:running: [ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-qrcode-core/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-qrcode-core/_latestVersion)
 ============
 
 ## 目录
@@ -14,14 +14,19 @@
 ## 功能介绍
 根据[之前公司](http://www.iqegg.com)的产品需求，参考 [barcodescanner](https://github.com/dm77/barcodescanner) 改的，希望能帮助到有生成二维码、扫描二维码、识别图片二维码等需求的猿友。修改幅度较大，也就没准备针对 [barcodescanner](https://github.com/dm77/barcodescanner) 库提交PR。
 
-- [x] ZXing 生成可自定义颜色、带 logo 的二维码
-- [x] ZXing 扫描二维码
-- [x] ZXing 识别图库中的二维码图片
-- [x] 可以设置用前置摄像头扫描
+- [x] 可定制各式各样的扫描框
+- [x] 可定制全屏扫描或只识别扫描框区域内码
+- [x] 可定制要识别的码的格式（详细用法查看 TestScanActivity 中的 onClick 方法）
 - [x] 可以控制闪光灯，方便夜间使用
-- [x] 可以定制各式各样的扫描框
-- [x] 可定制全屏扫描或只识别扫描框区域内的二维码
-- [x] ZBar 扫描二维码「已解决中文乱码问题」
+- [x] 可以设置用前置摄像头扫描
+***
+- [x] ZXing 生成可自定义颜色、带 logo 的二维码
+- [x] ZXing 生成一维码
+- [x] ZXing 扫描条码、二维码
+- [x] ZXing 识别图库中的条码、二维码图片
+***
+- [x] ZBar 扫描条码、二维码「已解决中文乱码问题」
+- [x] ZBar 识别图库中的条码、二维码图片
 
 ## 常见问题
 #### 1.部分手机无法扫描出结果，扫描预览界面二维码被压缩
@@ -111,6 +116,7 @@ qrcv_topOffset         | 扫描框距离 toolbar 底部的距离        | 90dp
 qrcv_cornerSize         | 扫描框边角线的宽度        | 3dp
 qrcv_cornerLength         | 扫描框边角线的长度        | 20dp
 qrcv_cornerColor         | 扫描框边角线的颜色        | @android:color/white
+qrcv_cornerDisplayType         | 扫描框边角线显示位置(相对于边框)，默认值为中间        | center
 qrcv_rectWidth         | 扫描框的宽度        | 200dp
 qrcv_barcodeRectHeight         | 条码扫样式描框的高度        | 140dp
 qrcv_maskColor         | 除去扫描框，其余部分阴影颜色        | #33FFFFFF
@@ -122,9 +128,10 @@ qrcv_customScanLineDrawable         | 扫描线的图片资源「默认的扫描
 qrcv_borderSize         | 扫描边框的宽度        | 1dp
 qrcv_borderColor         | 扫描边框的颜色        | @android:color/white
 qrcv_animTime         | 扫描线从顶部移动到底部的动画时间「单位为毫秒」        | 1000
-qrcv_isCenterVertical         | 扫描框是否垂直居中，该属性为true时会忽略 qrcv_topOffset 属性        | false
+qrcv_isCenterVertical（已废弃，如果要垂直居中用 qrcv_verticalBias="0.5"来代替）         | 扫描框是否垂直居中，该属性为true时会忽略 qrcv_topOffset 属性        | false
+qrcv_verticalBias         | 扫描框中心点在屏幕垂直方向的比例，当设置此值时，会忽略 qrcv_topOffset 属性        | -1
 qrcv_toolbarHeight         | Toolbar 的高度，通过该属性来修正由 Toolbar 导致扫描框在垂直方向上的偏差        | 0dp
-qrcv_isBarcode         | 是否是扫条形码        | false
+qrcv_isBarcode         | 扫描框的样式是否为扫条形码样式        | false
 qrcv_tipText         | 提示文案        | null
 qrcv_tipTextSize         | 提示文案字体大小        | 14sp
 qrcv_tipTextColor         | 提示文案颜色        | @android:color/white
@@ -136,13 +143,31 @@ qrcv_tipBackgroundColor         | 提示文案的背景色        | #22000000
 qrcv_isScanLineReverse         | 扫描线是否来回移动        | true
 qrcv_isShowDefaultGridScanLineDrawable         | 是否显示默认的网格图片扫描线        | false
 qrcv_customGridScanLineDrawable         | 扫描线的网格图片资源        | nulll
-qrcv_isOnlyDecodeScanBoxArea         | 是否只识别扫描框区域的二维码        | false
+qrcv_isOnlyDecodeScanBoxArea         | 是否只识别扫描框中的码        | false
+qrcv_isShowLocationPoint         | 是否显示定位点        | false
 
 ## 接口说明
 
 >QRCodeView
 
 ```java
+
+/**
+ * ZBarView 设置识别的格式。详细用法请看 zbardemo 的 TestScanActivity 中的 onClick 方法
+ *
+ * @param barcodeType 识别的格式
+ * @param formatList  barcodeType 为 BarcdeType.CUSTOM 时，必须指定该值
+ */
+public void setType(BarcodeType barcodeType, List<BarcodeFormat> formatList)
+
+/**
+ * ZXingView 设置识别的格式。详细用法请看 zxingdemo TestScanActivity 中的 onClick 方法
+ *
+ * @param barcodeType 识别的格式
+ * @param hintMap     barcodeType 为 BarcodeType.CUSTOM 时，必须指定该值
+ */
+public void setType(BarcodeType barcodeType, Map<DecodeHintType, Object> hintMap)
+
 /**
  * 设置扫描二维码的代理
  *
@@ -178,7 +203,7 @@ public void startCamera(int cameraFacing)
 public void stopCamera()
 
 /**
- * 延迟1.5秒后开始识别
+ * 延迟0.5秒后开始识别
  */
 public void startSpot()
 
@@ -200,7 +225,7 @@ public void stopSpot()
 public void stopSpotAndHiddenRect()
 
 /**
- * 显示扫描框，并且延迟1.5秒后开始识别
+ * 显示扫描框，并且延迟0.5秒后开始识别
  */
 public void startSpotAndShowRect()
 
@@ -213,6 +238,20 @@ public void openFlashlight()
  * 关闭散光灯
  */
 public void closeFlashlight()
+
+/**
+ * 解析本地图片二维码。返回二维码图片里的内容 或 null
+ *
+ * @param picturePath 要解析的二维码图片本地路径
+ */
+public void decodeQRCode(String picturePath)
+
+/**
+ * 解析 Bitmap 二维码。返回二维码图片里的内容 或 null
+ *
+ * @param bitmap 要解析的二维码图片
+ */
+public void decodeQRCode(Bitmap bitmap)
 ```
 
 >QRCodeView.Delegate   扫描二维码的代理
@@ -221,7 +260,7 @@ public void closeFlashlight()
 /**
  * 处理扫描结果
  *
- * @param result
+ * @param result 摄像头扫码时只要回调了该方法 result 就一定有值，不会为 null。解析本地图片或 Bitmap 时 result 可能为 null
  */
 void onScanQRCodeSuccess(String result)
 
@@ -229,26 +268,6 @@ void onScanQRCodeSuccess(String result)
  * 处理打开相机出错
  */
 void onScanQRCodeOpenCameraError()
-```
-
->QRCodeDecoder  解析二维码图片。几个重载方法都是耗时操作，请在子线程中调用。
-
-```java
-/**
- * 同步解析本地图片二维码。该方法是耗时操作，请在子线程中调用。
- *
- * @param picturePath 要解析的二维码图片本地路径
- * @return 返回二维码图片里的内容 或 null
- */
-public static String syncDecodeQRCode(String picturePath)
-
-/**
- * 同步解析bitmap二维码。该方法是耗时操作，请在子线程中调用。
- *
- * @param bitmap 要解析的二维码图片
- * @return 返回二维码图片里的内容 或 null
- */
-public static String syncDecodeQRCode(Bitmap bitmap)
 ```
 
 >QRCodeEncoder  创建二维码图片。几个重载方法都是耗时操作，请在子线程中调用。
@@ -291,6 +310,16 @@ public static Bitmap syncEncodeQRCode(String content, int size, int foregroundCo
  * @param logo            二维码图片的logo
  */
 public static Bitmap syncEncodeQRCode(String content, int size, int foregroundColor, int backgroundColor, Bitmap logo)
+
+/**
+ * 同步创建条形码图片
+ *
+ * @param content  要生成条形码包含的内容
+ * @param width    条形码的宽度，单位px
+ * @param height   条形码的高度，单位px
+ * @param textSize 字体大小，单位px，如果等于0则不在底部绘制文字
+ */
+public static Bitmap syncEncodeBarcode(String content, int width, int height, int textSize)
 ```
 
 #### 详细用法请查看[ZBarDemo](https://github.com/bingoogolapple/BGAQRCode-Android/tree/master/zbardemo):feet:
@@ -299,9 +328,9 @@ public static Bitmap syncEncodeQRCode(String content, int size, int foregroundCo
 
 ## 关于我
 
-| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群
-| ------------ | ------------- | ------------ | ------------ |
-| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
+| 个人主页 | 邮箱 | BGA系列开源库QQ群
+| ------------- | ------------ | ------------ |
+| <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
 
 ## 打赏支持
 

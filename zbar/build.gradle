@@ -40,7 +40,13 @@ dependencies {
     }
 }
 
-// gradle clean build bintrayUpload -PpublishAar
+// ./gradlew :zbar:clean :zbar:build :zbar:bintrayUpload -PpublishAar
 if (hasProperty("publishAar")) {
     apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/jcenter-release.gradle'
+}
+
+tasks.whenTaskAdded {
+    if (it.name == 'releaseAndroidJavadocs') {
+        it.enabled = false
+    }
 }

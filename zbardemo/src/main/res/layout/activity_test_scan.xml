@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                style="@style/MatchMatch">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchMatch">
 
     <cn.bingoogolapple.qrcode.zbar.ZBarView
         android:id="@+id/zbarview"
@@ -16,10 +16,10 @@
         app:qrcv_cornerSize="3dp"
         app:qrcv_customGridScanLineDrawable="@mipmap/custom_grid_scan_line"
         app:qrcv_isBarcode="false"
-        app:qrcv_isCenterVertical="false"
         app:qrcv_isOnlyDecodeScanBoxArea="false"
         app:qrcv_isShowDefaultGridScanLineDrawable="true"
         app:qrcv_isShowDefaultScanLineDrawable="true"
+        app:qrcv_isShowLocationPoint="false"
         app:qrcv_isShowTipBackground="true"
         app:qrcv_isShowTipTextAsSingleLine="false"
         app:qrcv_isTipTextBelowRect="false"
@@ -28,9 +28,10 @@
         app:qrcv_rectWidth="200dp"
         app:qrcv_scanLineColor="@color/colorPrimaryDark"
         app:qrcv_toolbarHeight="56dp"
-        app:qrcv_topOffset="20dp"/>
+        app:qrcv_topOffset="80dp"
+        app:qrcv_verticalBias="-1" />
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
 
-    <include layout="@layout/view_control"/>
+    <include layout="@layout/view_control" />
 </RelativeLayout>

@@ -1,82 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/MatchWrap.Vertical"
-    android:layout_alignParentBottom="true">
+<cn.bingoogolapple.flowlayout.BGAFlowLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchWrap"
+    android:layout_alignParentBottom="true"
+    android:padding="4dp"
+    app:fl_horizontalChildGap="4dp"
+    app:fl_isDistributionWhiteSpacing="true"
+    app:fl_verticalChildGap="4dp">
 
-    <LinearLayout style="@style/MatchWrap.Horizontal">
+    <TextView
+        android:id="@+id/start_preview"
+        style="@style/WrapWrapTv"
+        android:text="开始预览" />
 
-        <TextView
-            android:id="@+id/start_spot"
-            style="@style/AutoWrapTv"
-            android:text="开始识别" />
+    <TextView
+        android:id="@+id/stop_preview"
+        style="@style/WrapWrapTv"
+        android:text="停止预览" />
 
-        <TextView
-            android:id="@+id/stop_spot"
-            style="@style/AutoWrapTv"
-            android:text="暂停识别" />
+    <TextView
+        android:id="@+id/start_spot"
+        style="@style/WrapWrapTv"
+        android:text="开始识别" />
 
-        <TextView
-            android:id="@+id/show_rect"
-            style="@style/AutoWrapTv"
-            android:text="显示扫描框" />
+    <TextView
+        android:id="@+id/stop_spot"
+        style="@style/WrapWrapTv"
+        android:text="停止识别" />
 
-        <TextView
-            android:id="@+id/hidden_rect"
-            style="@style/AutoWrapTv"
-            android:text="隐藏扫描框" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/start_spot_showrect"
+        style="@style/WrapWrapTv"
+        android:text="开始识别显示扫描框" />
 
-    <LinearLayout style="@style/MatchWrap.Horizontal">
+    <TextView
+        android:id="@+id/stop_spot_hiddenrect"
+        style="@style/WrapWrapTv"
+        android:text="暂停识别隐藏扫描框" />
 
-        <TextView
-            android:id="@+id/start_spot_showrect"
-            style="@style/AutoWrapTv"
-            android:text="开始识别显示扫描框" />
+    <TextView
+        android:id="@+id/show_scan_rect"
+        style="@style/WrapWrapTv"
+        android:text="显示扫描框" />
 
-        <TextView
-            android:id="@+id/stop_spot_hiddenrect"
-            style="@style/AutoWrapTv"
-            android:text="暂停识别隐藏扫描框" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/hidden_scan_rect"
+        style="@style/WrapWrapTv"
+        android:text="隐藏扫描框" />
 
-    <LinearLayout style="@style/MatchWrap.Horizontal">
+    <TextView
+        android:id="@+id/decode_scan_box_area"
+        style="@style/WrapWrapTv"
+        android:text="仅识别扫描框中的码" />
 
-        <TextView
-            android:id="@+id/start_preview"
-            style="@style/AutoWrapTv"
-            android:text="开始预览" />
+    <TextView
+        android:id="@+id/decode_full_screen_area"
+        style="@style/WrapWrapTv"
+        android:text="识别整个屏幕中的码" />
 
-        <TextView
-            android:id="@+id/stop_preview"
-            style="@style/AutoWrapTv"
-            android:text="停止预览" />
+    <TextView
+        android:id="@+id/open_flashlight"
+        style="@style/WrapWrapTv"
+        android:text="打开闪光灯" />
 
-        <TextView
-            android:id="@+id/scan_barcode"
-            style="@style/AutoWrapTv"
-            android:text="扫条码" />
+    <TextView
+        android:id="@+id/close_flashlight"
+        style="@style/WrapWrapTv"
+        android:text="关闭闪光灯" />
 
-        <TextView
-            android:id="@+id/scan_qrcode"
-            style="@style/AutoWrapTv"
-            android:text="扫二维码" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/scan_one_dimension"
+        style="@style/WrapWrapTv"
+        android:text="仅识别一维条码" />
 
-    <LinearLayout style="@style/MatchWrap.Horizontal">
+    <TextView
+        android:id="@+id/scan_two_dimension"
+        style="@style/WrapWrapTv"
+        android:text="仅识别二维条码" />
 
-        <TextView
-            android:id="@+id/open_flashlight"
-            style="@style/AutoWrapTv"
-            android:text="开灯" />
+    <TextView
+        android:id="@+id/scan_qr_code"
+        style="@style/WrapWrapTv"
+        android:text="仅识别QRCode" />
 
-        <TextView
-            android:id="@+id/close_flashlight"
-            style="@style/AutoWrapTv"
-            android:text="关灯" />
+    <TextView
+        android:id="@+id/scan_code128"
+        style="@style/WrapWrapTv"
+        android:text="仅识别Code128" />
 
-        <TextView
-            android:id="@+id/choose_qrcde_from_gallery"
-            style="@style/AutoWrapTv"
-            android:text="从相册选取扫描" />
-    </LinearLayout>
-</LinearLayout>
+    <TextView
+        android:id="@+id/scan_ean13"
+        style="@style/WrapWrapTv"
+        android:text="仅识别EAN13" />
+
+    <TextView
+        android:id="@+id/scan_high_frequency"
+        style="@style/WrapWrapTv"
+        android:text="仅识别高频率格式" />
+
+    <TextView
+        android:id="@+id/scan_all"
+        style="@style/WrapWrapTv"
+        android:text="识别所有码" />
+
+    <TextView
+        android:id="@+id/scan_custom"
+        style="@style/WrapWrapTv"
+        android:text="自定义识别格式" />
+
+    <TextView
+        android:id="@+id/choose_qrcde_from_gallery"
+        style="@style/WrapWrapTv"
+        android:text="识别图片中的码" />
+</cn.bingoogolapple.flowlayout.BGAFlowLayout>
