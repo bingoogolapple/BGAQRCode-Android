@@ -24,18 +24,20 @@ android {
 
 dependencies {
     // -------------------- 以下几个库是为了方便编写演示案例添加进来的，集成到你自己项目时可以不依赖这些库 --------------------
-    implementation 'com.android.support:appcompat-v7:27.0.2'
-    implementation 'com.android.support:support-v4:27.0.2'
-    implementation 'com.android.support:recyclerview-v7:27.0.2'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'pub.devrel:easypermissions:1.0.1'
     implementation 'cn.bingoogolapple:bga-photopicker:1.2.8@aar'
     implementation 'cn.bingoogolapple:bga-baseadapter:1.2.9@aar'
+    implementation 'cn.bingoogolapple:bga-flowlayout:1.0.0@aar'
+
     implementation 'com.github.bumptech.glide:glide:4.5.0'
     // -------------------- 以上几个库是为了方便编写演示案例添加进来的，集成到你自己项目时可以不依赖这些库 --------------------
 
 //    implementation project(':zxing')
 
     // -------------------- 以下一个库是必须依赖的 ----------------------------
-    implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.2.1'
+    implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.2.5'
     // -------------------- 以上一个库是必须依赖的 ----------------------------
 }

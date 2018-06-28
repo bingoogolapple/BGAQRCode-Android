@@ -10,7 +10,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.zxing:core:3.3.1'
+    implementation 'com.google.zxing:core:3.3.3'
     if(hasProperty("publishAar")) {
         implementation "cn.bingoogolapple:bga-qrcode-core:${VERSION_NAME}"
     } else {
@@ -18,7 +18,7 @@ dependencies {
     }
 }
 
-// gradle clean build bintrayUpload -PpublishAar
+// ./gradlew :zxing:clean :zxing:build :zxing:bintrayUpload -PpublishAar
 if (hasProperty("publishAar")) {
     apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/jcenter-release.gradle'
 }

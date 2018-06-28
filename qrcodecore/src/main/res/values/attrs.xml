@@ -9,6 +9,11 @@
         <attr name="qrcv_cornerLength" format="dimension|reference" />
         <!-- 扫描框边角线的颜色，默认值为@android:color/white -->
         <attr name="qrcv_cornerColor" format="color|reference" />
+        <!-- 扫描框边角线显示位置(相对于边框)，默认值为中间 -->
+        <attr name="qrcv_cornerDisplayType">
+            <enum name="center" value="1" />
+            <enum name="inside" value="2" />
+        </attr>
         <!-- 扫描框的宽度，默认值为200dp -->
         <attr name="qrcv_rectWidth" format="dimension|reference" />
         <!-- 条码扫样式描框的高度，默认值为140dp -->
@@ -31,11 +36,11 @@
         <attr name="qrcv_borderColor" format="color|reference" />
         <!-- 扫描线从顶部移动到底部的动画时间，默认值为1000 -->
         <attr name="qrcv_animTime" format="integer" />
-        <!-- 扫描框是否垂直居中，该属性为true时会忽略qrcv_topOffset属性，默认值为false -->
-        <attr name="qrcv_isCenterVertical" format="boolean" />
+        <!-- 扫描框中心点在屏幕垂直方向的比例，当设置此值时，会忽略 qrcv_topOffset -->
+        <attr name="qrcv_verticalBias" format="float" />
         <!-- Toolbar的高度，当有设置qrcv_isCenterVertical属性时，通过该属性来修正有Toolbar时导致扫描框垂直居中的偏差，默认值为0dp -->
         <attr name="qrcv_toolbarHeight" format="dimension|reference" />
-        <!-- 是否是扫条形码，默认值为false -->
+        <!-- 扫描框的样式是否为扫条形码样式，默认值为false -->
         <attr name="qrcv_isBarcode" format="boolean" />
         <!-- 扫描二维码时的提示文案，默认值为null -->
         <attr name="qrcv_qrCodeTipText" format="string|reference" />
@@ -61,7 +66,9 @@
         <attr name="qrcv_isShowDefaultGridScanLineDrawable" format="boolean" />
         <!-- 扫描线的网格图片资源，默认值为null -->
         <attr name="qrcv_customGridScanLineDrawable" format="reference" />
-        <!-- 是否只识别扫描框区域的二维码，默认值为false -->
+        <!-- 是否只识别扫描框中的码，默认值为false -->
         <attr name="qrcv_isOnlyDecodeScanBoxArea" format="boolean" />
+        <!-- 是否显示定位点，默认值为false -->
+        <attr name="qrcv_isShowLocationPoint" format="boolean" />
     </declare-styleable>
 </resources>
