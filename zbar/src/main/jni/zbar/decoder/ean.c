@@ -667,11 +667,8 @@ static inline zbar_symbol_type_t integrate_partial (ean_decoder_t *ean,
         if(!ean->buf[0] && TEST_CFG(ean->upca_config, ZBAR_CFG_ENABLE))
             part = ZBAR_UPCA;
         else if(ean->buf[0] == 9 && ean->buf[1] == 7) {
-            /* ISBN-10 has priority over ISBN-13(?) */
-            if(ean->buf[2] == 8 &&
-               TEST_CFG(ean->isbn10_config, ZBAR_CFG_ENABLE))
-                part = ZBAR_ISBN10;
-            else if((ean->buf[2] == 8 || ean->buf[2] == 9) &&
+            /* ISBN-10 is deprecated */
+           if((ean->buf[2] == 8 || ean->buf[2] == 9) &&
                TEST_CFG(ean->isbn13_config, ZBAR_CFG_ENABLE))
                 part = ZBAR_ISBN13;
         }
