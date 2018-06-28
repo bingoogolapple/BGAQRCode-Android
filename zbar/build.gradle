@@ -34,7 +34,7 @@ android {
 
 dependencies {
     if (hasProperty("publishAar")) {
-        compile "cn.bingoogolapple:bga-qrcode-core:${VERSION_NAME}"
+        implementation "cn.bingoogolapple:bga-qrcode-core:${VERSION_NAME}"
     } else {
         api project(':qrcodecore')
     }
