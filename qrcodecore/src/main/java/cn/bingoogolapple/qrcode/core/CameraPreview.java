@@ -3,9 +3,13 @@ package cn.bingoogolapple.qrcode.core;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.hardware.Camera;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import java.util.Collections;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     /**
@@ -87,7 +91,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                         mCameraConfigurationManager.setDesiredCameraParameters(mCamera);
                         mCamera.startPreview();
 
-                        mCamera.autoFocus(autoFocusCB);
+                        mCamera.autoFocus(mAutoFocusCallback);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -123,6 +127,83 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
+    void onScanBoxRectChanged(Rect scanRect) {
+        if (mCamera == null || scanRect == null || scanRect.left <= 0 || scanRect.top <= 0) {
+            return;
+        }
+        try {
+            Camera.Parameters parameters = mCamera.getParameters(); // 先获取当前相机的参数配置对象
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO); // 设置聚焦模式
+            Camera.Size size = parameters.getPreviewSize();
+
+            int centerX = scanRect.centerX();
+            int centerY = scanRect.centerY();
+            int rectHalfWidth = scanRect.width() / 2;
+            int rectHalfHeight = scanRect.height() / 2;
+
+            BGAQRCodeUtil.printRect("转换前", scanRect);
+
+            if (BGAQRCodeUtil.isPortrait(getContext())) {
+                int temp = centerX;
+                centerX = centerY;
+                centerY = temp;
+
+                temp = rectHalfWidth;
+                rectHalfWidth = rectHalfHeight;
+                rectHalfHeight = temp;
+            }
+            scanRect = new Rect(centerX - rectHalfWidth, centerY - rectHalfHeight, centerX + rectHalfWidth, centerY + rectHalfHeight);
+
+            BGAQRCodeUtil.printRect("转换后", scanRect);
+
+            if (parameters.getMaxNumFocusAreas() > 0) {
+                Rect focusRect = calculateFocusArea(scanRect, 1f, size);
+                BGAQRCodeUtil.printRect("聚焦区域", focusRect);
+                parameters.setFocusAreas(Collections.singletonList(new Camera.Area(focusRect, 1000)));
+            }
+
+            if (parameters.getMaxNumMeteringAreas() > 0) {
+                Rect meteringRect = calculateFocusArea(scanRect, 1.5f, size);
+                BGAQRCodeUtil.printRect("测光区域", meteringRect);
+                parameters.setMeteringAreas(Collections.singletonList(new Camera.Area(meteringRect, 1000)));
+            }
+
+            removeCallbacks(doAutoFocus);
+            mCamera.cancelAutoFocus(); // 先要取消掉进程中所有的聚焦功能
+            mCamera.setParameters(parameters); // 一定要记得把相应参数设置给相机
+            mCamera.autoFocus(mAutoFocusCallback);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 计算扫码区域
+     *
+     * @param scanBox     扫码框
+     * @param coefficient 比率
+     */
+    private Rect calculateFocusArea(Rect scanBox, float coefficient, Camera.Size previewSize) {
+        int width = (int) (scanBox.width() * coefficient);
+        int height = (int) (scanBox.height() * coefficient);
+        float scanCenterX = scanBox.centerY();
+        float scanCenterY = scanBox.centerX();
+
+        int centerX = (int) (scanCenterX / previewSize.width * 2000 - 1000);
+        int centerY = (int) (scanCenterY / previewSize.height * 2000 - 1000);
+
+        int left = clamp(centerX - (width / 2), -1000, 1000);
+        int top = clamp(centerY - (height / 2), -1000, 1000);
+
+        RectF rectF = new RectF(left, top, left + width, top + height);
+        return new Rect(Math.round(rectF.left), Math.round(rectF.top),
+                Math.round(rectF.right), Math.round(rectF.bottom));
+    }
+
+    private int clamp(int x, int min, int max) {
+        return Math.min(Math.max(x, min), max);
+    }
+
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
@@ -152,7 +233,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         public void run() {
             if (mCamera != null && mPreviewing && mSurfaceCreated) {
                 try {
-                    mCamera.autoFocus(autoFocusCB);
+                    mCamera.autoFocus(mAutoFocusCallback);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -160,7 +241,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     };
 
-    Camera.AutoFocusCallback autoFocusCB = new Camera.AutoFocusCallback() {
+    Camera.AutoFocusCallback mAutoFocusCallback = new Camera.AutoFocusCallback() {
         public void onAutoFocus(boolean success, Camera camera) {
             if (success) {
                 postDelayed(doAutoFocus, getAutoFocusSuccessDelay());

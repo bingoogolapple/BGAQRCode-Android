@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-        BGAQRCodeUtil.setDebug(false);
+        BGAQRCodeUtil.setDebug(true);
     }
 
     public void onClick(View view) {

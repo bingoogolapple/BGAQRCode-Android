@@ -900,6 +900,7 @@ public class ScanBoxView extends View {
 
     public void setOnlyDecodeScanBoxArea(boolean onlyDecodeScanBoxArea) {
         mIsOnlyDecodeScanBoxArea = onlyDecodeScanBoxArea;
+        calFramingRect();
     }
 
     public boolean isShowLocationPoint() {
