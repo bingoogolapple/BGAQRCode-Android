@@ -71,20 +71,6 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         return mCameraPreview;
     }
 
-    /**
-     * 自动对焦成功后，再次对焦的延迟
-     */
-    public void setAutoFocusSuccessDelay(long autoFocusSuccessDelay) {
-        mCameraPreview.setAutoFocusSuccessDelay(autoFocusSuccessDelay);
-    }
-
-    /**
-     * 自动对焦失败后，再次对焦的延迟
-     */
-    public void setAutoFocusFailureDelay(long autoFocusFailureDelay) {
-        mCameraPreview.setAutoFocusSuccessDelay(autoFocusFailureDelay);
-    }
-
     public ScanBoxView getScanBoxView() {
         return mScanBoxView;
     }
