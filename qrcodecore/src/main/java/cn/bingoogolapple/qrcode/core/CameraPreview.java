@@ -80,13 +80,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
                         mCameraConfigurationManager.setDesiredCameraParameters(mCamera);
                         mCamera.startPreview();
-
-                        mCamera.autoFocus(new Camera.AutoFocusCallback() {
-                            @Override
-                            public void onAutoFocus(boolean success, Camera camera) {
-                                startContinuousAutoFocus();
-                            }
-                        });
+                        startContinuousAutoFocus();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

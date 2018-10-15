@@ -23,12 +23,6 @@ final class CameraConfigurationManager {
     }
 
     void initFromCameraParameters(Camera camera) {
-        Camera.Parameters parameters = camera.getParameters();
-
-        if (CameraConfigurationManager.autoFocusAble(camera)) {
-            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-        }
-
         Point screenResolution = BGAQRCodeUtil.getScreenResolution(mContext);
         Point screenResolutionForCamera = new Point();
         screenResolutionForCamera.x = screenResolution.x;
@@ -39,7 +33,7 @@ final class CameraConfigurationManager {
             screenResolutionForCamera.y = screenResolution.x;
         }
 
-        mPreviewResolution = getPreviewResolution(parameters, screenResolutionForCamera);
+        mPreviewResolution = getPreviewResolution(camera.getParameters(), screenResolutionForCamera);
 
         if (BGAQRCodeUtil.isPortrait(mContext)) {
             mCameraResolution = new Point(mPreviewResolution.y, mPreviewResolution.x);

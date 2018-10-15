@@ -38,6 +38,6 @@ dependencies {
 //    implementation project(':zxing')
 
     // -------------------- 以下一个库是必须依赖的 ----------------------------
-    implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.2.6'
+    implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.2.7'
     // -------------------- 以上一个库是必须依赖的 ----------------------------
 }
