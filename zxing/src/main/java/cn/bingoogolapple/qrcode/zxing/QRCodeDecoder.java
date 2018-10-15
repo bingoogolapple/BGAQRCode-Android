@@ -123,6 +123,7 @@ public class QRCodeDecoder {
     static {
         List<BarcodeFormat> highFrequencyFormatList = new ArrayList<>();
         highFrequencyFormatList.add(BarcodeFormat.QR_CODE);
+        highFrequencyFormatList.add(BarcodeFormat.UPC_A);
         highFrequencyFormatList.add(BarcodeFormat.EAN_13);
         highFrequencyFormatList.add(BarcodeFormat.CODE_128);
 

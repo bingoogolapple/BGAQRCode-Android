@@ -138,7 +138,7 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
                 break;
             case R.id.scan_high_frequency:
                 mZBarView.changeToScanQRCodeStyle(); // 切换成扫描二维码样式
-                mZBarView.setType(BarcodeType.HIGH_FREQUENCY, null); // 只识别高频率格式，包括 QR_CODE、EAN_13、CODE_128
+                mZBarView.setType(BarcodeType.HIGH_FREQUENCY, null); // 只识别高频率格式，包括 QR_CODE、ISBN13、UPC_A、EAN_13、CODE_128
                 mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.5秒后开始识别
                 break;
             case R.id.scan_all:
@@ -151,6 +151,8 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
 
                 List<BarcodeFormat> formatList = new ArrayList<>();
                 formatList.add(BarcodeFormat.QRCODE);
+                formatList.add(BarcodeFormat.ISBN13);
+                formatList.add(BarcodeFormat.UPCA);
                 formatList.add(BarcodeFormat.EAN13);
                 formatList.add(BarcodeFormat.CODE128);
                 mZBarView.setType(BarcodeType.CUSTOM, formatList); // 自定义识别的类型

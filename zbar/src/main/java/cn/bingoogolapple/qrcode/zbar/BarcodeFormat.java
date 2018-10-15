@@ -37,12 +37,12 @@ public class BarcodeFormat {
         ALL_FORMAT_LIST.add(BarcodeFormat.PARTIAL);
         ALL_FORMAT_LIST.add(BarcodeFormat.EAN8);
         ALL_FORMAT_LIST.add(BarcodeFormat.UPCE);
-        ALL_FORMAT_LIST.add(BarcodeFormat.ISBN10);
+//        ALL_FORMAT_LIST.add(BarcodeFormat.ISBN10);
         ALL_FORMAT_LIST.add(BarcodeFormat.UPCA);
         ALL_FORMAT_LIST.add(BarcodeFormat.EAN13);
         ALL_FORMAT_LIST.add(BarcodeFormat.ISBN13);
         ALL_FORMAT_LIST.add(BarcodeFormat.I25);
-        ALL_FORMAT_LIST.add(BarcodeFormat.DATABAR);
+//        ALL_FORMAT_LIST.add(BarcodeFormat.DATABAR);
         ALL_FORMAT_LIST.add(BarcodeFormat.DATABAR_EXP);
         ALL_FORMAT_LIST.add(BarcodeFormat.CODABAR);
         ALL_FORMAT_LIST.add(BarcodeFormat.CODE39);
@@ -58,12 +58,12 @@ public class BarcodeFormat {
         ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.PARTIAL);
         ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.EAN8);
         ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.UPCE);
-        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.ISBN10);
+//        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.ISBN10);
         ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.UPCA);
         ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.EAN13);
         ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.ISBN13);
         ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.I25);
-        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.DATABAR);
+//        ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.DATABAR);
         ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.DATABAR_EXP);
         ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.CODABAR);
         ONE_DIMENSION_FORMAT_LIST.add(BarcodeFormat.CODE39);
@@ -83,6 +83,8 @@ public class BarcodeFormat {
 
     static {
         HIGH_FREQUENCY_FORMAT_LIST.add(BarcodeFormat.QRCODE);
+        HIGH_FREQUENCY_FORMAT_LIST.add(BarcodeFormat.ISBN13);
+        HIGH_FREQUENCY_FORMAT_LIST.add(BarcodeFormat.UPCA);
         HIGH_FREQUENCY_FORMAT_LIST.add(BarcodeFormat.EAN13);
         HIGH_FREQUENCY_FORMAT_LIST.add(BarcodeFormat.CODE128);
     }

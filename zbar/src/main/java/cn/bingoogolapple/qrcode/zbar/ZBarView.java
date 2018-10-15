@@ -120,7 +120,10 @@ public class ZBarView extends QRCodeView {
                     }
 
                     result = symData;
-                    break;
+
+                    if (symbol.getType() != Symbol.NONE) {
+                        break;
+                    }
                 }
             }
         }
