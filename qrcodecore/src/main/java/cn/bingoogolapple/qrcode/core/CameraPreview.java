@@ -282,7 +282,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-    private boolean isPreviewing() {
+    boolean isPreviewing() {
         return mCamera != null && mPreviewing && mSurfaceCreated;
     }
 

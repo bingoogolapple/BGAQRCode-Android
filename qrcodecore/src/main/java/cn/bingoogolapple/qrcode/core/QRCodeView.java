@@ -15,6 +15,10 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 public abstract class QRCodeView extends RelativeLayout implements Camera.PreviewCallback {
+    /**
+     * 识别的最小延时，避免相机还未初始化完成
+     */
+    public static final int SPOT_MIN_DELAY = 100;
     protected Camera mCamera;
     protected CameraPreview mCameraPreview;
     protected ScanBoxView mScanBoxView;
@@ -148,16 +152,18 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     }
 
     /**
-     * 延迟0.5秒后开始识别
+     * 延迟0.1秒后开始识别
      */
     public void startSpot() {
-        startSpotDelay(500);
+        startSpotDelay(SPOT_MIN_DELAY);
     }
 
     /**
      * 延迟delay毫秒后开始识别
      */
     public void startSpotDelay(int delay) {
+        // 至少延时 SPOT_MIN_DELAY 毫秒，避免相机还未初始化完成
+        delay = Math.max(delay, SPOT_MIN_DELAY);
         mSpotAble = true;
 
         startCamera();
@@ -201,7 +207,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     }
 
     /**
-     * 显示扫描框，并且延迟0.5秒后开始识别
+     * 显示扫描框，并且延迟0.1秒后开始识别
      */
     public void startSpotAndShowRect() {
         startSpot();
@@ -212,7 +218,12 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
      * 打开闪光灯
      */
     public void openFlashlight() {
-        mCameraPreview.openFlashlight();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mCameraPreview.openFlashlight();
+            }
+        }, mCameraPreview.isPreviewing() ? 0 : 500);
     }
 
     /**

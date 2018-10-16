@@ -263,7 +263,6 @@ public class ScanBoxView extends View {
 
         // 移动扫描线的位置
         moveScanLine();
-
     }
 
     /**
@@ -570,7 +569,10 @@ public class ScanBoxView extends View {
 
     public void setIsBarcode(boolean isBarcode) {
         mIsBarcode = isBarcode;
+        refreshScanBox();
+    }
 
+    private void refreshScanBox() {
         if (mCustomGridScanLineDrawable != null || mIsShowDefaultGridScanLineDrawable) {
             if (mIsBarcode) {
                 mGridScanLineBitmap = mOriginBarCodeGridScanLineBitmap;
@@ -628,6 +630,7 @@ public class ScanBoxView extends View {
 
     public void setMaskColor(int maskColor) {
         mMaskColor = maskColor;
+        refreshScanBox();
     }
 
     public int getCornerColor() {
@@ -636,6 +639,7 @@ public class ScanBoxView extends View {
 
     public void setCornerColor(int cornerColor) {
         mCornerColor = cornerColor;
+        refreshScanBox();
     }
 
     public int getCornerLength() {
@@ -644,6 +648,7 @@ public class ScanBoxView extends View {
 
     public void setCornerLength(int cornerLength) {
         mCornerLength = cornerLength;
+        refreshScanBox();
     }
 
     public int getCornerSize() {
@@ -652,6 +657,7 @@ public class ScanBoxView extends View {
 
     public void setCornerSize(int cornerSize) {
         mCornerSize = cornerSize;
+        refreshScanBox();
     }
 
     public int getRectWidth() {
@@ -660,6 +666,7 @@ public class ScanBoxView extends View {
 
     public void setRectWidth(int rectWidth) {
         mRectWidth = rectWidth;
+        refreshScanBox();
     }
 
     public int getRectHeight() {
@@ -668,6 +675,7 @@ public class ScanBoxView extends View {
 
     public void setRectHeight(int rectHeight) {
         mRectHeight = rectHeight;
+        refreshScanBox();
     }
 
     public int getBarcodeRectHeight() {
@@ -676,6 +684,7 @@ public class ScanBoxView extends View {
 
     public void setBarcodeRectHeight(int barcodeRectHeight) {
         mBarcodeRectHeight = barcodeRectHeight;
+        refreshScanBox();
     }
 
     public int getTopOffset() {
@@ -684,6 +693,7 @@ public class ScanBoxView extends View {
 
     public void setTopOffset(int topOffset) {
         mTopOffset = topOffset;
+        refreshScanBox();
     }
 
     public int getScanLineSize() {
@@ -692,6 +702,7 @@ public class ScanBoxView extends View {
 
     public void setScanLineSize(int scanLineSize) {
         mScanLineSize = scanLineSize;
+        refreshScanBox();
     }
 
     public int getScanLineColor() {
@@ -700,6 +711,7 @@ public class ScanBoxView extends View {
 
     public void setScanLineColor(int scanLineColor) {
         mScanLineColor = scanLineColor;
+        refreshScanBox();
     }
 
     public int getScanLineMargin() {
@@ -708,6 +720,7 @@ public class ScanBoxView extends View {
 
     public void setScanLineMargin(int scanLineMargin) {
         mScanLineMargin = scanLineMargin;
+        refreshScanBox();
     }
 
     public boolean isShowDefaultScanLineDrawable() {
@@ -716,6 +729,7 @@ public class ScanBoxView extends View {
 
     public void setShowDefaultScanLineDrawable(boolean showDefaultScanLineDrawable) {
         mIsShowDefaultScanLineDrawable = showDefaultScanLineDrawable;
+        refreshScanBox();
     }
 
     public Drawable getCustomScanLineDrawable() {
@@ -724,6 +738,7 @@ public class ScanBoxView extends View {
 
     public void setCustomScanLineDrawable(Drawable customScanLineDrawable) {
         mCustomScanLineDrawable = customScanLineDrawable;
+        refreshScanBox();
     }
 
     public Bitmap getScanLineBitmap() {
@@ -732,6 +747,7 @@ public class ScanBoxView extends View {
 
     public void setScanLineBitmap(Bitmap scanLineBitmap) {
         mScanLineBitmap = scanLineBitmap;
+        refreshScanBox();
     }
 
     public int getBorderSize() {
@@ -740,6 +756,7 @@ public class ScanBoxView extends View {
 
     public void setBorderSize(int borderSize) {
         mBorderSize = borderSize;
+        refreshScanBox();
     }
 
     public int getBorderColor() {
@@ -748,6 +765,7 @@ public class ScanBoxView extends View {
 
     public void setBorderColor(int borderColor) {
         mBorderColor = borderColor;
+        refreshScanBox();
     }
 
     public int getAnimTime() {
@@ -756,6 +774,7 @@ public class ScanBoxView extends View {
 
     public void setAnimTime(int animTime) {
         mAnimTime = animTime;
+        refreshScanBox();
     }
 
     public float getVerticalBias() {
@@ -763,7 +782,8 @@ public class ScanBoxView extends View {
     }
 
     public void setVerticalBias(float verticalBias) {
-        this.mVerticalBias = verticalBias;
+        mVerticalBias = verticalBias;
+        refreshScanBox();
     }
 
     public int getToolbarHeight() {
@@ -772,6 +792,7 @@ public class ScanBoxView extends View {
 
     public void setToolbarHeight(int toolbarHeight) {
         mToolbarHeight = toolbarHeight;
+        refreshScanBox();
     }
 
     public String getQRCodeTipText() {
@@ -780,6 +801,7 @@ public class ScanBoxView extends View {
 
     public void setQRCodeTipText(String qrCodeTipText) {
         mQRCodeTipText = qrCodeTipText;
+        refreshScanBox();
     }
 
     public String getBarCodeTipText() {
@@ -788,6 +810,7 @@ public class ScanBoxView extends View {
 
     public void setBarCodeTipText(String barCodeTipText) {
         mBarCodeTipText = barCodeTipText;
+        refreshScanBox();
     }
 
     public String getTipText() {
@@ -796,6 +819,7 @@ public class ScanBoxView extends View {
 
     public void setTipText(String tipText) {
         mTipText = tipText;
+        refreshScanBox();
     }
 
     public int getTipTextColor() {
@@ -804,6 +828,8 @@ public class ScanBoxView extends View {
 
     public void setTipTextColor(int tipTextColor) {
         mTipTextColor = tipTextColor;
+        mTipPaint.setColor(mTipTextColor);
+        refreshScanBox();
     }
 
     public int getTipTextSize() {
@@ -812,6 +838,8 @@ public class ScanBoxView extends View {
 
     public void setTipTextSize(int tipTextSize) {
         mTipTextSize = tipTextSize;
+        mTipPaint.setTextSize(mTipTextSize);
+        refreshScanBox();
     }
 
     public boolean isTipTextBelowRect() {
@@ -820,6 +848,7 @@ public class ScanBoxView extends View {
 
     public void setTipTextBelowRect(boolean tipTextBelowRect) {
         mIsTipTextBelowRect = tipTextBelowRect;
+        refreshScanBox();
     }
 
     public int getTipTextMargin() {
@@ -828,6 +857,7 @@ public class ScanBoxView extends View {
 
     public void setTipTextMargin(int tipTextMargin) {
         mTipTextMargin = tipTextMargin;
+        refreshScanBox();
     }
 
     public boolean isShowTipTextAsSingleLine() {
@@ -836,6 +866,7 @@ public class ScanBoxView extends View {
 
     public void setShowTipTextAsSingleLine(boolean showTipTextAsSingleLine) {
         mIsShowTipTextAsSingleLine = showTipTextAsSingleLine;
+        refreshScanBox();
     }
 
     public boolean isShowTipBackground() {
@@ -844,6 +875,7 @@ public class ScanBoxView extends View {
 
     public void setShowTipBackground(boolean showTipBackground) {
         mIsShowTipBackground = showTipBackground;
+        refreshScanBox();
     }
 
     public int getTipBackgroundColor() {
@@ -852,6 +884,7 @@ public class ScanBoxView extends View {
 
     public void setTipBackgroundColor(int tipBackgroundColor) {
         mTipBackgroundColor = tipBackgroundColor;
+        refreshScanBox();
     }
 
     public boolean isScanLineReverse() {
@@ -860,6 +893,7 @@ public class ScanBoxView extends View {
 
     public void setScanLineReverse(boolean scanLineReverse) {
         mIsScanLineReverse = scanLineReverse;
+        refreshScanBox();
     }
 
     public boolean isShowDefaultGridScanLineDrawable() {
@@ -868,6 +902,7 @@ public class ScanBoxView extends View {
 
     public void setShowDefaultGridScanLineDrawable(boolean showDefaultGridScanLineDrawable) {
         mIsShowDefaultGridScanLineDrawable = showDefaultGridScanLineDrawable;
+        refreshScanBox();
     }
 
     public float getHalfCornerSize() {
@@ -876,6 +911,7 @@ public class ScanBoxView extends View {
 
     public void setHalfCornerSize(float halfCornerSize) {
         mHalfCornerSize = halfCornerSize;
+        refreshScanBox();
     }
 
     public StaticLayout getTipTextSl() {
@@ -884,6 +920,7 @@ public class ScanBoxView extends View {
 
     public void setTipTextSl(StaticLayout tipTextSl) {
         mTipTextSl = tipTextSl;
+        refreshScanBox();
     }
 
     public int getTipBackgroundRadius() {
@@ -892,6 +929,7 @@ public class ScanBoxView extends View {
 
     public void setTipBackgroundRadius(int tipBackgroundRadius) {
         mTipBackgroundRadius = tipBackgroundRadius;
+        refreshScanBox();
     }
 
     public boolean isOnlyDecodeScanBoxArea() {

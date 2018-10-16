@@ -37,6 +37,6 @@ dependencies {
 //    implementation project(':zbar')
 
     // -------------------- 以下一个库是必须依赖的 ----------------------------
-    implementation 'cn.bingoogolapple:bga-qrcode-zbar:1.2.8'
+    implementation 'cn.bingoogolapple:bga-qrcode-zbar:1.2.9'
     // -------------------- 以上一个库是必须依赖的 ----------------------------
 }

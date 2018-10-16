@@ -39,7 +39,7 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
         mZBarView.startCamera(); // 打开后置摄像头开始预览，但是并未开始识别
 //        mZBarView.startCamera(Camera.CameraInfo.CAMERA_FACING_FRONT); // 打开前置摄像头开始预览，但是并未开始识别
 
-        mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.5秒后开始识别
+        mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.1秒后开始识别
     }
 
     @Override
@@ -65,7 +65,7 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
         setTitle("扫描结果为：" + result);
         vibrate();
 
-        mZBarView.startSpot(); // 延迟0.5秒后开始识别
+        mZBarView.startSpot(); // 延迟0.1秒后开始识别
     }
 
     @Override
@@ -82,13 +82,13 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
                 mZBarView.stopCamera(); // 关闭摄像头预览，并且隐藏扫描框
                 break;
             case R.id.start_spot:
-                mZBarView.startSpot(); // 延迟0.5秒后开始识别
+                mZBarView.startSpot(); // 延迟0.1秒后开始识别
                 break;
             case R.id.stop_spot:
                 mZBarView.stopSpot(); // 停止识别
                 break;
             case R.id.start_spot_showrect:
-                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.5秒后开始识别
+                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.1秒后开始识别
                 break;
             case R.id.stop_spot_hiddenrect:
                 mZBarView.stopSpotAndHiddenRect(); // 停止识别，并且隐藏扫描框
@@ -114,37 +114,37 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
             case R.id.scan_one_dimension:
                 mZBarView.changeToScanBarcodeStyle(); // 切换成扫描条码样式
                 mZBarView.setType(BarcodeType.ONE_DIMENSION, null); // 只识别一维条码
-                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.5秒后开始识别
+                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.1秒后开始识别
                 break;
             case R.id.scan_two_dimension:
                 mZBarView.changeToScanQRCodeStyle(); // 切换成扫描二维码样式
                 mZBarView.setType(BarcodeType.TWO_DIMENSION, null); // 只识别二维条码
-                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.5秒后开始识别
+                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.1秒后开始识别
                 break;
             case R.id.scan_qr_code:
                 mZBarView.changeToScanQRCodeStyle(); // 切换成扫描二维码样式
                 mZBarView.setType(BarcodeType.ONLY_QR_CODE, null); // 只识别 QR_CODE
-                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.5秒后开始识别
+                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.1秒后开始识别
                 break;
             case R.id.scan_code128:
                 mZBarView.changeToScanBarcodeStyle(); // 切换成扫描条码样式
                 mZBarView.setType(BarcodeType.ONLY_CODE_128, null); // 只识别 CODE_128
-                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.5秒后开始识别
+                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.1秒后开始识别
                 break;
             case R.id.scan_ean13:
                 mZBarView.changeToScanBarcodeStyle(); // 切换成扫描条码样式
                 mZBarView.setType(BarcodeType.ONLY_EAN_13, null); // 只识别 EAN_13
-                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.5秒后开始识别
+                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.1秒后开始识别
                 break;
             case R.id.scan_high_frequency:
                 mZBarView.changeToScanQRCodeStyle(); // 切换成扫描二维码样式
                 mZBarView.setType(BarcodeType.HIGH_FREQUENCY, null); // 只识别高频率格式，包括 QR_CODE、ISBN13、UPC_A、EAN_13、CODE_128
-                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.5秒后开始识别
+                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.1秒后开始识别
                 break;
             case R.id.scan_all:
                 mZBarView.changeToScanQRCodeStyle(); // 切换成扫描二维码样式
                 mZBarView.setType(BarcodeType.ALL, null); // 识别所有类型的码
-                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.5秒后开始识别
+                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.1秒后开始识别
                 break;
             case R.id.scan_custom:
                 mZBarView.changeToScanQRCodeStyle(); // 切换成扫描二维码样式
@@ -157,7 +157,7 @@ public class TestScanActivity extends AppCompatActivity implements QRCodeView.De
                 formatList.add(BarcodeFormat.CODE128);
                 mZBarView.setType(BarcodeType.CUSTOM, formatList); // 自定义识别的类型
 
-                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.5秒后开始识别
+                mZBarView.startSpotAndShowRect(); // 显示扫描框，并且延迟0.1秒后开始识别
                 break;
 
             case R.id.choose_qrcde_from_gallery:
