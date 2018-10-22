@@ -20,6 +20,7 @@
 - [x] 可以控制闪光灯，方便夜间使用
 - [x] 可以设置用前置摄像头扫描
 - [x] 可以二指缩放预览
+- [x] 可以监听环境亮度，提示用户打开、关闭闪光灯
 ***
 - [x] ZXing 生成可自定义颜色、带 logo 的二维码
 - [x] ZXing 生成一维码
@@ -264,6 +265,13 @@ public void decodeQRCode(Bitmap bitmap)
  * @param result 摄像头扫码时只要回调了该方法 result 就一定有值，不会为 null。解析本地图片或 Bitmap 时 result 可能为 null
  */
 void onScanQRCodeSuccess(String result)
+
+/**
+ * 摄像头环境亮度发生变化
+ *
+ * @param isDark 是否变暗
+ */
+void onCameraAmbientBrightnessChanged(boolean isDark);
 
 /**
  * 处理打开相机出错

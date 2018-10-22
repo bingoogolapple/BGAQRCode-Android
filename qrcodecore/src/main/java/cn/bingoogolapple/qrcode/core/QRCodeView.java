@@ -32,6 +32,17 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     protected BarcodeType mBarcodeType = BarcodeType.HIGH_FREQUENCY;
     private static long sLastPreviewFrameTime = 0;
 
+    // 上次环境亮度记录的时间戳
+    private long mLastAmbientBrightnessRecordTime = System.currentTimeMillis();
+    // 上次环境亮度记录的索引
+    private int mAmbientBrightnessDarkIndex = 0;
+    // 环境亮度历史记录的数组，255 是代表亮度最大值
+    private static final long[] AMBIENT_BRIGHTNESS_DARK_LIST = new long[]{255, 255, 255, 255};
+    // 环境亮度扫描间隔
+    private static final int AMBIENT_BRIGHTNESS_WAIT_SCAN_TIME = 150;
+    // 亮度低的阀值
+    private static final int AMBIENT_BRIGHTNESS_DARK = 60;
+
     public QRCodeView(Context context, AttributeSet attributeSet) {
         this(context, attributeSet, 0);
     }
@@ -275,12 +286,63 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
             sLastPreviewFrameTime = System.currentTimeMillis();
         }
 
+        if (mCameraPreview != null && mCameraPreview.isPreviewing()) {
+            handleAmbientBrightness(data, camera);
+        }
+
         if (!mSpotAble || (mProcessDataTask != null && (mProcessDataTask.getStatus() == AsyncTask.Status.PENDING
                 || mProcessDataTask.getStatus() == AsyncTask.Status.RUNNING))) {
             return;
         }
 
         mProcessDataTask = new ProcessDataTask(camera, data, this, BGAQRCodeUtil.isPortrait(getContext())).perform();
+    }
+
+    private void handleAmbientBrightness(byte[] data, Camera camera) {
+        if (mCameraPreview == null || !mCameraPreview.isPreviewing()) {
+            return;
+        }
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - mLastAmbientBrightnessRecordTime < AMBIENT_BRIGHTNESS_WAIT_SCAN_TIME) {
+            return;
+        }
+        mLastAmbientBrightnessRecordTime = currentTime;
+
+        int width = camera.getParameters().getPreviewSize().width;
+        int height = camera.getParameters().getPreviewSize().height;
+        // 像素点的总亮度
+        long pixelLightCount = 0L;
+        // 像素点的总数
+        long pixelCount = width * height;
+        // 采集步长，因为没有必要每个像素点都采集，可以跨一段采集一个，减少计算负担，必须大于等于1。
+        int step = 10;
+        // data.length - allCount * 1.5f 的目的是判断图像格式是不是 YUV420 格式，只有是这种格式才相等
+        //因为 int 整形与 float 浮点直接比较会出问题，所以这么比
+        if (Math.abs(data.length - pixelCount * 1.5f) < 0.00001f) {
+            for (int i = 0; i < pixelCount; i += step) {
+                // 如果直接加是不行的，因为 data[i] 记录的是色值并不是数值，byte 的范围是 +127 到 —128，
+                // 而亮度 FFFFFF 是 11111111 是 -127，所以这里需要先转为无符号 unsigned long 参考 Byte.toUnsignedLong()
+                pixelLightCount += ((long) data[i]) & 0xffL;
+            }
+            // 平均亮度
+            long cameraLight = pixelLightCount / (pixelCount / step);
+            // 更新历史记录
+            int lightSize = AMBIENT_BRIGHTNESS_DARK_LIST.length;
+            AMBIENT_BRIGHTNESS_DARK_LIST[mAmbientBrightnessDarkIndex = mAmbientBrightnessDarkIndex % lightSize] = cameraLight;
+            mAmbientBrightnessDarkIndex++;
+            boolean isDarkEnv = true;
+            // 判断在时间范围 AMBIENT_BRIGHTNESS_WAIT_SCAN_TIME * lightSize 内是不是亮度过暗
+            for (long ambientBrightness : AMBIENT_BRIGHTNESS_DARK_LIST) {
+                if (ambientBrightness > AMBIENT_BRIGHTNESS_DARK) {
+                    isDarkEnv = false;
+                    break;
+                }
+            }
+            BGAQRCodeUtil.d("摄像头环境亮度为：" + cameraLight);
+            if (mDelegate != null) {
+                mDelegate.onCameraAmbientBrightnessChanged(isDarkEnv);
+            }
+        }
     }
 
     /**
@@ -449,6 +511,13 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
          * @param result 摄像头扫码时只要回调了该方法 result 就一定有值，不会为 null。解析本地图片或 Bitmap 时 result 可能为 null
          */
         void onScanQRCodeSuccess(String result);
+
+        /**
+         * 摄像头环境亮度发生变化
+         *
+         * @param isDark 是否变暗
+         */
+        void onCameraAmbientBrightnessChanged(boolean isDark);
 
         /**
          * 处理打开相机出错

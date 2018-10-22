@@ -818,7 +818,11 @@ public class ScanBoxView extends View {
     }
 
     public void setTipText(String tipText) {
-        mTipText = tipText;
+        if (mIsBarcode) {
+            mBarCodeTipText = tipText;
+        } else {
+            mQRCodeTipText = tipText;
+        }
         refreshScanBox();
     }
 
