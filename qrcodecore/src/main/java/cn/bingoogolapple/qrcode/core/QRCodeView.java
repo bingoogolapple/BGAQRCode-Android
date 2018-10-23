@@ -18,7 +18,8 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     /**
      * 识别的最小延时，避免相机还未初始化完成
      */
-    public static final int SPOT_MIN_DELAY = 100;
+    private static final int SPOT_MIN_DELAY = 100;
+    private static final int NO_CAMERA_ID = -1;
     protected Camera mCamera;
     protected CameraPreview mCameraPreview;
     protected ScanBoxView mScanBoxView;
@@ -119,17 +120,32 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
      * 打开指定摄像头开始预览，但是并未开始识别
      */
     public void startCamera(int cameraFacing) {
-        if (mCamera != null) {
+        if (mCamera != null || Camera.getNumberOfCameras() == 0) {
             return;
         }
+        int ultimateCameraId = findCameraIdByFacing(cameraFacing);
+        if (ultimateCameraId != NO_CAMERA_ID) {
+            startCameraById(ultimateCameraId);
+        } else if (cameraFacing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+            ultimateCameraId = findCameraIdByFacing(Camera.CameraInfo.CAMERA_FACING_FRONT);
+        } else if (cameraFacing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            ultimateCameraId = findCameraIdByFacing(Camera.CameraInfo.CAMERA_FACING_BACK);
+        }
+
+        if (ultimateCameraId != NO_CAMERA_ID) {
+            startCameraById(ultimateCameraId);
+        }
+    }
+
+    private int findCameraIdByFacing(int cameraFacing) {
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         for (int cameraId = 0; cameraId < Camera.getNumberOfCameras(); cameraId++) {
             Camera.getCameraInfo(cameraId, cameraInfo);
             if (cameraInfo.facing == cameraFacing) {
-                startCameraById(cameraId);
-                break;
+                return cameraId;
             }
         }
+        return NO_CAMERA_ID;
     }
 
     private void startCameraById(int cameraId) {

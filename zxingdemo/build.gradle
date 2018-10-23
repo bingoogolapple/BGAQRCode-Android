@@ -35,9 +35,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     // -------------------- 以上几个库是为了方便编写演示案例添加进来的，集成到你自己项目时可以不依赖这些库 --------------------
 
-//    implementation project(':zxing')
+    implementation project(':zxing')
 
     // -------------------- 以下一个库是必须依赖的 ----------------------------
-    implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.3.1'
+//    implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.3.2'
     // -------------------- 以上一个库是必须依赖的 ----------------------------
 }
