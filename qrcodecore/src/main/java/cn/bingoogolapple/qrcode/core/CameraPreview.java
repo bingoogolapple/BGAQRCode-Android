@@ -267,7 +267,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
      */
     private void startContinuousAutoFocus() {
         mIsTouchFocusing = false;
-        if (!isPreviewing()) {
+        if (mCamera == null) {
             return;
         }
         try {
