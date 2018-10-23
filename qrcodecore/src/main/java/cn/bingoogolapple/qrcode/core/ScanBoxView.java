@@ -607,11 +607,11 @@ public class ScanBoxView extends View {
         }
 
         if (mVerticalBias != -1) {
-            int screenHeight = BGAQRCodeUtil.getScreenResolution(getContext()).y;
+            int screenHeight = BGAQRCodeUtil.getScreenResolution(getContext()).y - BGAQRCodeUtil.getStatusBarHeight(getContext());
             if (mToolbarHeight == 0) {
                 mTopOffset = (int) (screenHeight * mVerticalBias - mRectHeight / 2);
             } else {
-                mTopOffset = (int) ((screenHeight + mToolbarHeight) * mVerticalBias - mRectHeight / 2);
+                mTopOffset = mToolbarHeight + (int) ((screenHeight - mToolbarHeight) * mVerticalBias - mRectHeight / 2);
             }
         }
 
