@@ -147,6 +147,7 @@ qrcv_isShowDefaultGridScanLineDrawable         | 是否显示默认的网格图�
 qrcv_customGridScanLineDrawable         | 扫描线的网格图片资源        | nulll
 qrcv_isOnlyDecodeScanBoxArea         | 是否只识别扫描框中的码        | false
 qrcv_isShowLocationPoint         | 是否显示定位点        | false
+qrcv_isAutoZoom         | 码太小时是否自动缩放        | false
 
 ## 接口说明
 

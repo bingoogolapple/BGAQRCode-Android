@@ -1,5 +1,8 @@
 package cn.bingoogolapple.qrcode.core;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -31,7 +34,9 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     private PointF[] mLocationPoints;
     private Paint mPaint;
     protected BarcodeType mBarcodeType = BarcodeType.HIGH_FREQUENCY;
-    private static long sLastPreviewFrameTime = 0;
+    private long mLastPreviewFrameTime = 0;
+    private ValueAnimator mAutoZoomAnimator;
+    private long mLastAutoZoomTime = 0;
 
     // 上次环境亮度记录的时间戳
     private long mLastAmbientBrightnessRecordTime = System.currentTimeMillis();
@@ -298,8 +303,8 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     @Override
     public void onPreviewFrame(final byte[] data, final Camera camera) {
         if (BGAQRCodeUtil.isDebug()) {
-            BGAQRCodeUtil.d("两次 onPreviewFrame 时间间隔：" + (System.currentTimeMillis() - sLastPreviewFrameTime));
-            sLastPreviewFrameTime = System.currentTimeMillis();
+            BGAQRCodeUtil.d("两次 onPreviewFrame 时间间隔：" + (System.currentTimeMillis() - mLastPreviewFrameTime));
+            mLastPreviewFrameTime = System.currentTimeMillis();
         }
 
         if (mCameraPreview != null && mCameraPreview.isPreviewing()) {
@@ -454,34 +459,119 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         return mScanBoxView != null && mScanBoxView.isShowLocationPoint();
     }
 
-    protected void transformToViewCoordinates(final PointF[] pointArr, final Rect scanBoxAreaRect) {
+    /**
+     * 是否自动缩放
+     */
+    protected boolean isAutoZoom() {
+        return mScanBoxView != null && mScanBoxView.isAutoZoom();
+    }
+
+    protected boolean transformToViewCoordinates(final PointF[] pointArr, final Rect scanBoxAreaRect, final boolean isNeedAutoZoom, final String result) {
         if (pointArr == null || pointArr.length == 0) {
-            return;
+            return false;
         }
 
-        new Thread() {
+        try {
+            // 不管横屏还是竖屏，size.width 大于 size.height
+            Camera.Size size = mCamera.getParameters().getPreviewSize();
+            boolean isMirrorPreview = mCameraId == Camera.CameraInfo.CAMERA_FACING_FRONT;
+            int statusBarHeight = BGAQRCodeUtil.getStatusBarHeight(getContext());
+
+            PointF[] transformedPoints = new PointF[pointArr.length];
+            int index = 0;
+            for (PointF qrPoint : pointArr) {
+                transformedPoints[index] = transform(qrPoint.x, qrPoint.y, size.width, size.height, isMirrorPreview, statusBarHeight, scanBoxAreaRect);
+                index++;
+            }
+            mLocationPoints = transformedPoints;
+            postInvalidate();
+
+            if (isNeedAutoZoom) {
+                return handleAutoZoom(transformedPoints, result);
+            }
+            return false;
+        } catch (Exception e) {
+            mLocationPoints = null;
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean handleAutoZoom(PointF[] locationPoints, final String result) {
+        if (mCamera == null || mScanBoxView == null) {
+            return false;
+        }
+        if (locationPoints == null || locationPoints.length < 1) {
+            return false;
+        }
+        if (mAutoZoomAnimator != null && mAutoZoomAnimator.isRunning()) {
+            return true;
+        }
+        if (System.currentTimeMillis() - mLastAutoZoomTime < 1500) {
+            return true;
+        }
+        Camera.Parameters parameters = mCamera.getParameters();
+        if (!parameters.isZoomSupported()) {
+            return false;
+        }
+
+        float point1X = locationPoints[0].x;
+        float point1Y = locationPoints[0].y;
+        float point2X = locationPoints[1].x;
+        float point2Y = locationPoints[1].y;
+        float xLen = Math.abs(point1X - point2X);
+        float yLen = Math.abs(point1Y - point2Y);
+        int len = (int) Math.sqrt(xLen * xLen + yLen * yLen);
+
+        int scanBoxWidth = mScanBoxView.getRectWidth();
+        if (len > scanBoxWidth / 4) {
+            return false;
+        }
+        // 二维码在扫描框中的宽度小于扫描框的 1/4，放大镜头
+        final int maxZoom = parameters.getMaxZoom();
+        final int zoomStep = maxZoom / 4;
+        final int zoom = parameters.getZoom();
+        post(new Runnable() {
             @Override
             public void run() {
-                try {
-                    // 不管横屏还是竖屏，size.width 大于 size.height
-                    Camera.Size size = mCamera.getParameters().getPreviewSize();
-                    boolean isMirrorPreview = mCameraId == Camera.CameraInfo.CAMERA_FACING_FRONT;
-                    int statusBarHeight = BGAQRCodeUtil.getStatusBarHeight(getContext());
-
-                    PointF[] transformedPoints = new PointF[pointArr.length];
-                    int index = 0;
-                    for (PointF qrPoint : pointArr) {
-                        transformedPoints[index] = transform(qrPoint.x, qrPoint.y, size.width, size.height, isMirrorPreview, statusBarHeight, scanBoxAreaRect);
-                        index++;
-                    }
-                    mLocationPoints = transformedPoints;
-                    postInvalidate();
-                } catch (Exception e) {
-                    mLocationPoints = null;
-                    e.printStackTrace();
-                }
+                startAutoZoom(zoom, Math.min(zoom + zoomStep, maxZoom), result);
             }
-        }.start();
+        });
+        return true;
+    }
+
+    private void startAutoZoom(int oldZoom, int newZoom, final String result) {
+        mAutoZoomAnimator = ValueAnimator.ofInt(oldZoom, newZoom);
+        mAutoZoomAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                if (mCameraPreview == null || !mCameraPreview.isPreviewing()) {
+                    return;
+                }
+                int zoom = (int) animation.getAnimatedValue();
+                Camera.Parameters parameters = mCamera.getParameters();
+                parameters.setZoom(zoom);
+                mCamera.setParameters(parameters);
+            }
+        });
+        mAutoZoomAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                onPostParseData(new ScanResult(result));
+            }
+        });
+        mAutoZoomAnimator.setDuration(600);
+        mAutoZoomAnimator.setRepeatCount(0);
+        mAutoZoomAnimator.start();
+        mLastAutoZoomTime = System.currentTimeMillis();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mAutoZoomAnimator != null) {
+            mAutoZoomAnimator.cancel();
+        }
     }
 
     private PointF transform(float originX, float originY, float cameraPreviewWidth, float cameraPreviewHeight, boolean isMirrorPreview, int statusBarHeight,

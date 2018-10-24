@@ -10,7 +10,6 @@ import net.sourceforge.zbar.Config;
 import net.sourceforge.zbar.Image;
 import net.sourceforge.zbar.ImageScanner;
 import net.sourceforge.zbar.Symbol;
-import net.sourceforge.zbar.SymbolSet;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
@@ -104,30 +103,44 @@ public class ZBarView extends QRCodeView {
     }
 
     private String processData(Image barcode) {
-        String result = null;
-        if (mScanner.scanImage(barcode) != 0) {
-            SymbolSet symbolSet = mScanner.getResults();
-            for (Symbol symbol : symbolSet) {
-                String symData;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                    symData = new String(symbol.getDataBytes(), StandardCharsets.UTF_8);
+        if (mScanner.scanImage(barcode) == 0) {
+            return null;
+        }
+
+        for (Symbol symbol : mScanner.getResults()) {
+            // 未能识别的格式继续遍历
+            if (symbol.getType() == Symbol.NONE) {
+                continue;
+            }
+
+            String symData;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                symData = new String(symbol.getDataBytes(), StandardCharsets.UTF_8);
+            } else {
+                symData = symbol.getData();
+            }
+            // 空数据继续遍历
+            if (TextUtils.isEmpty(symData)) {
+                continue;
+            }
+
+            // 处理自动缩放和定位点
+            boolean isNeedAutoZoom = isNeedAutoZoom(symbol);
+            if (isShowLocationPoint() || isNeedAutoZoom) {
+                if (transformToViewCoordinates(symbol.getLocationPoints(), null, isNeedAutoZoom, symData)) {
+                    return null;
                 } else {
-                    symData = symbol.getData();
+                    return symData;
                 }
-                if (!TextUtils.isEmpty(symData)) {
-                    if (isShowLocationPoint()) {
-                        transformToViewCoordinates(symbol.getLocationPoints(), null);
-                    }
-
-                    result = symData;
-
-                    if (symbol.getType() != Symbol.NONE) {
-                        break;
-                    }
-                }
+            } else {
+                return symData;
             }
         }
-        return result;
+        return null;
+    }
+
+    private boolean isNeedAutoZoom(Symbol symbol) {
+        return isAutoZoom() && symbol.getType() == Symbol.QRCODE;
     }
 
     @Override
