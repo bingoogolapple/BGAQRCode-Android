@@ -408,6 +408,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
                 e.printStackTrace();
             }
         } else {
+            mSpotAble = false;
             try {
                 if (mDelegate != null) {
                     mDelegate.onScanQRCodeSuccess(result);
@@ -513,7 +514,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         if (mAutoZoomAnimator != null && mAutoZoomAnimator.isRunning()) {
             return true;
         }
-        if (System.currentTimeMillis() - mLastAutoZoomTime < 1500) {
+        if (System.currentTimeMillis() - mLastAutoZoomTime < 1200) {
             return true;
         }
         Camera.Parameters parameters = mCamera.getParameters();
