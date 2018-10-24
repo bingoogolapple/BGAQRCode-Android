@@ -131,12 +131,14 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         int ultimateCameraId = findCameraIdByFacing(cameraFacing);
         if (ultimateCameraId != NO_CAMERA_ID) {
             startCameraById(ultimateCameraId);
-        } else if (cameraFacing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+            return;
+        }
+
+        if (cameraFacing == Camera.CameraInfo.CAMERA_FACING_BACK) {
             ultimateCameraId = findCameraIdByFacing(Camera.CameraInfo.CAMERA_FACING_FRONT);
         } else if (cameraFacing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             ultimateCameraId = findCameraIdByFacing(Camera.CameraInfo.CAMERA_FACING_BACK);
         }
-
         if (ultimateCameraId != NO_CAMERA_ID) {
             startCameraById(ultimateCameraId);
         }
@@ -145,9 +147,13 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     private int findCameraIdByFacing(int cameraFacing) {
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         for (int cameraId = 0; cameraId < Camera.getNumberOfCameras(); cameraId++) {
-            Camera.getCameraInfo(cameraId, cameraInfo);
-            if (cameraInfo.facing == cameraFacing) {
-                return cameraId;
+            try {
+                Camera.getCameraInfo(cameraId, cameraInfo);
+                if (cameraInfo.facing == cameraFacing) {
+                    return cameraId;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return NO_CAMERA_ID;
