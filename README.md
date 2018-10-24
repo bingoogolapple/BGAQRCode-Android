@@ -21,6 +21,7 @@
 - [x] 可以设置用前置摄像头扫描
 - [x] 可以二指缩放预览
 - [x] 可以监听环境亮度，提示用户打开、关闭闪光灯
+- [x] 识别到比较小的码时自动放大
 ***
 - [x] ZXing 生成可自定义颜色、带 logo 的二维码
 - [x] ZXing 生成一维码
@@ -147,6 +148,7 @@ qrcv_isShowDefaultGridScanLineDrawable         | 是否显示默认的网格图�
 qrcv_customGridScanLineDrawable         | 扫描线的网格图片资源        | nulll
 qrcv_isOnlyDecodeScanBoxArea         | 是否只识别扫描框中的码        | false
 qrcv_isShowLocationPoint         | 是否显示定位点        | false
+qrcv_isAutoZoom         | 码太小时是否自动缩放        | false
 
 ## 接口说明
 

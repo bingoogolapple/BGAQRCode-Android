@@ -9,6 +9,7 @@ import android.view.View;
 
 import java.util.List;
 
+import cn.bingoogolapple.qrcode.core.BGAQRCodeUtil;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+
+        BGAQRCodeUtil.setDebug(true);
     }
 
     public void onClick(View view) {

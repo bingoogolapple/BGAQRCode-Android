@@ -70,5 +70,7 @@
         <attr name="qrcv_isOnlyDecodeScanBoxArea" format="boolean" />
         <!-- 是否显示定位点，默认值为false -->
         <attr name="qrcv_isShowLocationPoint" format="boolean" />
+        <!-- 码太小时是否自动缩放，默认值为false -->
+        <attr name="qrcv_isAutoZoom" format="boolean" />
     </declare-styleable>
 </resources>

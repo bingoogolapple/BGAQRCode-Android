@@ -78,6 +78,7 @@ public class ScanBoxView extends View {
 
     private boolean mIsOnlyDecodeScanBoxArea;
     private boolean mIsShowLocationPoint;
+    private boolean mIsAutoZoom;
 
     private QRCodeView mQRCodeView;
 
@@ -124,6 +125,7 @@ public class ScanBoxView extends View {
 
         mIsOnlyDecodeScanBoxArea = false;
         mIsShowLocationPoint = false;
+        mIsAutoZoom = false;
     }
 
     void init(QRCodeView qrCodeView, AttributeSet attrs) {
@@ -206,6 +208,8 @@ public class ScanBoxView extends View {
             mIsOnlyDecodeScanBoxArea = typedArray.getBoolean(attr, mIsOnlyDecodeScanBoxArea);
         } else if (attr == R.styleable.QRCodeView_qrcv_isShowLocationPoint) {
             mIsShowLocationPoint = typedArray.getBoolean(attr, mIsShowLocationPoint);
+        } else if (attr == R.styleable.QRCodeView_qrcv_isAutoZoom) {
+            mIsAutoZoom = typedArray.getBoolean(attr, mIsAutoZoom);
         }
     }
 
@@ -951,5 +955,13 @@ public class ScanBoxView extends View {
 
     public void setShowLocationPoint(boolean showLocationPoint) {
         mIsShowLocationPoint = showLocationPoint;
+    }
+
+    public boolean isAutoZoom() {
+        return mIsAutoZoom;
+    }
+
+    public void setAutoZoom(boolean autoZoom) {
+        mIsAutoZoom = autoZoom;
     }
 }
