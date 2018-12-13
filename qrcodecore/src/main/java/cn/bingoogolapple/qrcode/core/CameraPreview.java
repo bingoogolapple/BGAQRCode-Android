@@ -18,6 +18,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private boolean mIsTouchFocusing = false;
     private float mOldDist = 1f;
     private CameraConfigurationManager mCameraConfigurationManager;
+    private Delegate mDelegate;
 
     public CameraPreview(Context context) {
         super(context);
@@ -36,6 +37,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 showCameraPreview();
             }
         }
+    }
+
+    void setDelegate(Delegate delegate) {
+        mDelegate = delegate;
     }
 
     @Override
@@ -68,25 +73,23 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     private void showCameraPreview() {
-        post(new Runnable() {
-            @Override
-            public void run() {
-                if (mCamera != null) {
-                    try {
-                        mPreviewing = true;
-                        SurfaceHolder surfaceHolder = getHolder();
-                        surfaceHolder.setKeepScreenOn(true);
-                        mCamera.setPreviewDisplay(surfaceHolder);
+        if (mCamera != null) {
+            try {
+                mPreviewing = true;
+                SurfaceHolder surfaceHolder = getHolder();
+                surfaceHolder.setKeepScreenOn(true);
+                mCamera.setPreviewDisplay(surfaceHolder);
 
-                        mCameraConfigurationManager.setDesiredCameraParameters(mCamera);
-                        mCamera.startPreview();
-                        startContinuousAutoFocus();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                mCameraConfigurationManager.setDesiredCameraParameters(mCamera);
+                mCamera.startPreview();
+                if (mDelegate != null) {
+                    mDelegate.onStartPreview();
                 }
+                startContinuousAutoFocus();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
+        }
     }
 
     void stopCameraPreview() {
@@ -304,5 +307,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }
         }
         super.onMeasure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
+    }
+
+    interface Delegate {
+        void onStartPreview();
     }
 }

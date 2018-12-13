@@ -207,16 +207,9 @@ public void startCamera(int cameraFacing)
 public void stopCamera()
 
 /**
- * 延迟0.1秒后开始识别
+ * 开始识别
  */
 public void startSpot()
-
-/**
- * 延迟delay毫秒后开始识别
- *
- * @param delay
- */
-public void startSpotDelay(int delay)
 
 /**
  * 停止识别
@@ -229,7 +222,7 @@ public void stopSpot()
 public void stopSpotAndHiddenRect()
 
 /**
- * 显示扫描框，并且延迟0.1秒后开始识别
+ * 显示扫描框，并开始识别
  */
 public void startSpotAndShowRect()
 
