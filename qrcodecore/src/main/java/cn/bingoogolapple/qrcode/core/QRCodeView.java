@@ -11,23 +11,17 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 public abstract class QRCodeView extends RelativeLayout implements Camera.PreviewCallback {
-    /**
-     * 识别的最小延时，避免相机还未初始化完成
-     */
-    private static final int SPOT_MIN_DELAY = 100;
     private static final int NO_CAMERA_ID = -1;
     protected Camera mCamera;
     protected CameraPreview mCameraPreview;
     protected ScanBoxView mScanBoxView;
     protected Delegate mDelegate;
-    protected Handler mHandler;
     protected boolean mSpotAble = false;
     protected ProcessDataTask mProcessDataTask;
     protected int mCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
@@ -55,13 +49,18 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
 
     public QRCodeView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mHandler = new Handler();
         initView(context, attrs);
         setupReader();
     }
 
     private void initView(Context context, AttributeSet attrs) {
         mCameraPreview = new CameraPreview(context);
+        mCameraPreview.setDelegate(new CameraPreview.Delegate() {
+            @Override
+            public void onStartPreview() {
+                setOneShotPreviewCallback();
+            }
+        });
 
         mScanBoxView = new ScanBoxView(context);
         mScanBoxView.init(this, attrs);
@@ -75,6 +74,16 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         mPaint = new Paint();
         mPaint.setColor(getScanBoxView().getCornerColor());
         mPaint.setStyle(Paint.Style.FILL);
+    }
+
+    private void setOneShotPreviewCallback() {
+        if (mSpotAble && mCameraPreview.isPreviewing()) {
+            try {
+                mCamera.setOneShotPreviewCallback(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     protected abstract void setupReader();
@@ -190,26 +199,12 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     }
 
     /**
-     * 延迟0.1秒后开始识别
+     * 开始识别
      */
     public void startSpot() {
-        startSpotDelay(SPOT_MIN_DELAY);
-    }
-
-    /**
-     * 延迟delay毫秒后开始识别
-     */
-    public void startSpotDelay(int delay) {
-        // 至少延时 SPOT_MIN_DELAY 毫秒，避免相机还未初始化完成
-        delay = Math.max(delay, SPOT_MIN_DELAY);
         mSpotAble = true;
-
         startCamera();
-        // 开始前先移除之前的任务
-        if (mHandler != null) {
-            mHandler.removeCallbacks(mOneShotPreviewCallbackTask);
-            mHandler.postDelayed(mOneShotPreviewCallbackTask, delay);
-        }
+        setOneShotPreviewCallback();
     }
 
     /**
@@ -230,10 +225,6 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
                 e.printStackTrace();
             }
         }
-
-        if (mHandler != null) {
-            mHandler.removeCallbacks(mOneShotPreviewCallbackTask);
-        }
     }
 
     /**
@@ -245,7 +236,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
     }
 
     /**
-     * 显示扫描框，并且延迟0.1秒后开始识别
+     * 显示扫描框，并开始识别
      */
     public void startSpotAndShowRect() {
         startSpot();
@@ -256,7 +247,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
      * 打开闪光灯
      */
     public void openFlashlight() {
-        mHandler.postDelayed(new Runnable() {
+        postDelayed(new Runnable() {
             @Override
             public void run() {
                 mCameraPreview.openFlashlight();
@@ -276,9 +267,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
      */
     public void onDestroy() {
         stopCamera();
-        mHandler = null;
         mDelegate = null;
-        mOneShotPreviewCallbackTask = null;
     }
 
     /**
@@ -314,7 +303,11 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
         }
 
         if (mCameraPreview != null && mCameraPreview.isPreviewing()) {
-            handleAmbientBrightness(data, camera);
+            try {
+                handleAmbientBrightness(data, camera);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         if (!mSpotAble || (mProcessDataTask != null && (mProcessDataTask.getStatus() == AsyncTask.Status.PENDING
@@ -425,19 +418,6 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
             mDelegate.onScanQRCodeSuccess(result);
         }
     }
-
-    private Runnable mOneShotPreviewCallbackTask = new Runnable() {
-        @Override
-        public void run() {
-            if (mCamera != null && mSpotAble) {
-                try {
-                    mCamera.setOneShotPreviewCallback(QRCodeView.this);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    };
 
     void onScanBoxRectChanged(Rect rect) {
         mCameraPreview.onScanBoxRectChanged(rect);
