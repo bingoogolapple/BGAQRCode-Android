@@ -13,7 +13,7 @@ import java.util.Collections;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private Camera mCamera;
-    private boolean mPreviewing = true;
+    private boolean mPreviewing = false;
     private boolean mSurfaceCreated = false;
     private boolean mIsTouchFocusing = false;
     private float mOldDist = 1f;
