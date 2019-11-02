@@ -553,8 +553,8 @@ public class ScanBoxView extends View {
             Rect rect = new Rect(mFramingRect);
             float ratio = 1.0f * previewHeight / getMeasuredHeight();
 
-            float centerX = rect.exactCenterX()*ratio;
-            float centerY = rect.exactCenterY()*ratio;
+            float centerX = rect.exactCenterX() * ratio;
+            float centerY = rect.exactCenterY() * ratio;
 
             float halfWidth = rect.width() / 2f;
             float halfHeight = rect.height() / 2f;
