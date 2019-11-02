@@ -13,7 +13,7 @@ import java.util.Collections;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private Camera mCamera;
-    private boolean mPreviewing = true;
+    private boolean mPreviewing = false;
     private boolean mSurfaceCreated = false;
     private boolean mIsTouchFocusing = false;
     private float mOldDist = 1f;
@@ -22,6 +22,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public CameraPreview(Context context) {
         super(context);
+        getHolder().addCallback(this);
     }
 
     void setCamera(Camera camera) {
@@ -30,7 +31,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCameraConfigurationManager = new CameraConfigurationManager(getContext());
             mCameraConfigurationManager.initFromCameraParameters(mCamera);
 
-            getHolder().addCallback(this);
             if (mPreviewing) {
                 requestLayout();
             } else {
