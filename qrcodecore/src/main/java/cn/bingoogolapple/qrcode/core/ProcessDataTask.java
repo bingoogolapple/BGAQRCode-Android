@@ -105,9 +105,7 @@ class ProcessDataTask extends AsyncTask<Void, Void, ScanResult> {
         if (mPicturePath != null) {
             return qrCodeView.processBitmapData(BGAQRCodeUtil.getDecodeAbleBitmap(mPicturePath));
         } else if (mBitmap != null) {
-            ScanResult result = qrCodeView.processBitmapData(mBitmap);
-            mBitmap = null;
-            return result;
+            return qrCodeView.processBitmapData(mBitmap);
         } else {
             if (BGAQRCodeUtil.isDebug()) {
                 BGAQRCodeUtil.d("两次任务执行的时间间隔：" + (System.currentTimeMillis() - sLastStartTime));
