@@ -1,6 +1,7 @@
 package cn.bingoogolapple.qrcode.core;
 
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.text.TextUtils;
@@ -14,12 +15,14 @@ class ProcessDataTask extends AsyncTask<Void, Void, ScanResult> {
     private String mPicturePath;
     private Bitmap mBitmap;
     private WeakReference<QRCodeView> mQRCodeViewRef;
+    protected WeakReference<ScanBoxView> mScanBoxViewRef;
     private static long sLastStartTime = 0;
 
-    ProcessDataTask(Camera camera, byte[] data, QRCodeView qrCodeView, boolean isPortrait) {
+    ProcessDataTask(Camera camera, byte[] data, QRCodeView qrCodeView, ScanBoxView scanBoxView, boolean isPortrait) {
         mCamera = camera;
         mData = data;
         mQRCodeViewRef = new WeakReference<>(qrCodeView);
+        mScanBoxViewRef = new WeakReference<>(scanBoxView);
         mIsPortrait = isPortrait;
     }
 
@@ -48,11 +51,12 @@ class ProcessDataTask extends AsyncTask<Void, Void, ScanResult> {
     protected void onCancelled() {
         super.onCancelled();
         mQRCodeViewRef.clear();
+        mScanBoxViewRef.clear();
         mBitmap = null;
         mData = null;
     }
 
-    private ScanResult processData(QRCodeView qrCodeView) {
+    private ScanResult processData(QRCodeView qrCodeView, ScanBoxView scanBoxView) {
         if (mData == null) {
             return null;
         }
@@ -67,17 +71,33 @@ class ProcessDataTask extends AsyncTask<Void, Void, ScanResult> {
             height = size.height;
 
             if (mIsPortrait) {
-                data = new byte[mData.length];
-                for (int y = 0; y < height; y++) {
-                    for (int x = 0; x < width; x++) {
-                        data[x * height + height - y - 1] = mData[x + y * width];
-                    }
-                }
-                int tmp = width;
-                width = height;
-                height = tmp;
-            }
+                Rect rect = scanBoxView.getScanBoxAreaRect(width);
 
+                if (rect != null) {
+                    int frameWidth = rect.right - rect.left;
+                    int frameHeight = rect.bottom - rect.top;
+                    data = new byte[frameWidth * frameHeight];
+
+                    for (int y = 0; y < frameWidth; y++) {
+                        for (int x = 0; x < frameHeight; x++) {
+                            data[x * frameWidth + frameWidth - y - 1] = mData[(rect.top + x - 1) + (y + height - rect.right) * width];
+                        }
+                    }
+
+                    width = frameWidth;
+                    height = frameHeight;
+                } else {
+                    data = new byte[mData.length];
+                    for (int y = 0; y < height; y++) {
+                        for (int x = 0; x < width; x++) {
+                            data[x * height + height - y - 1] = this.mData[x + y * width];
+                        }
+                    }
+                    int tmp = width;
+                    width = height;
+                    height = tmp;
+                }
+            }
             return qrCodeView.processData(data, width, height, false);
         } catch (Exception e1) {
             e1.printStackTrace();
@@ -98,6 +118,7 @@ class ProcessDataTask extends AsyncTask<Void, Void, ScanResult> {
     @Override
     protected ScanResult doInBackground(Void... params) {
         QRCodeView qrCodeView = mQRCodeViewRef.get();
+        ScanBoxView scanBoxView = mScanBoxViewRef.get();
         if (qrCodeView == null) {
             return null;
         }
@@ -115,7 +136,7 @@ class ProcessDataTask extends AsyncTask<Void, Void, ScanResult> {
             }
             long startTime = System.currentTimeMillis();
 
-            ScanResult scanResult = processData(qrCodeView);
+            ScanResult scanResult = processData(qrCodeView, scanBoxView);
 
             if (BGAQRCodeUtil.isDebug()) {
                 long time = System.currentTimeMillis() - startTime;
