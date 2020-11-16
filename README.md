@@ -332,9 +332,9 @@ public static Bitmap syncEncodeBarcode(String content, int width, int height, in
 
 ## 关于我
 
-| 个人主页 | 邮箱 | BGA系列开源库QQ群
-| ------------- | ------------ | ------------ |
-| <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://bgashare.bingoogolapple.cn/BGA_CODE_CLUB.png?imageView2/2/w/200) |
+| 个人主页 | 邮箱 | BGA 系列开源库 QQ 群 | GitHub 喵(专注于 GitHub 等一切与程序员有关的内容) |
+| ------------- | ------------ | ------------ | ------------ |
+| <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://bgashare.bingoogolapple.cn/BGA_CODE_CLUB.png?imageView2/2/w/200) | ![GitHub喵](https://user-images.githubusercontent.com/8949716/99201262-1fd55200-27e5-11eb-8097-c06d2497f477.jpeg) |
 
 ## 打赏支持
 
