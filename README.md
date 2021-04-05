@@ -40,10 +40,6 @@
 
 在自己项目里集成时记得在 onDestroy 方法中调用 mQRCodeView.onDestroy()，在 onStop 方法中调用 mQRCodeView.stopCamera()，否则会出现黑屏。如果没执行前面提到的这两个方法出现黑屏的话，那你就只能加上前面提到的两个方法后，重启手机后重新运行了
 
-#### 3.Gradle 依赖时提示找不到cn.bingoogolapple:bga-libraryname:「latestVersion」
-
-[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-qrcode-core/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-qrcode-core/_latestVersion)「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。***请不要再来问我「latestVersion」是什么了***
-
 ## 效果图与示例 apk
 
 ![zbar109](https://cloud.githubusercontent.com/assets/8949716/17475203/5d788730-5d8c-11e6-836a-61e885e05453.gif)
@@ -57,20 +53,22 @@
 | ![ZXingDemo apk文件二维码](http://bgashare.bingoogolapple.cn/qrcode/zxingdemoapk.png) | ![ZBarDemo apk文件二维码](http://bgashare.bingoogolapple.cn/qrcode/zbardemoapk.png) |
 
 ## Gradle 依赖
-[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-qrcode-core/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-qrcode-core/_latestVersion)「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。***请不要再来问我「latestVersion」是什么了***
+
+* 把 `maven { url 'https://jitpack.io' }` 添加到 root build.gradle 的 repositories 中
+* 在 app build.gradle 中添加如下依赖，末尾的「latestVersion」指的是徽章 [![](https://jitpack.io/v/bingoogolapple/BGAQRCode-Android.svg)](https://jitpack.io/#bingoogolapple/BGAQRCode-Android) 里的版本名称，请自行替换
 
 >ZXing
 
 ```groovy
 dependencies {
-    implementation 'cn.bingoogolapple:bga-qrcode-zxing:latestVersion'
+    implementation 'com.github.bingoogolapple.BGAQRCode-Android:zxing:latestVersion'
 }
 ```
 >ZBar
 
 ```groovy
 dependencies {
-    implementation 'cn.bingoogolapple:bga-qrcode-zbar:latestVersion'
+    implementation 'com.github.bingoogolapple.BGAQRCode-Android:zbar:latestVersion'
 }
 ```
 ## 布局文件
