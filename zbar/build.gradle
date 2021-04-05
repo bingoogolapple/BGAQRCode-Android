@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     compileSdkVersion ANDROID_BUILD_SDK_VERSION as int
@@ -33,16 +34,7 @@ android {
 }
 
 dependencies {
-    if (hasProperty("publishAar")) {
-        compile "cn.bingoogolapple:bga-qrcode-core:${VERSION_NAME}"
-    } else {
-        api project(':qrcodecore')
-    }
-}
-
-// ./gradlew :zbar:clean :zbar:build :zbar:bintrayUpload -PpublishAar
-if (hasProperty("publishAar")) {
-    apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/jcenter-release.gradle'
+    api project(':qrcodecore')
 }
 
 tasks.whenTaskAdded {

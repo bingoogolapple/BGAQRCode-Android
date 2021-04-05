@@ -190,22 +190,26 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     private static void handleZoom(boolean isZoomIn, Camera camera) {
-        Camera.Parameters params = camera.getParameters();
-        if (params.isZoomSupported()) {
-            int zoom = params.getZoom();
-            if (isZoomIn && zoom < params.getMaxZoom()) {
-                BGAQRCodeUtil.d("放大");
-                zoom++;
-            } else if (!isZoomIn && zoom > 0) {
-                BGAQRCodeUtil.d("缩小");
-                zoom--;
+        try {
+            Camera.Parameters params = camera.getParameters();
+            if (params.isZoomSupported()) {
+                int zoom = params.getZoom();
+                if (isZoomIn && zoom < params.getMaxZoom()) {
+                    BGAQRCodeUtil.d("放大");
+                    zoom++;
+                } else if (!isZoomIn && zoom > 0) {
+                    BGAQRCodeUtil.d("缩小");
+                    zoom--;
+                } else {
+                    BGAQRCodeUtil.d("既不放大也不缩小");
+                }
+                params.setZoom(zoom);
+                camera.setParameters(params);
             } else {
-                BGAQRCodeUtil.d("既不放大也不缩小");
+                BGAQRCodeUtil.d("不支持缩放");
             }
-            params.setZoom(zoom);
-            camera.setParameters(params);
-        } else {
-            BGAQRCodeUtil.d("不支持缩放");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
