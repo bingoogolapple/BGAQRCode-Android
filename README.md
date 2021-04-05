@@ -1,4 +1,4 @@
-:running:BGAQRCode-Android:running: [ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-qrcode-core/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-qrcode-core/_latestVersion)
+:running:BGAQRCode-Android:running:
 ============
 
 ## 目录
