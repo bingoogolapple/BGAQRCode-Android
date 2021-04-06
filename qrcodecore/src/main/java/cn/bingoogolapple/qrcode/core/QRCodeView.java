@@ -315,7 +315,7 @@ public abstract class QRCodeView extends RelativeLayout implements Camera.Previe
             return;
         }
 
-        mProcessDataTask = new ProcessDataTask(camera, data, this, BGAQRCodeUtil.isPortrait(getContext())).perform();
+        mProcessDataTask = new ProcessDataTask(camera, data, this, mScanBoxView, BGAQRCodeUtil.isPortrait(getContext())).perform();
     }
 
     private void handleAmbientBrightness(byte[] data, Camera camera) {
