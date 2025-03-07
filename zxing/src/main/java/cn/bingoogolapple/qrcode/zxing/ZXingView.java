@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
+import com.google.zxing.LuminanceSource;
 import com.google.zxing.MultiFormatReader;
 import com.google.zxing.PlanarYUVLuminanceSource;
 import com.google.zxing.Result;
@@ -27,6 +28,8 @@ import cn.bingoogolapple.qrcode.core.ScanResult;
 public class ZXingView extends QRCodeView {
     private MultiFormatReader mMultiFormatReader;
     private Map<DecodeHintType, Object> mHintMap;
+    private boolean isInvertSupported = false;
+    private long counter = 0;
 
     public ZXingView(Context context, AttributeSet attributeSet) {
         this(context, attributeSet, 0);
@@ -75,6 +78,16 @@ public class ZXingView extends QRCodeView {
         setupReader();
     }
 
+    public void enableInvertCode() {
+        isInvertSupported = true;
+    }
+
+    @Override
+    public void startSpot() {
+        counter = 0;
+        super.startSpot();
+    }
+
     @Override
     protected ScanResult processBitmapData(Bitmap bitmap) {
         return new ScanResult(QRCodeDecoder.syncDecodeQRCode(bitmap));
@@ -85,14 +98,19 @@ public class ZXingView extends QRCodeView {
         Result rawResult = null;
         Rect scanBoxAreaRect = null;
 
+        counter++;
         try {
-            PlanarYUVLuminanceSource source;
+            LuminanceSource source;
             scanBoxAreaRect = mScanBoxView.getScanBoxAreaRect(height);
             if (scanBoxAreaRect != null) {
                 source = new PlanarYUVLuminanceSource(data, width, height, scanBoxAreaRect.left, scanBoxAreaRect.top, scanBoxAreaRect.width(),
                         scanBoxAreaRect.height(), false);
             } else {
                 source = new PlanarYUVLuminanceSource(data, width, height, 0, 0, width, height, false);
+            }
+
+            if (counter % 2 == 0 && isInvertSupported) {
+                source = source.invert();
             }
 
             rawResult = mMultiFormatReader.decodeWithState(new BinaryBitmap(new GlobalHistogramBinarizer(source)));
